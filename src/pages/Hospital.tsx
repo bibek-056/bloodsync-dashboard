@@ -1,152 +1,154 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { AddButton, DeleteButton } from '../components/Buttons';
+import { BigButton } from '../components/Buttons';
+import { useReadRequestQuery } from '../api/apiHandler';
+import Loading from '../components/Loading';
 
-// Interface for the data object structure
+interface Column {
+  id: 'name' | 'address' | 'contact';
+  label: string;
+  minWidth?: number;
+  align?: 'center';
+  format?: (value: number) => string;
+}
+
+const columns: readonly Column[] = [
+  {
+    id: 'name',
+    label: 'Hospital Name',
+    minWidth: 170,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'address',
+    label: 'Hospital Address',
+    minWidth: 50,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'contact',
+    label: 'Hospital Contact',
+    minWidth: 120,
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
+  },
+];
+
 interface Data {
   name: string;
   address: string;
   contact: string;
-  action: JSX.Element;
-  history: {
-    adminName: string;
-    adminEmail: string;
-  }[];
 }
 
-// Function to create data objects
 function createData(name: string, address: string, contact: string): Data {
-  return {
-    name,
-    address,
-    contact,
-    action: (
-      <div className="flex gap-2 justify-between items-center">
-        <AddButton /> <DeleteButton />{' '}
-      </div>
-    ),
-    history: [
-      {
-        adminName: 'Rakesh Shah',
-        adminEmail: 'raku211@gmail.com',
-      },
-    ],
+  return { name, address, contact };
+}
+
+export default function Hospital() {
+  const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
+
+  {
+    hospitalData && console.log(hospitalData);
+  }
+
+  const rows = hospitalData?.map((item: any) => {
+    return createData(
+      item.hospitalName,
+      item.hospitalAddress,
+      item.contactInfo
+    );
+  });
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
   };
-}
 
-// Interface for Row component props
-interface RowProps {
-  row: Data;
-}
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
-// Row component
-function Row(props: RowProps) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row" className="font-black	">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.address}</TableCell>
-        <TableCell align="right">{row.contact}</TableCell>
-        <TableCell align="right">{row.action}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h3" gutterBottom component="div">
-                Hospital Admin
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow className="bg-blue-300 text-3xl">
-                    <TableCell style={{ fontWeight: 'bold' }}>Nname</TableCell>
-                    <TableCell style={{ fontWeight: 'bold' }}>Email</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.adminName}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.adminName}
-                      </TableCell>
-                      <TableCell>{historyRow.adminEmail}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
+  return isLoading ? (
+    <Loading />
+  ) : (
+    <>
+      <div className="flex w-full justify-between items-center">
+        <input
+          placeholder="Search Here"
+          className="w-2/5 h-12 p-4 rounded border"
+        ></input>
+        <BigButton />
+      </div>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{
+                      minWidth: column.minWidth,
+                    }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows &&
+                rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row: any, index: any) => {
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row?.name}
+                        className={index % 2 == 0 ? 'bg-white' : 'bg-slate-100'}
+                      >
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+    </>
   );
 }
-
-// Array of data rows
-const rows: Data[] = [
-  createData('CHR', 'rukum', '9861128974'),
-  createData('ABC', 'rukum', '9861128974'),
-  createData('XYZ', 'rukum', '9861128974'),
-];
-
-// Hospital component
-function Hospital() {
-  return (
-    <TableContainer
-      component={Paper}
-      sx={{ maxHeight: '75vh' }}
-      className="border border-black font-bold"
-    >
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell style={{ fontWeight: 'bold' }}>Name </TableCell>
-            <TableCell align="right" style={{ fontWeight: 'bold' }}>
-              Address
-            </TableCell>
-            <TableCell align="right" style={{ fontWeight: 'bold' }}>
-              Contact
-            </TableCell>
-            <TableCell align="right" style={{ fontWeight: 'bold' }}>
-              Action
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}
-
-export default Hospital;

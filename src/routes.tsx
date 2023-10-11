@@ -2,7 +2,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import Donor from './pages/Donor';
+import Donor from './pages/donor';
 import PatientWaitlist from './pages/PatientWaitlist';
 import Inventory from './pages/Inventory';
 import Hospital from './pages/Hospital';
@@ -29,10 +29,10 @@ const routes = [
     component: <Inventory />,
   },
   {
-    name: 'Hospitals',
+    name: 'Hospital',
     key: 'hospital',
     icon: <LocalHospitalIcon />,
-    route: '/hospital',
+    route: '/hospitals',
     component: <Hospital />,
   },
 ];
