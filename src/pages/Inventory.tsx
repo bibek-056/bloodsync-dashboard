@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +10,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { AddButton, BigButton, DeleteButton } from "../components/Buttons";
 import { useReadRequestQuery } from "../api/apiHandler";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import CreateInventory from "../components/Forms/CreateInventory";
 
 interface Column {
   id: "inventoryItem" | "bloodGroup" | "amount" | "lastUsed" | "actions";
@@ -68,7 +71,7 @@ function createData(
 }
 
 export default function Inventory() {
-  const { data: inventoryData } = useReadRequestQuery('inventorys');
+  const { data: inventoryData } = useReadRequestQuery("inventorys");
 
   const rows = inventoryData?.map((item: any) => {
     return createData(
@@ -96,14 +99,26 @@ export default function Inventory() {
     setPage(0);
   };
 
+  const [createForm, setCreateForm] = useState<boolean>(false);
+
+  function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateForm(!createForm);
+  }
+
   return (
     <>
       <div className="flex w-full justify-between items-center">
-        <input 
+        <input
           placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border">
-        </input>
-        <BigButton />
+          className="w-2/5 h-12 p-4 rounded border"
+        ></input>
+        {/* <BigButton/> */}
+        <button
+          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
+          onClick={handleOpenForm}
+        >
+          <IoMdAddCircleOutline className="text-lg" /> Add New Inventory
+        </button>
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: "75vh" }}>
@@ -162,6 +177,8 @@ export default function Inventory() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      
+      {createForm && <CreateInventory /> }
     </>
   );
 }
