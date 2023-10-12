@@ -8,11 +8,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { IoPersonAdd } from 'react-icons/io5';
 import {
   DeleteButton,
   EditButton,
 } from "../components/Buttons";
-import AddPatientButton from "../components/Buttons";
 import AddForm from "../components/Forms/AddPatient";
 import { useReadRequestQuery } from "../api/apiHandler";
 
@@ -115,33 +115,40 @@ export default function PatientDataTable() {
     setPage(0);
   };
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
-    console.log("Button clicked. showForm:", showForm);
-  };
+  const [createAddForm, setCreateAddForm] = useState<boolean>(false);
+
+  function handleAddForm(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateAddForm(!createAddForm);
+  }
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      {showForm ? (
-        <AddForm />
-      ) : (
-        <>
-          <AddPatientButton onClick={toggleForm} />
-          <TableContainer
-            sx={{ maxHeight: "75vh" }}
-            className="border border-black"
-          >
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{
-                        minWidth: column.minWidth,
-                      }}
-                    >
+    <>
+      <div className="flex w-full justify-between items-center">
+        <input
+          placeholder="Search Here"
+          className="w-2/5 h-12 p-4 rounded border"
+        ></input>
+       
+        <button
+          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
+          onClick={handleAddForm}
+        >
+          <IoPersonAdd className="text-lg" /> Add New Patient
+        </button>
+      </div>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: "75vh" }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{
+                      minWidth: column.minWidth,
+                    }}
+                  >
                       {column.label}
                     </TableCell>
                   ))}
@@ -187,8 +194,9 @@ export default function PatientDataTable() {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-        </>
-      )}
+
     </Paper>
+    {createAddForm && <AddForm /> }
+    </>
   );
 }

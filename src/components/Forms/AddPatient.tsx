@@ -1,73 +1,53 @@
-import React, { useState } from 'react';
-import { Form, Input, Select } from 'antd';
 import { AddButton, CancelButton } from "../Buttons";
+import { IoPersonAdd } from 'react-icons/io5';
 
-type SizeType = Parameters<typeof Form>[0]['size'];
-
-const AddForm: React.FC = () => {
-  const [componentSize, setComponentSize] = useState<SizeType | 'default'>('default');
-
-  const onFormLayoutChange = ({ size }: { size: SizeType }) => {
-    setComponentSize(size);
-  };
-
-  const inventoryOptions = [
-    { value: 'item1', label: 'Item 1' },
-    { value: 'item2', label: 'Item 2' },
-    { value: 'item3', label: 'Item 3' },
-  ];
-
-  const priorityOptions = [
-    { value: 'high', label: 'High' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'low', label: 'Low' },
-  ];
-
-  const onFinish = (values: any) => {
-    console.log('Form values:', values);
-  };
-
+const AddForm = () => {
   return (
-    <div className="form-container">
-      <Form
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 14 }}
-        layout="horizontal"
-        initialValues={{ size: componentSize }}
-        onValuesChange={onFormLayoutChange}
-        size={componentSize as SizeType}
-        style={{ maxWidth: 600 }}
-        onFinish={onFinish}
-      >
-        <Form.Item label="Patient Name" name="patientName">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Quantity" name="quantity">
-          <Input />
-        </Form.Item>
-        <Form.Item label="Inventory Item" name="inventoryItem">
-          <Select>
-            {inventoryOptions.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item label="Priority" name="priority">
-          <Select>
-            {priorityOptions.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <div className="w-full flex gap-4">
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-[#0000007A] z-50">
+      <div className="w-96 bg-white p-6 rounded-lg">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-black-500 mb-4">Add a New Patient</p>
+          <IoPersonAdd className="text-xl text-black-500 cursor-pointer" />
+        </div>
+        <form className="flex flex-col gap-4">
+          <div className="flex flex-col">
+            <label className="font-semibold text-lg text-black-500">Patient Name</label>
+            <input
+              className="w-full rounded-md h-10 p-2 border"
+              type="text"
+              placeholder="Enter patient name"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-semibold text-lg text-black-500">Quantity</label>
+            <input
+              className="w-full rounded-md h-10 p-2 border"
+              type="number"
+              placeholder="Enter quantity"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="font-semibold text-lg text-black-500">Inventory Item</label>
+            <select className="w-full rounded-md h-10 p-2 border">
+              <option value="item1">Item 1</option>
+              <option value="item2">Item 2</option>
+              <option value="item3">Item 3</option>
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label className="font-semibold text-lg text-black-500">Priority</label>
+            <select className="w-full rounded-md h-10 p-2 border">
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div className="flex justify-end gap-4">
             <AddButton />
             <CancelButton />
           </div>
-      </Form>
+        </form>
+      </div>
     </div>
   );
 };

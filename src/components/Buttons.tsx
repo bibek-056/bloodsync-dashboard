@@ -22,20 +22,18 @@ export const BigButton = () => {
   )
 }
 
-interface AddPatientButtonProps {
-  onClick: () => void;
-}
-const AddPatientButton: React.FC<AddPatientButtonProps> = ({ onClick }) => {
+export const AddPatientButton = () => {
+  const [createAddForm, setCreateAddForm] = useState<boolean>(false);
+   
+  function handleAddForm(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateAddForm(!createAddForm)
+  }
   return (
-    <button
-      className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
-      onClick={onClick}
-    >
-      <IoPersonAdd className="text-lg" /> Add New Patient
+    <button className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-blue-500 text-white font-medium m-5" onClick={handleAddForm}>
+      <IoPersonAdd className="text-lg"/> Add New Patient
     </button>
-  );
-};
-export default AddPatientButton;
+  )
+}
 
 export const DeleteButton = () => {
   return (
