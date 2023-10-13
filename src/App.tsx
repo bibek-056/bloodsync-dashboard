@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Navbar from './components/navbar';
-import Donor from './pages/donor';
+import Donor from './pages/Donor';
 import PatientWaitlist from './pages/PatientWaitlist';
 import Hospital from './pages/Hospital';
 import Homepage from './pages/Homepage';
