@@ -1,14 +1,14 @@
-import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { BigButton } from '../components/Buttons';
-import { useReadRequestQuery } from '../api/apiHandler';
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { HospitalAdminAddButton } from "../components/Buttons";
+import { useReadRequestQuery } from "../api/apiHandler";
 import Loading from '../components/Loading';
 
 interface Column {
@@ -88,9 +88,9 @@ export default function Hospital() {
       <div className="flex w-full justify-between items-center">
         <input
           placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border"
-        ></input>
-        <BigButton />
+          className="w-2/5 h-12 p-4 rounded border">
+        </input>
+        <HospitalAdminAddButton />
       </div>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: '75vh' }}>
