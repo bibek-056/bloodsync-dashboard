@@ -18,7 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import routes from '../routes';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 240;
+const drawerWidth = 210;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -85,7 +85,7 @@ export default function Navbar({ children }: Props) {
   };
 
   return (
-    <Box className="bg-slate-100" sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -99,7 +99,7 @@ export default function Navbar({ children }: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            BloodSync
           </Typography>
         </Toolbar>
       </AppBar>
@@ -111,6 +111,7 @@ export default function Navbar({ children }: Props) {
             width: drawerWidth,
             boxSizing: 'border-box',
             //To change color of navbar
+            backgroundColor: '#F1F5F9',
           },
         }}
         variant="persistent"
