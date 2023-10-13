@@ -58,11 +58,7 @@ export const HospitalAdminAddButton = () => {
       <IoPersonAdd className="text-lg"/> Add Hospital Admin
     </button>
   )
-<<<<<<< HEAD
-};
-=======
 }
->>>>>>> 876c1bcfdcb364b54dea05274cfca4e4dd7505ff
 
 export const CancelButton = () => {
   return (
@@ -70,8 +66,4 @@ export const CancelButton = () => {
       Cancel
     </button>
   );
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 876c1bcfdcb364b54dea05274cfca4e4dd7505ff
