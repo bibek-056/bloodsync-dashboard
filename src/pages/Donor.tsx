@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Loading from '../components/Loading';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import { toast } from 'react-toastify';
 import {
   useDeleteRequestMutation,
   useReadRequestQuery,
@@ -23,6 +24,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 interface Column {
   id:
     | 'index'
@@ -139,8 +141,13 @@ function Donor() {
   const { data, isLoading } = useReadRequestQuery('donors');
   const [deleteDonor] = useDeleteRequestMutation();
   const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state
-  const handleOpenDrawer = () => {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [donorId, setDonorId] = React.useState('');
+  const handleOpenDrawer = (id: string) => {
     setOpenDrawer(true);
+    setDonorId(id);
+    console.log(donorId);
   };
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
@@ -157,26 +164,26 @@ function Donor() {
       item.wardNo,
       item.hospital.hospitalName,
       item.emergencyContact,
-      <div className="flex justify-around items-center">
+      <div className="flex gap-2 justify-around items-center">
         <DeleteIcon
-          onClick={() => handleOpenDrawer()}
-          className="cursor-pointer"
+          onClick={() => handleOpenDrawer(item.donorId)}
+          className="cursor-pointer text-red-600"
         />
         <BorderColorIcon className="cursor-pointer" />
       </div>
     );
   });
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  async function handleDelete(
-    event: React.MouseEvent<SVGSVGElement, MouseEvent>,
-    slug: string,
-    id: string
-  ) {
-    event.preventDefault();
-    await deleteDonor(`${slug}/${id}`).unwrap();
+
+  async function handleDelete(slug: string, id: string) {
+    try {
+      await deleteDonor(`${slug}/${id}`).unwrap();
+      toast.success('Sucessfully Deleted');
+    } catch (er) {
+      toast.error(`Failed to delete ${er} `);
+    }
   }
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -196,19 +203,21 @@ function Donor() {
     <Loading />
   ) : (
     <>
-      <div className="flex w-[100%] justify-between items-center">
-        <input
-          placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border"
-        ></input>
-        {/* <BigButton/> */}
-        <button
-          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
-          // onClick={handleOpenForm}
-        >
-          <IoMdAddCircleOutline className="text-lg" /> Add New Donor
-        </button>
-      </div>
+      <Link to="/create-donor">
+        <div className="flex w-[100%] justify-between items-center">
+          <input
+            placeholder="Search Here"
+            className="w-2/5 h-12 p-4 rounded border"
+          ></input>
+          {/* <BigButton/> */}
+          <button
+            className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
+            // onClick={handleOpenForm}
+          >
+            <IoMdAddCircleOutline className="text-lg" /> Add New Donor
+          </button>
+        </div>
+      </Link>
       <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
         <TableContainer
           style={{
@@ -283,8 +292,8 @@ function Donor() {
             <Button onClick={handleCloseDrawer}>Cancel</Button>
             <Button
               onClick={() => {
-                handleCloseDrawer(); // Close the dialog
-                // Handle delete here
+                handleCloseDrawer();
+                handleDelete('donors', donorId);
               }}
               autoFocus
             >
