@@ -10,6 +10,9 @@ import TableRow from "@mui/material/TableRow";
 import { HospitalAdminAddButton } from "../components/Buttons";
 import { useReadRequestQuery } from "../api/apiHandler";
 import Loading from '../components/Loading';
+import AddAdmin from "../components/Forms/AddAdmin";
+import { IoPersonAdd } from "react-icons/io5";
+import { useState } from "react";
 
 interface Column {
   id: 'name' | 'address' | 'contact';
@@ -81,16 +84,30 @@ export default function Hospital() {
     setPage(0);
   };
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  const [createAddAdmin, setCreateAddAdmin] = useState<boolean>(false);
+
+  function handleAddAdmin(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateAddAdmin(!createAddAdmin);
+  }
+
+
+  return isLoading ?(
+    <Loading/>):(
+    
     <>
       <div className="flex w-full justify-between items-center">
         <input
           placeholder="Search Here"
           className="w-2/5 h-12 p-4 rounded border">
         </input>
-        <HospitalAdminAddButton />
+
+        
+        <button
+          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
+          onClick={handleAddAdmin}
+        >
+          <IoPersonAdd className="text-lg" /> Add New Admin
+        </button>
       </div>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: '75vh' }}>
@@ -149,6 +166,7 @@ export default function Hospital() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      {createAddAdmin && <AddAdmin />}
     </>
   );
 }
