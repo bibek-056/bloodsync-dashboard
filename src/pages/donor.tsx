@@ -247,7 +247,7 @@ function Donor() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {rows && rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row: any, index: number) => {
                   return (
@@ -275,7 +275,7 @@ function Donor() {
           className="bg-slate-100"
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={rows?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

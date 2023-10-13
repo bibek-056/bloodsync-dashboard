@@ -1,5 +1,5 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { AddButton, CancelButton, DeleteButton } from "../Buttons";
+import { AddButton, CancelButton} from "../Buttons";
 
 const CreateInventory = () => {
   return (
