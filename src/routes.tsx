@@ -35,6 +35,5 @@ const routes = [
     route: '/hospitals',
     component: <Hospital />,
   },
-  
 ];
 export default routes;

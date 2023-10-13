@@ -15,66 +15,59 @@ import { IoPersonAdd } from "react-icons/io5";
 import { useState } from "react";
 
 interface Column {
-  id: "name" | "address" | "contact" ;
+  id: 'name' | 'address' | 'contact';
   label: string;
   minWidth?: number;
-  align?: "center";
+  align?: 'center';
   format?: (value: number) => string;
 }
 
 const columns: readonly Column[] = [
   {
-    id: "name",
-    label: "Hospital Name",
+    id: 'name',
+    label: 'Hospital Name',
     minWidth: 170,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: "address",
-    label: "Hospital Address",
+    id: 'address',
+    label: 'Hospital Address',
     minWidth: 50,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: "contact",
-    label: "Hospital Contact",
+    id: 'contact',
+    label: 'Hospital Contact',
     minWidth: 120,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
-  
 ];
-
 
 interface Data {
   name: string;
   address: string;
   contact: string;
-  
 }
 
-function createData(
-  name: string,
-  address: string,
-  contact: string,
- 
-): Data {
+function createData(name: string, address: string, contact: string): Data {
   return { name, address, contact };
 }
 
 export default function Hospital() {
-  
   const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
 
-  {hospitalData && console.log(hospitalData)}
+  {
+    hospitalData && console.log(hospitalData);
+  }
 
   const rows = hospitalData?.map((item: any) => {
     return createData(
       item.hospitalName,
       item.hospitalAddress,
-      item.contactInfo,
+      item.contactInfo
     );
   });
   const [page, setPage] = React.useState(0);
@@ -103,7 +96,7 @@ export default function Hospital() {
     
     <>
       <div className="flex w-full justify-between items-center">
-        <input 
+        <input
           placeholder="Search Here"
           className="w-2/5 h-12 p-4 rounded border">
         </input>
@@ -116,8 +109,8 @@ export default function Hospital() {
           <IoPersonAdd className="text-lg" /> Add New Admin
         </button>
       </div>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: "75vh" }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -145,13 +138,13 @@ export default function Hospital() {
                         role="checkbox"
                         tabIndex={-1}
                         key={row?.name}
-                        className={index % 2 == 0 ? "bg-white" : "bg-slate-100"}
+                        className={index % 2 == 0 ? 'bg-white' : 'bg-slate-100'}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
+                              {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : value}
                             </TableCell>
