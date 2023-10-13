@@ -14,7 +14,6 @@ import {
   useDeleteRequestMutation,
   useReadRequestQuery,
 } from '../api/apiHandler';
-
 import {
   Button,
   Dialog,
@@ -24,7 +23,6 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
-
 interface Column {
   id:
     | 'index'
@@ -43,9 +41,7 @@ interface Column {
   align?: 'center';
   format?: (value: number) => string;
 }
-
 //  This is to define columns in the table
-
 const columns: readonly Column[] = [
   {
     id: 'index',
@@ -99,7 +95,6 @@ const columns: readonly Column[] = [
     align: 'center',
   },
 ];
-
 interface Data {
   index: number; // Add index property
   donorName: string;
@@ -113,7 +108,6 @@ interface Data {
   emergencyContact: number;
   actions: React.ReactNode;
 }
-
 function createData(
   index: number, // Add index parameter
   donorName: string,
@@ -141,20 +135,16 @@ function createData(
     actions,
   };
 }
-
 function Donor() {
   const { data, isLoading } = useReadRequestQuery('donors');
   const [deleteDonor] = useDeleteRequestMutation();
   const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state
-
   const handleOpenDrawer = () => {
     setOpenDrawer(true);
   };
-
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
-
   const rows = data?.map((item: any, index: number) => {
     return createData(
       index + 1,
@@ -178,7 +168,6 @@ function Donor() {
   });
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   async function handleDelete(
     event: React.MouseEvent<SVGSVGElement, MouseEvent>,
     slug: string,
@@ -188,15 +177,12 @@ function Donor() {
     await deleteDonor(`${slug}/${id}`).unwrap();
   }
   const [open, setOpen] = React.useState(false);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -249,7 +235,7 @@ function Donor() {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row:any, index: number) => {
+                .map((row, index: number) => {
                   return (
                     <TableRow
                       hover
@@ -310,5 +296,4 @@ function Donor() {
     </>
   );
 }
-
 export default Donor;
