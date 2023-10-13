@@ -54,7 +54,15 @@ export const EditButton = () => {
 export const HospitalAdminAddButton = () => {
   return (
     <button className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5">
-      <IoMdAddCircleOutline className="text-lg"/> Add Hospital Admin
+      <IoPersonAdd className="text-lg"/> Add Hospital Admin
     </button>
   )
-}
+};
+
+export const CancelButton = () => {
+  return (
+    <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium">
+      Cancel
+    </button>
+  );
+};
