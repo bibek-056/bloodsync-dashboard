@@ -8,11 +8,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { IoPersonAdd } from 'react-icons/io5';
-import {
-  DeleteButton,
-  EditButton,
-} from "../components/Buttons";
+import Loading from "../components/Loading";
+import { IoPersonAdd } from "react-icons/io5";
+import { DeleteButton, EditButton } from "../components/Buttons";
 import AddForm from "../components/Forms/AddPatient";
 import { useReadRequestQuery } from "../api/apiHandler";
 
@@ -99,7 +97,9 @@ export default function PatientDataTable() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // const [showForm, setShowForm] = useState(false);
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -121,14 +121,16 @@ export default function PatientDataTable() {
     setCreateAddForm(!createAddForm);
   }
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <div className="flex w-full justify-between items-center">
         <input
           placeholder="Search Here"
           className="w-2/5 h-12 p-4 rounded border"
         ></input>
-       
+
         <button
           className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
           onClick={handleAddForm}
@@ -149,54 +151,53 @@ export default function PatientDataTable() {
                       minWidth: column.minWidth,
                     }}
                   >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows &&
-                  rows
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: Data, index: number) => {
-                      return (
-                        <TableRow
-                          key={row.sno}
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          className={
-                            index % 2 === 0 ? "bg-white" : "bg-slate-100"
-                          }
-                        >
-                          {columns.map((column) => {
-                            const value = row[column.id];
-                            return (
-                              <TableCell key={column.id} align={column.align}>
-                                {column.format && typeof value === "number"
-                                  ? column.format(value)
-                                  : value}
-                              </TableCell>
-                            );
-                          })}
-                        </TableRow>
-                      );
-                    })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows?.length || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-
-    </Paper>
-    {createAddForm && <AddForm /> }
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows &&
+                rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row: Data, index: number) => {
+                    return (
+                      <TableRow
+                        key={row.sno}
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        className={
+                          index % 2 === 0 ? "bg-white" : "bg-slate-100"
+                        }
+                      >
+                        {columns.map((column) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === "number"
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
+      {createAddForm && <AddForm />}
     </>
   );
 }
