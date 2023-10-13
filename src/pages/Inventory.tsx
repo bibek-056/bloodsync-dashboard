@@ -1,54 +1,59 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import { AddButton, BigButton, DeleteButton } from '../components/Buttons';
-import { useReadRequestQuery } from '../api/apiHandler';
-import { IoMdAddCircleOutline } from 'react-icons/io';
-import CreateInventory from '../components/Forms/CreateInventory';
+import * as React from "react";
+import { useState } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { DeleteButton } from "../components/Buttons";
+import { useReadRequestQuery } from "../api/apiHandler";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import CreateInventory from "../components/Forms/CreateInventory";
+import EditInventory from "../components/Forms/EditInventory";
 
 interface Column {
-  id: 'inventoryItem' | 'bloodGroup' | 'amount' | 'lastUsed' | 'actions';
+  id: "inventoryItem" | "bloodGroup" | "amount" | "lastUsed" | "actions";
   label: string;
   minWidth?: number;
-  align?: 'center';
+  align?: "center";
   format?: (value: number) => string;
+}
+
+interface CreateInventoryProps {
+  handleOpenForm: () => void;
 }
 
 const columns: readonly Column[] = [
   {
-    id: 'inventoryItem',
-    label: 'Inventory Item',
+    id: "inventoryItem",
+    label: "Inventory Item",
     minWidth: 170,
-    align: 'center',
+    align: "center",
   },
-  { id: 'bloodGroup', label: 'Blood Group', minWidth: 50, align: 'center' },
+  { id: "bloodGroup", label: "Blood Group", minWidth: 50, align: "center" },
   {
-    id: 'amount',
-    label: 'Amount',
+    id: "amount",
+    label: "Amount",
     minWidth: 120,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: 'lastUsed',
-    label: 'Last Used',
+    id: "lastUsed",
+    label: "Last Used",
     minWidth: 170,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: 'actions',
-    label: 'Actions',
+    id: "actions",
+    label: "Actions",
     minWidth: 170,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
 ];
 
@@ -71,7 +76,11 @@ function createData(
 }
 
 export default function Inventory() {
-  const { data: inventoryData } = useReadRequestQuery('inventorys');
+
+  const [createForm, setCreateForm] = useState<boolean>(false);
+  const [editQuantity, setEditQuantity] = useState<any>(null);
+
+  const { data: inventoryData } = useReadRequestQuery("inventorys");
 
   const rows = inventoryData?.map((item: any) => {
     return createData(
@@ -80,7 +89,12 @@ export default function Inventory() {
       item.quantity,
       item.dateModified ? item.dateModified : item.dateCreated,
       <div className="flex gap-2 justify-between items-center">
-        <AddButton />
+        <button
+          className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
+          onClick={() => handleEditQuantity(item)}
+        >
+          Add
+        </button>
         <DeleteButton />
       </div>
     );
@@ -99,28 +113,34 @@ export default function Inventory() {
     setPage(0);
   };
 
-  const [createForm, setCreateForm] = useState<boolean>(false);
-
   function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
     setCreateForm(!createForm);
   }
 
+  function handleCloseEdit(event: React.MouseEvent<HTMLButtonElement>) {
+    setEditQuantity(null)
+  }
+
+  const handleEditQuantity = (item: any) => {
+    setEditQuantity(item);
+  };
+
   return (
     <>
-      <div className="flex w-full justify-between items-center">
+      <div className="flex w-full justify-between items-center px-5 py-3">
         <input
           placeholder="Search Here"
           className="w-2/5 h-12 p-4 rounded border"
         ></input>
         <button
-          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
+          className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-[#006EB9] text-white font-medium"
           onClick={handleOpenForm}
         >
           <IoMdAddCircleOutline className="text-lg" /> Add New Inventory
         </button>
       </div>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: '75vh' }}>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: "75vh" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -148,13 +168,13 @@ export default function Inventory() {
                         role="checkbox"
                         tabIndex={-1}
                         key={row.inventoryItem}
-                        className={index % 2 == 0 ? 'bg-white' : 'bg-slate-100'}
+                        className={index % 2 == 0 ? "bg-white" : "bg-slate-100"}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === 'number'
+                              {column.format && typeof value === "number"
                                 ? column.format(value)
                                 : value}
                             </TableCell>
@@ -177,7 +197,8 @@ export default function Inventory() {
         />
       </Paper>
 
-      {createForm && <CreateInventory />}
+      {createForm && <CreateInventory handleOpenForm={handleOpenForm} />}
+      {editQuantity && <EditInventory editElement = {editQuantity} handleCloseEdit={handleCloseEdit} />}
     </>
   );
 }
