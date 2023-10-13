@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { BigButton } from "../components/Buttons";
+import { HospitalAdminAddButton } from "../components/Buttons";
 import { useReadRequestQuery } from "../api/apiHandler";
 import Loading from '../components/Loading';
 
@@ -97,7 +97,7 @@ export default function Hospital() {
           placeholder="Search Here"
           className="w-2/5 h-12 p-4 rounded border">
         </input>
-        <BigButton />
+        <HospitalAdminAddButton />
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: "75vh" }}>
