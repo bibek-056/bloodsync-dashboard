@@ -4,7 +4,7 @@ import { IoPersonAdd } from 'react-icons/io5';
 
 export const AddButton = () => {
   return (
-    <button className="border w-full h-10 rounded p-2 bg-green-500 text-white font-medium">
+    <button className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium" type="submit">
       Add
     </button>
   );
