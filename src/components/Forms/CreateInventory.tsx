@@ -2,14 +2,8 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AddButton } from "../Buttons";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useState, useEffect } from "react";
 import { useReadRequestQuery, useAddInventoryMutation } from "../../api/apiHandler";
-
-export type InventoryData = {
-  inventoryName: string;
-  bloodGroupId: number;
-  quantity: number;
-};
+import { InventoryData } from "../../models/datamodels";
 
 interface CreateInventoryProps {
   handleOpenForm : () => void
@@ -18,10 +12,6 @@ interface CreateInventoryProps {
 const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
 
   const [ addInventory ] = useAddInventoryMutation();
-
-  useEffect(() => {
-    setShow(true);
-  }, []);
 
   const form = useForm<InventoryData>();
   const { register, control, handleSubmit } = form;
