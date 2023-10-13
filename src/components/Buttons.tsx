@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoMdAddCircleOutline } from "react-icons/io"; 
 import { IoPersonAdd } from 'react-icons/io5';
+
 export const AddButton = () => {
   return (
     <button className="border w-full h-10 rounded p-2 bg-green-500 text-white font-medium">
@@ -58,3 +59,11 @@ export const HospitalAdminAddButton = () => {
     </button>
   )
 }
+
+export const CancelButton = () => {
+  return (
+    <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium">
+      Cancel
+    </button>
+  );
+};
