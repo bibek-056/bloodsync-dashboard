@@ -249,7 +249,7 @@ function Donor() {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index: number) => {
+                .map((row: any, index: number) => {
                   return (
                     <TableRow
                       hover
