@@ -9,4 +9,10 @@ export type EditInventory = {
     inventoryName: string;
     quantity: number;
     bloodGroupId: string;
-}
+};
+export type PatientData = {
+    patientName: string;
+    quantity: number;
+    InventoryId: number;
+    PriorityId: number
+};
