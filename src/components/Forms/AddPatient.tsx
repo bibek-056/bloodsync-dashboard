@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { AddButton } from "../Buttons";
 import { IoPersonAdd } from 'react-icons/io5';
 import { DevTool } from "@hookform/devtools";
-import { useReadRequestQuery, useAddPatientMutation } from "../../api/apiHandler";
+import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
 import { PatientData } from "../../models/datamodels";
 
 interface CreatePatientProps {
@@ -10,7 +10,7 @@ interface CreatePatientProps {
 }
 
 const CreatePatient: React.FC<CreatePatientProps> = (props) => {
-  const [addPatient] = useAddPatientMutation();
+  const [addPatient] = useAddAdminMutation();
 
   const form = useForm<PatientData>();
   const { register, control, handleSubmit } = form;
@@ -70,7 +70,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 p-3 border"
                 id="priority"
-                {...register("PriorityId")}
+                {...register("priorityId")}
               >
                 <option>Select a priority</option>
                 {priorities?.map((priority) => (
@@ -88,7 +88,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 p-3 border"
                 id="inventoryItem"
-                {...register("InventoryId")}
+                {...register("inventoryId")}
               >
                 <option>Select an inventory item</option>
                 {inventoryItems?.map((item) => (

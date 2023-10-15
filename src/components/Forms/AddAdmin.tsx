@@ -1,121 +1,144 @@
-import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AddButton } from "../Buttons";
+import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
+import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
+import { AddAdminDataModel } from "../../models/datamodels";
 
-const AddAdmin = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+interface CreateAdminProps {
+  handleOpenForm : () => void
+}
+
+const CreateInventory: React.FC<CreateAdminProps> = (props) => {
+
+  const [ addAdmin ] = useAddAdminMutation();
+
+  const form = useForm<AddAdminDataModel>();
+  const { register, control, handleSubmit } = form;
+
+  const onSubmit = async (data: AddAdminDataModel) => {
+    console.log("form sumbitted", data); 
+    await addAdmin(data);
   };
 
-  const [formVisible, setFormVisible] = useState(true);
+  const handelCloseForm = () => {
+    props.handleOpenForm();
+  }
 
-  const closeForm = () => {
-    setFormVisible(false);
-  };
+  const { data: hospitals } = useReadRequestQuery("hospitals")
+  const { data: userTypes } = useReadRequestQuery("userTypes")
 
-  
-
+  console.log(hospitals);
   return (
-    <div>
-      {formVisible && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-[#0000007A] z-50">
-          <div className="w-96 bg-white p-6 rounded-lg">
-            <div
-              className="absolute top-1 right-2 cursor-pointer"
-              onClick={closeForm}
-            >
-              <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
-            </div>
-            <form className="flex flex-col gap-4">
-              
-                <div>
-                  <label className="font-semibold text-lg text-black-500">
-                    First name
-                    <span className="required-field">*</span>
-                  </label>
-                  <input
-                    className="w-full rounded-md h-10 p-2 border"
-                    type="text"
-                    placeholder="Enter first name"
-                    required
-                  />
-                
-                
-              </div>
-              <div>
-                <label className="font-semibold text-lg text-black-500">
-                  Hospital name
-                  <span className="required-field">*</span>
-                </label>
-                <input
-                  className="w-full rounded-md h-10 p-2 border"
-                  type="text"
-                  placeholder="Enter hospital name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-lg text-black-500">
-                  Address
-                  <span className="required-field">*</span>
-                </label>
-                <input
-                  className="w-full rounded-md h-10 p-2 border"
-                  type="text"
-                  placeholder="Enter address"
-                  required
-                />
-              </div>
-              <div>
-                <label className="font-semibold text-lg text-black-500">
-                  Email
-                  <span className="required-field">*</span>
-                </label>
-                <input
-                  className="w-full rounded-md h-10 p-2 border"
-                  type="email"
-                  placeholder="Enter email"
-                  required
-                />
-              </div>
-              <div className="flex flex-col relative">
-                <label className="font-semibold text-lg text-black-500">
-                  Password
-                  <span className="required-field">*</span>
-                </label>
-                <input
-                  className="w-full rounded-md h-10 p-2 border"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  required
-                />
-                <span
-                  className="absolute top-2/3 right-3 -translate-y-1/2 cursor-pointer text-sm text-blue-500"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </span>
-              </div>
-              <div className="d-flex justify-content-center mb-4">
-                <label className="font-semibold text-lg text-black-500">
-                  Create admin?
-                </label>
-                <input
-                  className="ml-2"
-                  type="checkbox"
-                  id="form6Example8"
-                />
-              </div>
-              <button className="mb-4 bg-blue-500 hover-bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg w-full">
-                submit
-              </button>
-            </form>
+    <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
+      <div className="w-2/5 h-screen bg-white flex justify-center items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10 overflow-y-auto"
+        >
+          <div className="w-full flex items-center justify-between">
+            <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
+              Create a new Admin
+            </p>
+            <AiOutlineCloseCircle className="text-[#006EB9] text-xl cursor-pointer" onClick={handelCloseForm} />
           </div>
-        </div>
-      )}
+          <div className=" w-full flex flex-col gap-10">
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                Admin Name
+              </label>
+              <input
+                className="w-full rounded-md h-12 p-4 border"
+                type="text"
+                id="name"
+                {...register("name")}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                User address
+              </label>
+              <input
+                className="w-full rounded-md h-12 p-4 border"
+                type="text"
+                id="userAddress"
+                {...register("address")}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                Admin Email
+              </label>
+              <input
+                className="w-full rounded-md h-12 p-4 border"
+                type="text"
+                id="AdminEmail"
+                {...register("email")}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                password
+              </label>
+              <input
+                className="w-full rounded-md h-12 p-4 border"
+                type="text"
+                id="password"
+                {...register("password")}
+              />
+            </div>
+
+
+
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                Organization Name
+              </label>
+              <select
+                className="w-full rounded-md h-12 px-4 border"
+                id="hospitalId"
+                {...register("hospitalId")}
+              >
+                <option>Select an organization name</option>
+                {hospitals?.map((oneGroup) => (
+                  <option label={oneGroup.hospitalName}>{oneGroup.hospitalId}</option>
+                ))}
+                </select>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                User Type
+              </label>
+              <select
+                className="w-full rounded-md h-12 px-4 border"
+                id="userType"
+                {...register("userTypeId")}
+              >
+                <option>Select UserType</option>
+                {userTypes?.map((oneGroup) => (
+                  <option label={oneGroup.userTypeName}>{oneGroup.userTypeId}</option>
+                ))}
+                </select>
+            </div>
+
+
+            
+          </div>
+          <div className="w-full flex gap-4">
+            <AddButton />
+            <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium" onClick={handelCloseForm}>
+              Cancel
+            </button>
+          </div>
+        </form>
+        <DevTool control={control} />
+      </div>
     </div>
   );
 };
 
-export default AddAdmin;
+export default CreateInventory;

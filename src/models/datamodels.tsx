@@ -5,10 +5,16 @@ export type InventoryData = {
 };
 
 export type EditInventory = {
-  inventoryId: string;
-  inventoryName: string;
+    inventoryId: string;
+    inventoryName: string;
+    quantity: number;
+    bloodGroupId: string;
+};
+export type PatientData = {
+  patientName: string;
   quantity: number;
-  bloodGroupId: string;
+  inventoryId: string;
+  priorityId: string;
 };
 
 export type DonorData = {
@@ -63,4 +69,14 @@ export type Hospitals = {
   contactInfo: string;
   dateCreated: Date;
   dateModified: Date;
+};
+export type AddAdminDataModel = {
+    userId: string;
+    hospitalId: string;
+    userTypeId: string;
+    name: string;
+    hospitalName: string;
+    address: string;
+    email: string;
+    password: string;
 };
