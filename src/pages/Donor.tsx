@@ -203,21 +203,22 @@ function Donor() {
     <Loading />
   ) : (
     <>
-      <Link to="/create-donor">
-        <div className="flex w-[100%] justify-between items-center">
-          <input
-            placeholder="Search Here"
-            className="w-2/5 h-12 p-4 rounded border"
-          ></input>
-          {/* <BigButton/> */}
+      <div className="flex w-[100%] justify-between items-center">
+        <input
+          placeholder="Search Here"
+          className="w-2/5 h-12 p-4 rounded border"
+        ></input>
+        {/* <BigButton/> */}
+        <Link to="/create-donor">
           <button
             className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
             // onClick={handleOpenForm}
           >
             <IoMdAddCircleOutline className="text-lg" /> Add New Donor
           </button>
-        </div>
-      </Link>
+        </Link>
+      </div>
+
       <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
         <TableContainer
           style={{
