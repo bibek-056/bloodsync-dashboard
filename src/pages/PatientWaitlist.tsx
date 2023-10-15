@@ -10,18 +10,19 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Loading from "../components/Loading";
 import { IoPersonAdd } from "react-icons/io5";
-import { DeleteButton, EditButton } from "../components/Buttons";
+import DeleteIcon from '@mui/icons-material/Delete';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import AddForm from "../components/Forms/AddPatient";
 import { useReadRequestQuery } from "../api/apiHandler";
 
 interface Column {
   id:
-    | "sno"
-    | "patientName"
-    | "inventoryItem"
-    | "dateCreated"
-    | "priority"
-    | "actions";
+  | "sno"
+  | "patientName"
+  | "inventoryItem"
+  | "dateCreated"
+  | "priority"
+  | "actions";
   label: string;
   minWidth?: number;
   align?: "center";
@@ -87,10 +88,12 @@ export default function PatientDataTable() {
       item.inventory.inventoryName,
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
-      <div className="flex gap-2 justify-between items-center">
-        <DeleteButton />
-        <EditButton />
-      </div>
+      <div className="flex justify-around items-center">
+  <DeleteIcon className="cursor-pointer text-red-600 m-0 p-0" />
+  <BorderColorIcon className="cursor-pointer m-0 p-0" />
+</div>
+
+
     );
   });
 
@@ -201,3 +204,4 @@ export default function PatientDataTable() {
     </>
   );
 }
+

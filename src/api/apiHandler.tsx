@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { EditInventory, InventoryData } from "../models/datamodels";
+import { PatientData } from "../models/datamodels";
 
 export const AxiosClient = createApi({
   reducerPath: "axiosClient",
@@ -35,6 +36,13 @@ export const AxiosClient = createApi({
         body: inventory,
       }),
     }),
+    addPatient: builder.mutation<void, PatientData>({ // Corrected placement
+      query: (patientwaitlist) => ({
+        url: "patientwaitlists",
+        method: "POST",
+        body: patientwaitlist,
+      }),
+    }),
   }),
 });
 
@@ -43,4 +51,5 @@ export const {
   useDeleteRequestMutation,
   useAddInventoryMutation,
   useEditInventoryMutation,
+  useAddPatientMutation, // Corrected mutation name
 } = AxiosClient;
