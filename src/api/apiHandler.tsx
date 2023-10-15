@@ -27,6 +27,7 @@ export const AxiosClient = createApi({
         method: "POST",
         body: inventory,
       }),
+      invalidatesTags: ["Donors"],
     }),
     editInventory: builder.mutation<void, EditInventory>({
       query: (inventory) => ({
@@ -34,6 +35,7 @@ export const AxiosClient = createApi({
         method: "PUT",
         body: inventory,
       }),
+      invalidatesTags: ["Donors"],
     }),
 
     addAdmin: builder.mutation<void, AddAdminDataModel>({

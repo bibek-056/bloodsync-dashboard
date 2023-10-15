@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useEditInventoryMutation } from "../../api/apiHandler";
-import { actions } from "react-table";
 
 type editData = {
   inventoryName: string;
-  quantity: number;
+  quantity: string;
   action: boolean;
   inventoryId: string;
   bloodGroupId: string;
@@ -14,6 +14,9 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   editElement,
   handleCloseEdit,
 }) => {
+
+  const [ loading, setLoading ] = useState<boolean>(false);
+
   const handleClose = () => {
     handleCloseEdit();
   };
@@ -22,21 +25,22 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
 
   const [editInventory] = useEditInventoryMutation();
 
-  const newElement = { ...editElement };
-
   const onSubmit = async (editData: editData) => {
-    console.log(editData);
-    const newElement = {
-      inventoryId : editElement.inventoryId,
-      bloodGroupId : editElement.bloodGroupId,
-      inventoryName : editData.inventoryName,
-      quantity : 12
+    setLoading(true);
+    editData.bloodGroupId = editElement.bloodGroupId;
+    editData.inventoryId = editElement.inventoryId;
+    {
+      editData.action
+        ? (editData.quantity = (Number(editData.quantity) + Number(editElement.quantity)).toString())
+        : (editData.quantity = (Number(editElement.quantity) - Number(editData.quantity)).toString());
     }
-    try {
-      await editInventory(newElement);
-    } catch(er) {
-      console.log(er);
+    try{
+      await editInventory(editData)
+    } catch(error) {
+      console.log(error)
     }
+    setLoading(false);
+    handleClose();
   };
   return (
     <div className="flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
@@ -47,11 +51,12 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
         <div className="flex w-full justify-between items-center">
           <input
             className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
-            value={newElement.inventoryName}
+            value={editElement.inventoryName}
             {...register("inventoryName")}
           ></input>
           <button
             className="flex items-center justify-center w-1/10 h-10 p-4 bg-slate-500 text-white rounded"
+            disabled={loading}
             onClick={handleClose}
           >
             Cancel
@@ -63,7 +68,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
               <p className="font-medium text-lg leading-4">
                 Available Quantity
               </p>
-              <p>{newElement.quantity}</p>
+              <p>{editElement.quantity}</p>
             </div>
             <div className="w-full flex justify-between items-center">
               <p className="font-medium text-lg leading-4">Last Updated On</p>
@@ -83,15 +88,16 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
               <label>Amount to be Added:</label>
               <input
                 className="w-[45%] border rounded h-12 p-4"
-                type="number"
+                type="string"
                 {...register("quantity")}
               />
             </div>
           </div>
         </div>
         <button
-          className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded"
+          className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-500"
           type="submit"
+          disabled={loading}
         >
           Save Changes
         </button>
