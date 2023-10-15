@@ -47,3 +47,20 @@ export type BloodGroup = {
   bloodGroupId: string;
   bloodGroupName: string;
 };
+
+export type UserTypes = {
+  userTypeId: string;
+  userTypeName: string;
+  dateCreated: Date;
+};
+
+export type Hospitals = {
+  hospitalId: string;
+  hospitalName: string;
+  hospitalAddress: string;
+  logoUrl: string;
+  hospitalDescription: string;
+  contactInfo: string;
+  dateCreated: Date;
+  dateModified: Date;
+};

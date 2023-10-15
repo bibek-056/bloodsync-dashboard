@@ -1,50 +1,50 @@
-import * as React from "react";
-import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Loading from "../components/Loading";
-import { IoPersonAdd } from "react-icons/io5";
+import * as React from 'react';
+import { useState } from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Loading from '../components/Loading';
+import { IoPersonAdd } from 'react-icons/io5';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import AddForm from "../components/Forms/AddPatient";
-import { useReadRequestQuery } from "../api/apiHandler";
+import AddForm from '../components/Forms/AddPatient';
+import { useReadRequestQuery } from '../api/apiHandler';
 
 interface Column {
   id:
-  | "sno"
-  | "patientName"
-  | "inventoryItem"
-  | "dateCreated"
-  | "priority"
-  | "actions";
+    | 'sno'
+    | 'patientName'
+    | 'inventoryItem'
+    | 'dateCreated'
+    | 'priority'
+    | 'actions';
   label: string;
   minWidth?: number;
-  align?: "center";
+  align?: 'center';
   format?: (value: any) => string;
 }
 
 const columns: Column[] = [
-  { id: "sno", label: "S.No", minWidth: 50, align: "center" },
-  { id: "patientName", label: "Patient Name", minWidth: 170, align: "center" },
+  { id: 'sno', label: 'S.No', minWidth: 50, align: 'center' },
+  { id: 'patientName', label: 'Patient Name', minWidth: 170, align: 'center' },
   {
-    id: "inventoryItem",
-    label: "Inventory Item",
+    id: 'inventoryItem',
+    label: 'Inventory Item',
     minWidth: 100,
-    align: "center",
+    align: 'center',
   },
-  { id: "dateCreated", label: "Date Created", minWidth: 150, align: "center" },
-  { id: "priority", label: "Priority", minWidth: 100, align: "center" },
+  { id: 'dateCreated', label: 'Date Created', minWidth: 150, align: 'center' },
+  { id: 'priority', label: 'Priority', minWidth: 100, align: 'center' },
   {
-    id: "actions",
-    label: "Actions",
+    id: 'actions',
+    label: 'Actions',
     minWidth: 170,
-    align: "center",
+    align: 'center',
     format: (value: any) => value,
   },
 ];
@@ -77,7 +77,7 @@ function createData(
 }
 
 export default function PatientDataTable() {
-  const { data } = useReadRequestQuery("patientwaitlists");
+  const { data } = useReadRequestQuery('patientwaitlists');
 
   let snoCounter = 1;
   const rows = data?.map((item: any) => {
@@ -88,12 +88,10 @@ export default function PatientDataTable() {
       item.inventory.inventoryName,
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
-      <div className="flex justify-around items-center">
-  <DeleteIcon className="cursor-pointer text-red-600 m-0 p-0" />
-  <BorderColorIcon className="cursor-pointer m-0 p-0" />
-</div>
-
-
+      <div className="flex justify-center gap-4 items-center">
+        <DeleteIcon className="cursor-pointer text-red-600 m-0 p-0" />
+        <BorderColorIcon className="cursor-pointer m-0 p-0" />
+      </div>
     );
   });
 
@@ -141,8 +139,8 @@ export default function PatientDataTable() {
           <IoPersonAdd className="text-lg" /> Add New Patient
         </button>
       </div>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: "75vh" }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -171,14 +169,14 @@ export default function PatientDataTable() {
                         role="checkbox"
                         tabIndex={-1}
                         className={
-                          index % 2 === 0 ? "bg-white" : "bg-slate-100"
+                          index % 2 === 0 ? 'bg-white' : 'bg-slate-100'
                         }
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
+                              {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : value}
                             </TableCell>
@@ -204,4 +202,3 @@ export default function PatientDataTable() {
     </>
   );
 }
-
