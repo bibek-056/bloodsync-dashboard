@@ -18,6 +18,7 @@ const App = () => (
         <Route path="/donor" element={<Donor />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/hospitals" element={<Hospital />} />
+        <Route path="/create-donor" element={<CreateDonor />} />
       </Routes>
     </Navbar>
   </Router>
