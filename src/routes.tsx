@@ -7,7 +7,6 @@ import PatientWaitlist from './pages/PatientWaitlist';
 import Inventory from './pages/Inventory';
 import Hospital from './pages/Hospital';
 const routes = [
-  
   {
     name: 'Patient Waitlist',
     key: 'patientwaitlist',
@@ -28,6 +27,13 @@ const routes = [
     icon: <LocalHospitalIcon />,
     route: '/hospitals',
     component: <Hospital />,
+  },
+  {
+    name: 'Donor',
+    key: 'donor',
+    icon: <PersonIcon />,
+    route: '/donor',
+    component: <Donor />,
   },
 ];
 export default routes;

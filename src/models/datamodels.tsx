@@ -1,7 +1,7 @@
 export type InventoryData = {
-    inventoryName: string;
-    bloodGroupId: number;
-    quantity: number;
+  inventoryName: string;
+  bloodGroupId: number;
+  quantity: number;
 };
 
 export type EditInventory = {
