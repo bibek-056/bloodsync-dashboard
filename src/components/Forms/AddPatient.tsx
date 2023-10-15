@@ -70,7 +70,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 p-3 border"
                 id="priority"
-                {...register("PriorityId")}
+                {...register("priorityId")}
               >
                 <option>Select a priority</option>
                 {priorities?.map((priority) => (
@@ -88,7 +88,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 p-3 border"
                 id="inventoryItem"
-                {...register("InventoryId")}
+                {...register("inventoryId")}
               >
                 <option>Select an inventory item</option>
                 {inventoryItems?.map((item) => (

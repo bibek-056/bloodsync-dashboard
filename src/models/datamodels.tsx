@@ -10,6 +10,12 @@ export type EditInventory = {
     quantity: number;
     bloodGroupId: string;
 };
+export type PatientData = {
+  patientName: string;
+  quantity: number;
+  inventoryId: string;
+  priorityId: string;
+};
 
 export type AddAdminDataModel = {
     userId: string;

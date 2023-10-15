@@ -12,8 +12,8 @@ import Loading from "../components/Loading";
 import { IoPersonAdd } from "react-icons/io5";
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import AddForm from "../components/Forms/AddPatient";
 import { useReadRequestQuery } from "../api/apiHandler";
+import CreatePatient from "../components/Forms/AddPatient";
 
 interface Column {
   id:
@@ -89,10 +89,9 @@ export default function PatientDataTable() {
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
       <div className="flex justify-around items-center">
-  <DeleteIcon className="cursor-pointer text-red-600 m-0 p-0" />
-  <BorderColorIcon className="cursor-pointer m-0 p-0" />
-</div>
-
+        <DeleteIcon className="cursor-pointer text-red-600" />
+        <BorderColorIcon className="cursor-pointer" />
+      </div>
 
     );
   });
@@ -200,8 +199,8 @@ export default function PatientDataTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      {createAddForm && <AddForm />}
+      {createAddForm && <CreatePatient handleOpenForm={handleAddForm} />}
+
     </>
   );
 }
-
