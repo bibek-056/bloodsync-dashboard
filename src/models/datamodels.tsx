@@ -5,45 +5,19 @@ export type InventoryData = {
 };
 
 export type EditInventory = {
-  inventoryId: string;
-  inventoryName: string;
-  quantity: number;
-  bloodGroupId: string;
+    inventoryId: string;
+    inventoryName: string;
+    quantity: number;
+    bloodGroupId: string;
 };
 
-export type DonorData = {
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  userTypeId: string;
-  hospitalId: string;
-  userId: string;
-  bloodGroupId: string;
-  lastDonated: string;
-  district: string;
-  municipality: string;
-  wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
-};
-
-export type EditDonor = {
-  donorId: string;
-  userId: string;
-  bloodGroupId: string;
-  usertypeId: string;
-  name: string;
-  email: string;
-  lastDonated: string;
-  district: string;
-  municipality: string;
-  wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
-};
-
-export type BloodGroup = {
-  bloodGroupId: string;
-  bloodGroupName: string;
+export type AddAdminDataModel = {
+    userId: string;
+    hospitalId: string;
+    userTypeId: string;
+    name: string;
+    hospitalName: string;
+    address: string;
+    email: string;
+    password: string;
 };
