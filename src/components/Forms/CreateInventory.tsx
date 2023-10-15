@@ -1,31 +1,41 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { AddButton } from "../Buttons";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useReadRequestQuery, useAddInventoryMutation } from "../../api/apiHandler";
+import {
+  useReadRequestQuery,
+  useAddInventoryMutation,
+} from "../../api/apiHandler";
 import { InventoryData } from "../../models/datamodels";
+import { toast } from "react-toastify";
 
 interface CreateInventoryProps {
-  handleOpenForm : () => void
+  handleOpenForm: () => void;
 }
 
 const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
-
-  const [ addInventory ] = useAddInventoryMutation();
+  const [addInventory] = useAddInventoryMutation();
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<InventoryData>();
   const { register, control, handleSubmit } = form;
 
   const onSubmit = async (data: InventoryData) => {
-    console.log("form sumbitted", data);
-    await addInventory(data);
+    setLoading(true)
+    try{
+      await addInventory(data);
+      toast.success("Successfully Created Inventory Item")
+    } catch(er) {
+      toast.error("Failed to create Inventory")
+    }
+    props.handleOpenForm();
   };
 
   const handelCloseForm = () => {
     props.handleOpenForm();
-  }
+  };
 
-  const { data: bloodGroups } = useReadRequestQuery("bloodgroups")
+  const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
 
   console.log(bloodGroups);
   return (
@@ -39,7 +49,10 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
             <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
               Create a new Inventory Item
             </p>
-            <AiOutlineCloseCircle className="text-[#006EB9] text-xl cursor-pointer" onClick={handelCloseForm} />
+            <AiOutlineCloseCircle
+              className="text-[#006EB9] text-xl cursor-pointer"
+              onClick={handelCloseForm}
+            />
           </div>
           <div className=" w-full flex flex-col gap-10">
             <div className="flex flex-col gap-2">
@@ -64,9 +77,11 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
               >
                 <option>Select a blood group</option>
                 {bloodGroups?.map((oneGroup) => (
-                  <option label={oneGroup.bloodGroupName}>{oneGroup.bloodGroupId}</option>
+                  <option label={oneGroup.bloodGroupName}>
+                    {oneGroup.bloodGroupId}
+                  </option>
                 ))}
-                </select>
+              </select>
             </div>
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
@@ -81,8 +96,17 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
             </div>
           </div>
           <div className="w-full flex gap-4">
-            <AddButton />
-            <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium" onClick={handelCloseForm}>
+            <button
+              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500"
+              disabled={ loading }
+              type="submit"
+            >
+              Add
+            </button>
+            <button
+              className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium"
+              onClick={handelCloseForm}
+            >
               Cancel
             </button>
           </div>
