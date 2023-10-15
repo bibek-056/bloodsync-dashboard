@@ -9,4 +9,15 @@ export type EditInventory = {
     inventoryName: string;
     quantity: number;
     bloodGroupId: string;
-}
+};
+
+export type AddAdminDataModel = {
+    userId: string;
+    hospitalId: string;
+    userTypeId: string;
+    name: string;
+    hospitalName: string;
+    address: string;
+    email: string;
+    password: string;
+};
