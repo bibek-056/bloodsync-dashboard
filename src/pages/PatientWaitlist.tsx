@@ -12,8 +12,8 @@ import Loading from "../components/Loading";
 import { IoPersonAdd } from "react-icons/io5";
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import AddForm from "../components/Forms/AddPatient";
 import { useReadRequestQuery } from "../api/apiHandler";
+import CreatePatient from "../components/Forms/AddPatient";
 
 interface Column {
   id:
@@ -199,7 +199,8 @@ export default function PatientDataTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      {createAddForm && <AddForm />}
+      {createAddForm && <CreatePatient handleOpenForm={handleAddForm} />}
+
     </>
   );
 }
