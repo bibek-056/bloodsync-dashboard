@@ -8,11 +8,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { DeleteButton } from "../components/Buttons";
-import { useReadRequestQuery } from "../api/apiHandler";
+import { toast } from 'react-toastify';
+import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import CreateInventory from "../components/Forms/CreateInventory";
 import EditInventory from "../components/Forms/EditInventory";
+import Delete from "@mui/icons-material/Delete";
+import DeleteAlert from "../components/Alert/DeleteAlert";
 
 interface Column {
   id: "inventoryItem" | "bloodGroup" | "amount" | "lastUsed" | "actions";
@@ -76,12 +78,22 @@ function createData(
 }
 
 export default function Inventory() {
-
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editQuantity, setEditQuantity] = useState<any>(null);
+  const [ deleteRecord, setDeleteRecord ] = useState<string>(null);
+
 
   const { data: inventoryData } = useReadRequestQuery("inventorys");
 
+  const [ deleteInventory ] = useDeleteRequestMutation();
+
+  const handleDelete = async(id: string) => {
+    setDeleteRecord(id);
+  }
+
+  const handleCancel = () => {
+    setDeleteRecord(null);
+  }
   const rows = inventoryData?.map((item: any) => {
     return createData(
       item.inventoryName,
@@ -95,7 +107,9 @@ export default function Inventory() {
         >
           Add
         </button>
-        <DeleteButton />
+        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" onClick={() => handleDelete(item.inventoryId)}>
+          Delete
+        </button>
       </div>
     );
   });
@@ -118,7 +132,7 @@ export default function Inventory() {
   }
 
   function handleCloseEdit(event: React.MouseEvent<HTMLButtonElement>) {
-    setEditQuantity(null)
+    setEditQuantity(null);
   }
 
   const handleEditQuantity = (item: any) => {
@@ -198,7 +212,15 @@ export default function Inventory() {
       </Paper>
 
       {createForm && <CreateInventory handleOpenForm={handleOpenForm} />}
-      {editQuantity && <EditInventory editElement = {editQuantity} handleCloseEdit={handleCloseEdit} />}
+      {editQuantity && (
+        <EditInventory
+          editElement={editQuantity}
+          handleCloseEdit={handleCloseEdit}
+        />
+      )}
+      {deleteRecord && (
+        <DeleteAlert deleteRecord={ deleteRecord } handleCancel={handleCancel}/>
+      )}
     </>
   );
 }
