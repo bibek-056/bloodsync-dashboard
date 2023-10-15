@@ -89,10 +89,9 @@ export default function PatientDataTable() {
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
       <div className="flex justify-around items-center">
-  <DeleteIcon className="cursor-pointer text-red-600 m-0 p-0" />
-  <BorderColorIcon className="cursor-pointer m-0 p-0" />
-</div>
-
+        <DeleteIcon className="cursor-pointer text-red-600" />
+        <BorderColorIcon className="cursor-pointer" />
+      </div>
 
     );
   });
