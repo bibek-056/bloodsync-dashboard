@@ -37,8 +37,8 @@ export type DonorData = {
   district: string;
   municipality: string;
   wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
+  phoneNumber: number;
+  emergencyContact: number;
 };
 
 export type EditDonors = {
@@ -54,8 +54,8 @@ export type EditDonors = {
   district: string;
   municipality: string;
   wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
+  phoneNumber: number;
+  emergencyContact: number;
   password: string;
 };
 
@@ -70,7 +70,7 @@ export type UserTypes = {
   dateCreated: Date;
 };
 
-export type HospitalDataModel = {
+export type Hospital = {
   hospitalId: string;
   hospitalName: string;
   hospitalAddress: string;
@@ -89,4 +89,64 @@ export type AddAdminDataModel = {
   address: string;
   email: string;
   password: string;
+};
+
+export type User = {
+  userId: string;
+  name: string;
+  address: string;
+  email: string;
+  password: string;
+  hospital: Hospital;
+  userTypeId: string;
+  // userType: UserTypes;
+};
+
+export type Donors = {
+  index: number;
+  name: string;
+  hospitalAffiliated: string;
+  donorId: string;
+  lastDonated: string;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  phoneNumber: number;
+  emergencyContact: number;
+  dateCreated: Date;
+  hospital: Hospital;
+  user: User;
+  bloodGroup: BloodGroup;
+};
+
+export type DonorDatata = {
+  index: number;
+  name: string;
+  hospitalAffiliated: string;
+  donorId: string;
+  lastDonated: string;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  phoneNumber: number;
+  emergencyContact: number;
+  dateCreated: Date;
+  hospital: Hospital;
+  user: User;
+  bloodGroup: BloodGroup;
+  actions: JSX.Element;
+};
+
+export type DonorTable = {
+  index: number;
+  donorName: string;
+  bloodGroup: string;
+  lastDonated: string;
+  phoneNumber: number;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  hospitalAffiliated: string;
+  emergencyContact: number;
+  actions: JSX.Element;
 };

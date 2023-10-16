@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   BloodGroup,
   UserTypes,
-  HospitalDataModel,
+  Hospital,
   EditDonors,
 } from '../../models/datamodels';
 import {
@@ -341,7 +341,7 @@ export default function EditDonor() {
               defaultValue={donorData?.hospital.hospitalId}
             >
               <option label="Select a hopsital"> </option>
-              {hospitals?.map((oneGroup: HospitalDataModel) => (
+              {hospitals?.map((oneGroup: Hospital) => (
                 <option label={oneGroup.hospitalName}>
                   {oneGroup.hospitalId}
                 </option>
