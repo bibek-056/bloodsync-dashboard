@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  EditInventory,
+  EditInventoryData,
   InventoryData,
   AddAdminDataModel,
   PatientData,
   EditPatientwaitlist,
   DonorData,
+  HospitalDataModel,
 } from '../models/datamodels';
 
 export const AxiosClient = createApi({
@@ -28,6 +29,17 @@ export const AxiosClient = createApi({
       },
       invalidatesTags: ['Donors'],
     }),
+
+    deleteAdmin: builder.mutation<{ success: boolean; id: string }, string>({
+      query(slug: string) {
+        return {
+          url: `${slug}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Users'],
+    }),
+
     addInventory: builder.mutation<void, InventoryData>({
       query: (inventory) => ({
         url: 'inventorys',
@@ -36,7 +48,17 @@ export const AxiosClient = createApi({
       }),
       invalidatesTags: ["Donors"],
     }),
-    editInventory: builder.mutation<void, EditInventory>({
+
+    addHospital: builder.mutation<void, HospitalDataModel>({
+      query: (hospital) => ({
+        url: 'hospitals',
+        method: 'POST',
+        body: hospital,
+      }),
+      invalidatesTags: ["Hospitals"],
+    }),
+
+    editInventory: builder.mutation<void, EditInventoryData>({
       query: (inventory) => ({
         url: `inventorys/${inventory.inventoryId}`,
         method: 'PUT',
@@ -87,4 +109,6 @@ export const {
   useAddDonorMutation,
   useAddPatientMutation,
   useEditPatientMutation,
+  useDeleteAdminMutation,
+  useAddHospitalMutation,
 } = AxiosClient;

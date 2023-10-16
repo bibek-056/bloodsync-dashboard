@@ -68,7 +68,7 @@ export type UserTypes = {
   dateCreated: Date;
 };
 
-export type Hospitals = {
+export type HospitalDataModel = {
   hospitalId: string;
   hospitalName: string;
   hospitalAddress: string;
