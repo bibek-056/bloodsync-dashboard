@@ -67,7 +67,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
       >
         <div className="flex w-full justify-between items-center">
           <input
-            className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
+            className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
             defaultValue={editElement.inventoryName}
             {...register('inventoryName')}
           ></input>
