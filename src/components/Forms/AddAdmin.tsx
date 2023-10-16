@@ -4,9 +4,10 @@ import { DevTool } from "@hookform/devtools";
 import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
 import { AddAdminDataModel } from "../../models/datamodels";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface CreateAdminProps {
-  handleOpenForm : () => void
+  handleOpenForm : () => void;
 }
 
 const CreateInventory: React.FC<CreateAdminProps> = (props) => {
@@ -18,8 +19,14 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
   const { register, control, handleSubmit } = form;
 
   const onSubmit = async (data: AddAdminDataModel) => {
-    console.log("form sumbitted", data); 
-    await addAdmin(data);
+    setLoading(true)
+    try{
+      await addAdmin(data);
+      toast.success("Successfully Created Inventory Item")
+    } catch(er) {
+      toast.error("Failed to create Inventory")
+    }
+    props.handleOpenForm();
   };
 
   const handelCloseForm = () => {
