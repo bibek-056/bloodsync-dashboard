@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useEditInventoryMutation } from "../../api/apiHandler";
+import {
+  useEditInventoryMutation,
+  useReadRequestQuery,
+} from "../../api/apiHandler";
 
 type editData = {
   inventoryName: string;
@@ -14,8 +17,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   editElement,
   handleCloseEdit,
 }) => {
-
-  const [ loading, setLoading ] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleClose = () => {
     handleCloseEdit();
@@ -23,21 +25,26 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   const form = useForm<editData>();
   const { register, handleSubmit } = form;
 
+  const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
+
   const [editInventory] = useEditInventoryMutation();
 
   const onSubmit = async (editData: editData) => {
     setLoading(true);
-    editData.bloodGroupId = editElement.bloodGroupId;
     editData.inventoryId = editElement.inventoryId;
     {
       editData.action
-        ? (editData.quantity = (Number(editData.quantity) + Number(editElement.quantity)).toString())
-        : (editData.quantity = (Number(editElement.quantity) - Number(editData.quantity)).toString());
+        ? (editData.quantity = (
+            Number(editData.quantity) + Number(editElement.quantity)
+          ).toString())
+        : (editData.quantity = (
+            Number(editElement.quantity) - Number(editData.quantity)
+          ).toString());
     }
-    try{
-      await editInventory(editData)
-    } catch(error) {
-      console.log(error)
+    try {
+      await editInventory(editData);
+    } catch (error) {
+      console.log(error);
     }
     setLoading(false);
     handleClose();
@@ -51,16 +58,20 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
         <div className="flex w-full justify-between items-center">
           <input
             className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
-            value={editElement.inventoryName}
+            defaultValue={editElement.inventoryName}
             {...register("inventoryName")}
           ></input>
-          <button
-            className="flex items-center justify-center w-1/10 h-10 p-4 bg-slate-500 text-white rounded"
-            disabled={loading}
-            onClick={handleClose}
-          >
-            Cancel
-          </button>
+          <select className="w-20 h-12" {...register("bloodGroupId")}>
+            {bloodGroups?.map((oneGroup) => (
+              <option
+                key={oneGroup.bloodGroupId}
+                value={oneGroup.bloodGroupId}
+                selected={oneGroup.bloodGroupId === editElement.bloodGroupId}
+              >
+                {oneGroup.bloodGroupName}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex flex-col justify-between w-full h-3/5 border-2 border-[#006EB9] rounded p-4">
           <div className="w-full h-2/5 flex flex-col justify-evenly text-[#006EB9] gap-3 border-b-2 border-[#006EB9]">
@@ -94,13 +105,22 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
             </div>
           </div>
         </div>
-        <button
-          className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-500"
-          type="submit"
-          disabled={loading}
-        >
-          Save Changes
-        </button>
+        <div className="flex gap-4 w-full">
+          <button
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-500"
+            type="submit"
+            disabled={loading}
+          >
+            Save Changes
+          </button>
+          <button
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-500"
+            disabled={loading}
+            onClick={handleClose}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

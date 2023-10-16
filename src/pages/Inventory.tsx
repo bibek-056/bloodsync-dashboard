@@ -8,12 +8,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { toast } from 'react-toastify';
 import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import CreateInventory from "../components/Forms/CreateInventory";
 import EditInventory from "../components/Forms/EditInventory";
-import Delete from "@mui/icons-material/Delete";
 import DeleteAlert from "../components/Alert/DeleteAlert";
 
 interface Column {
@@ -105,7 +103,7 @@ export default function Inventory() {
           className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
           onClick={() => handleEditQuantity(item)}
         >
-          Add
+          Edit
         </button>
         <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" onClick={() => handleDelete(item.inventoryId)}>
           Delete
