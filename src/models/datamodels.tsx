@@ -4,10 +4,10 @@ export type InventoryData = {
   quantity: number;
 };
 
-export type EditInventory = {
+export type EditInventoryData = {
     inventoryId: string;
     inventoryName: string;
-    quantity: number;
+    quantity: string;
     bloodGroupId: string;
 };
 export type PatientData = {

@@ -1,25 +1,42 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import {
   DonorData,
   BloodGroup,
   UserTypes,
   Hospitals,
 } from '../../models/datamodels';
-import { useReadRequestQuery } from '../../api/apiHandler';
+import { useAddDonorMutation, useReadRequestQuery } from '../../api/apiHandler';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
+// import Loading from '../Loading';
 
 export default function CreateDonor() {
   const form = useForm<DonorData>();
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = form;
   const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
   const { data: hospitals } = useReadRequestQuery('hospitals');
   const { data: userTypes } = useReadRequestQuery('userTypes');
-  const onSubmit: SubmitHandler<DonorData> = (data) => console.log(data);
+  const [disableButton, setDisableButton] = useState(false);
+  const navigate = useNavigate();
+  const [addDonor] = useAddDonorMutation();
+  const onSubmit: SubmitHandler<DonorData> = async (data) => {
+    setDisableButton(true);
+    try {
+      await addDonor(data).unwrap();
+      toast.success('Sucessfully Added Donor');
+      navigate('/donor');
+    } catch (error) {
+      toast.error('Failed to Add a Donor');
+    } finally {
+      setDisableButton(false);
+    }
+  };
+
   return (
     <>
       <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
@@ -34,14 +51,16 @@ export default function CreateDonor() {
             Name
           </p>
           <input
-            className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
+            className={`w-4/5 px-4 py-2 text-xl text-black border ${
+              errors.name ? 'border-red-500' : 'border-slate-800'
+            } rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2`}
             {...register('name', {
               required: 'Name is required',
               maxLength: {
-                value: 5,
-                message: 'Max Length is 5',
+                value: 32,
+                message: 'Max Length is 32',
               },
               minLength: {
                 value: 2,
@@ -51,7 +70,7 @@ export default function CreateDonor() {
           />
           {errors.name && (
             <p
-              className=" m-0 w-full items-start ml-20 text-sm text-red-600"
+              className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
               role="alert"
             >
               *{errors.name.message}
@@ -65,7 +84,7 @@ export default function CreateDonor() {
             type="email"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
             {...register('email', {
               required: 'Email is required',
               pattern: {
@@ -77,7 +96,7 @@ export default function CreateDonor() {
           />
           {errors.email && (
             <p
-              className=" m-0 w-full items-start ml-20 text-sm text-red-600"
+              className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
               role="alert"
             >
               *{errors.email.message}
@@ -90,7 +109,7 @@ export default function CreateDonor() {
             type="password"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
             {...register('password', {
               required: 'Enter your password',
               maxLength: {
@@ -110,7 +129,7 @@ export default function CreateDonor() {
           />
           {errors.password && (
             <p
-              className=" m-0 w-full items-start ml-20 text-sm text-red-600"
+              className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
               role="alert"
             >
               *{errors.password.message}
@@ -123,14 +142,15 @@ export default function CreateDonor() {
             type="text"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2
+           "
             {...register('address', {
               required: 'Address is required',
             })}
           />
           {errors.address && (
             <p
-              className=" m-0 w-full items-start ml-20 text-sm text-red-600"
+              className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
               role="alert"
             >
               *{errors.address.message}
@@ -146,14 +166,14 @@ export default function CreateDonor() {
                 type="text"
                 className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
                 {...register('district', {
                   required: 'This field is required',
                 })}
               />
               {errors.district && (
                 <p
-                  className=" m-0 w-full items-start text-sm text-red-600"
+                  className=" m-0 w-full items-start text-sm text-red-600 mb-2"
                   role="alert"
                 >
                   *{errors.district.message}
@@ -166,14 +186,14 @@ export default function CreateDonor() {
               </p>
               <input
                 type="text"
-                className=" w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-4"
+                className=" w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
                 {...register('municipality', {
                   required: 'This field is required',
                 })}
               />
               {errors.municipality && (
                 <p
-                  className=" m-0 w-full items-start text-sm text-red-600"
+                  className=" m-0 w-full items-start text-sm text-red-600 mb-2"
                   role="alert"
                 >
                   *{errors.municipality.message}
@@ -186,14 +206,14 @@ export default function CreateDonor() {
               </p>
               <input
                 type="text"
-                className=" w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-4"
+                className=" w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
                 {...register('wardNo', {
                   required: 'This field is required',
                 })}
               />
               {errors.municipality && (
                 <p
-                  className=" m-0 w-full items-start text-sm text-red-600"
+                  className=" m-0 w-full items-start text-sm text-red-600 mb-2"
                   role="alert"
                 >
                   *{errors.municipality.message}
@@ -201,6 +221,7 @@ export default function CreateDonor() {
               )}
             </div>
           </div>
+
           {/* BloodGroup */}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             Bloodgroup
@@ -208,8 +229,8 @@ export default function CreateDonor() {
           <select
             placeholder="Select your blood group"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
-            transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+            transition duration-200 mb-2 ease-in-out
+           focus:border-slate-100 "
             {...register('bloodGroupId', {
               required: 'Blood Group ID is needed',
             })}
@@ -221,6 +242,14 @@ export default function CreateDonor() {
               </option>
             ))}
           </select>
+          {errors.bloodGroupId && (
+            <p
+              className=" m-0 w-4/5 items-start text-sm mb-1 text-red-600"
+              role="alert"
+            >
+              *{errors.bloodGroupId.message}
+            </p>
+          )}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             Contact Number
           </p>
@@ -228,7 +257,7 @@ export default function CreateDonor() {
             type="text"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
             {...register('phoneNumber', {
               required: 'Phone number is required',
               maxLength: {
@@ -241,6 +270,14 @@ export default function CreateDonor() {
               },
             })}
           />
+          {errors.phoneNumber && (
+            <p
+              className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+              role="alert"
+            >
+              *{errors.phoneNumber.message}
+            </p>
+          )}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             {' '}
             Emergency Contact
@@ -249,9 +286,9 @@ export default function CreateDonor() {
             type="text"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
             {...register('emergencyContact', {
-              required: 'Phone number is required',
+              required: 'Emergency Contact is required',
               maxLength: {
                 value: 10,
                 message: 'Max Length is 10',
@@ -262,13 +299,21 @@ export default function CreateDonor() {
               },
             })}
           />
+          {errors.emergencyContact && (
+            <p
+              className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+              role="alert"
+            >
+              *{errors.emergencyContact.message}
+            </p>
+          )}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             UserType
           </p>
           <select
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-2"
             {...register('userTypeId')}
           >
             <option disabled> Select the usertype</option>
@@ -278,14 +323,24 @@ export default function CreateDonor() {
               </option>
             ))}
           </select>
+          {errors.userTypeId && (
+            <p
+              className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+              role="alert"
+            >
+              *{errors.userTypeId.message}
+            </p>
+          )}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             Hospital Affiliated
           </p>
           <select
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
-            {...register('hospitalId')}
+           focus:border-slate-100 mb-2"
+            {...register('hospitalId', {
+              required: 'Select a hospital',
+            })}
           >
             <option disabled> Select the usertype</option>
             {hospitals?.map((oneGroup: Hospitals) => (
@@ -294,9 +349,30 @@ export default function CreateDonor() {
               </option>
             ))}
           </select>
+          {errors.userTypeId && (
+            <p
+              className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+              role="alert"
+            >
+              *{errors.userTypeId.message}
+            </p>
+          )}
+          <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
+            Last Donated
+          </p>
+          <input
+            className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
+            transition duration-200 ease-in-out
+           focus:border-slate-100 mb-2"
+            type="date"
+            value="2023-08-12"
+            {...register('lastDonated')}
+          />
           <button
+            disabled={disableButton}
             type="submit"
-            className="w-4/5 text-center  px-4 py-2 rounded text-white hover:bg-[#446eb6] bg-[#006EB9] text-base mb-1 font-thin"
+            className="cursor-pointer  w-4/5 text-center  px-4 py-2 rounded text-white hover:bg-[#446eb6] bg-[#006EB9] text-base mb-1 font-thin
+            disabled:bg-blue-700 disabled:cursor-not-allowed"
           >
             Create Donor
           </button>

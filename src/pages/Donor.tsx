@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Loading from '../components/Loading';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import moment from 'moment';
 import { toast } from 'react-toastify';
 import {
   useDeleteRequestMutation,
@@ -24,7 +25,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 interface Column {
   id:
     | 'index'
@@ -138,16 +139,16 @@ function createData(
   };
 }
 function Donor() {
-  const { data, isLoading } = useReadRequestQuery('donors');
+  const { data, isLoading, error } = useReadRequestQuery('donors');
   const [deleteDonor] = useDeleteRequestMutation();
   const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [donorId, setDonorId] = React.useState('');
+  const navigate = useNavigate();
   const handleOpenDrawer = (id: string) => {
     setOpenDrawer(true);
     setDonorId(id);
-    console.log(donorId);
   };
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
@@ -157,7 +158,7 @@ function Donor() {
       index + 1,
       item.user.name,
       item.bloodGroup.bloodGroupName,
-      item.lastDonated,
+      moment(item.lastDonated).format('L'),
       item.phoneNumber,
       item.district,
       item.municipality,
@@ -169,12 +170,18 @@ function Donor() {
           onClick={() => handleOpenDrawer(item.patientId)}
           className="cursor-pointer text-red-600"
         />
-        <BorderColorIcon className="cursor-pointer" />
+        <BorderColorIcon
+          className="cursor-pointer"
+          onClick={() => {
+            navigate(`/donor/edit/${item.donorId}`);
+          }}
+        />
       </div>
     );
   });
 
   async function handleDelete(slug: string, id: string) {
+<<<<<<< HEAD
     try {
       console.log(id);
       await deleteDonor(`${slug}/${id}`).unwrap();
@@ -182,6 +189,17 @@ function Donor() {
     } catch (er) {
       toast.error(`Failed to delete ${er} `);
     }
+=======
+    await deleteDonor(`${slug}/${id}`)
+      .unwrap()
+      .then((success) => {
+        console.log(success);
+        toast.success('Sucessfully Deleted');
+      })
+      .catch((error) => {
+        toast.error(`Failed to delete ${error} `);
+      });
+>>>>>>> 5ae105e52bc55de367b060a8ce681332bc4f2c88
   }
   const [open, setOpen] = React.useState(false);
 
@@ -200,111 +218,117 @@ function Donor() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <>
-      <div className="flex w-[100%] justify-between items-center">
-        <input
-          placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border"
-        ></input>
-        {/* <BigButton/> */}
-        <Link to="/create-donor">
-          <button
-            className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
-            // onClick={handleOpenForm}
-          >
-            <IoMdAddCircleOutline className="text-lg" /> Add New Donor
-          </button>
-        </Link>
-      </div>
-
-      <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
-        <TableContainer
-          style={{
-            backgroundColor: '#F1F5F9',
-          }}
-        >
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={index}
-                    align={column.align}
-                    style={{
-                      // minWidth: column.minWidth,
-                      backgroundColor: '#F1F5F9',
-                    }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index: number) => {
-                  return (
-                    <TableRow
-                      hover
-                      // tabIndex={-1}
-                      key={row.index}
-                      className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}
-                    >
-                      {columns.map((column, index) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={index} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          className="bg-slate-100"
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-        <Dialog
-          open={openDrawer}
-          onClose={handleCloseDrawer}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to delete this record?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDrawer}>Cancel</Button>
-            <Button
-              onClick={() => {
-                handleCloseDrawer();
-                handleDelete('donors', donorId);
-              }}
-              autoFocus
+  if (error) {
+    return <p>Contact your admin sorry</p>;
+  } else if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        <div className="flex w-[100%] justify-between items-center">
+          <input
+            placeholder="Search Here"
+            className="w-2/5 h-12 p-4 rounded border"
+          ></input>
+          {/* <BigButton/> */}
+          <Link to="/create-donor">
+            <button
+              className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
+              // onClick={handleOpenForm}
             >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    </>
-  );
+              <IoMdAddCircleOutline className="text-lg" /> Add New Donor
+            </button>
+          </Link>
+        </div>
+
+        <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
+          <TableContainer
+            style={{
+              backgroundColor: '#F1F5F9',
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column, index) => (
+                    <TableCell
+                      key={index}
+                      align={column.align}
+                      style={{
+                        // minWidth: column.minWidth,
+                        backgroundColor: '#F1F5F9',
+                      }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index: number) => {
+                    return (
+                      <TableRow
+                        hover
+                        // tabIndex={-1}
+                        key={row.index}
+                        className={
+                          index % 2 === 0 ? 'bg-white' : 'bg-slate-100'
+                        }
+                      >
+                        {columns.map((column, index) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={index} align={column.align}>
+                              {value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            className="bg-slate-100"
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+          <Dialog
+            open={openDrawer}
+            onClose={handleCloseDrawer}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to delete this record?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDrawer}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  handleCloseDrawer();
+                  handleDelete('donors', donorId);
+                }}
+                autoFocus
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      </>
+    );
+  }
 }
 export default Donor;
