@@ -1,24 +1,34 @@
 import { useForm } from "react-hook-form";
-import { AddButton } from "../Buttons";
+import { useState } from "react";
 import { IoPersonAdd } from 'react-icons/io5';
 import { DevTool } from "@hookform/devtools";
-import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
+import { AddButton } from "../Buttons";
+import { useReadRequestQuery, useAddPatientMutation } from "../../api/apiHandler";
 import { PatientData } from "../../models/datamodels";
+import { toast } from "react-toastify";
 
 interface CreatePatientProps {
   handleOpenForm: () => void;
 }
 
 const CreatePatient: React.FC<CreatePatientProps> = (props) => {
-  const [addPatient] = useAddAdminMutation();
+  const [addPatient] = useAddPatientMutation();
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<PatientData>();
   const { register, control, handleSubmit } = form;
 
-  const onSubmit = async (data: PatientData) => {
-    console.log("Form submitted", data);
-    await addPatient(data);
+   const onSubmit = async (data: PatientData) => {
+    setLoading(true)
+    try{
+      await addPatient(data);
+      toast.success("Successfully Added new patient")
+    } catch(er) {
+      toast.error("Failed to Add new Patient")
+    }
+    props.handleOpenForm();
   };
+
 
   const handleCloseForm = () => {
     props.handleOpenForm();

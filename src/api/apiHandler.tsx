@@ -3,6 +3,8 @@ import {
   EditInventory,
   InventoryData,
   AddAdminDataModel,
+  PatientData,
+  EditPatientwaitlist,
   DonorData,
 } from '../models/datamodels';
 
@@ -41,6 +43,21 @@ export const AxiosClient = createApi({
       }),
     }),
 
+    addPatient: builder.mutation<void, PatientData>({
+      query: (patientwaitlists) => ({
+        url: 'patientwaitlists',
+        method: 'POST',
+        body: patientwaitlists,
+      }),
+    }),
+    editPatient: builder.mutation<void, EditPatientwaitlist>({
+      query: (patientwaitlists) => ({
+        url: `patientwaitlists/${patientwaitlists.patientId}`,
+        method: 'PUT',
+        body: patientwaitlists,
+      }),
+    }),
+
     addAdmin: builder.mutation<void, AddAdminDataModel>({
       query: (user) => ({
         url: 'users',
@@ -66,4 +83,6 @@ export const {
   useEditInventoryMutation,
   useAddAdminMutation,
   useAddDonorMutation,
+  useAddPatientMutation,
+  useEditPatientMutation,
 } = AxiosClient;

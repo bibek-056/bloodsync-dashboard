@@ -16,6 +16,14 @@ export type PatientData = {
   inventoryId: string;
   priorityId: string;
 };
+export type EditPatientwaitlist= {
+  patientId: string;
+  patientName: string;
+  quantity: number;
+  priorityId: string;
+  inventoryId: string;
+  
+};
 
 export type DonorData = {
   name: string;
