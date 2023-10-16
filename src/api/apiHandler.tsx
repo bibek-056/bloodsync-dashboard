@@ -73,6 +73,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: patientwaitlists,
       }),
+      invalidatesTags: ["Donors"],
     }),
     editPatient: builder.mutation<void, EditPatientwaitlist>({
       query: (patientwaitlists) => ({
@@ -80,6 +81,7 @@ export const AxiosClient = createApi({
         method: 'PUT',
         body: patientwaitlists,
       }),
+      invalidatesTags: ["Donors"],
     }),
 
     addAdmin: builder.mutation<void, AddAdminDataModel>({
@@ -92,7 +94,7 @@ export const AxiosClient = createApi({
 
     addDonor: builder.mutation<void, DonorData>({
       query: (donor) => ({
-        url: 'donors',
+        url: 'userdonor',
         method: 'POST',
         body: donor,
       }),

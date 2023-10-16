@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   useEditInventoryMutation,
   useReadRequestQuery,
 } from "../../api/apiHandler";
+import { CircularProgress } from "@mui/material";
 
 type editData = {
   inventoryName: string;
@@ -23,13 +24,21 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
     handleCloseEdit();
   };
   const form = useForm<editData>();
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, formState: { errors } } = form;
 
-  const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
+  const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
 
   const [editInventory] = useEditInventoryMutation();
 
   const onSubmit = async (editData: editData) => {
+<<<<<<< HEAD
+    console.log(editData);
+    const newElement = {
+      inventoryId : editElement.inventory,
+      bloodGroupId : editElement.bloodGroupId,
+      inventoryName : editData.inventoryName,
+      quantity : 12
+=======
     setLoading(true);
     editData.inventoryId = editElement.inventoryId;
     {
@@ -40,6 +49,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
         : (editData.quantity = (
             Number(editElement.quantity) - Number(editData.quantity)
           ).toString());
+>>>>>>> 5ae105e52bc55de367b060a8ce681332bc4f2c88
     }
     try {
       await editInventory(editData);
@@ -57,18 +67,19 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
       >
         <div className="flex w-full justify-between items-center">
           <input
-            className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
+            className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
             defaultValue={editElement.inventoryName}
-            {...register("inventoryName")}
+            {...register('inventoryName')}
           ></input>
-          <select className="w-20 h-12" {...register("bloodGroupId")}>
+          <select className="w-20 h-12" {...register('bloodGroupId')}>
             {bloodGroups?.map((oneGroup) => (
               <option
                 key={oneGroup.bloodGroupId}
-                value={oneGroup.bloodGroupId}
+                label={oneGroup.bloodGroupName}
+                defaultValue={editElement.bloodGroupId}
                 selected={oneGroup.bloodGroupId === editElement.bloodGroupId}
               >
-                {oneGroup.bloodGroupName}
+                {oneGroup.bloodGroupId}
               </option>
             ))}
           </select>
@@ -109,24 +120,35 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
             </div>
             <div className="flex flex-col gap-2">
               <input
-                className="w-full border rounded h-12 p-4"
+                className="w-full border rounded h-12 p-4 invalid:border-red-500 text-black"
                 type="string"
                 placeholder="Quantity"
-                {...register("quantity")}
+                {...register("quantity", {
+                  required: "Quantity is required",
+                })}
               />
+              {errors.quantity && (
+                <p
+                  className=" m-0 w-full items-start text-sm text-red-600"
+                  role="alert"
+                >
+                  *{errors.quantity.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
         <div className="flex gap-4 w-full">
           <button
-            className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-500"
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-300"
             type="submit"
             disabled={loading}
           >
-            Save Changes
+            { loading ? <CircularProgress/> :
+            <p>Save Changes</p> }
           </button>
           <button
-            className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-500"
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-300"
             disabled={loading}
             onClick={handleClose}
           >

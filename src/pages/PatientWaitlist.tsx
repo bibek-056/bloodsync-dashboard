@@ -86,13 +86,13 @@ export default function PatientDataTable() {
 
   const [createAddForm, setCreateAddForm] = useState<boolean>(false);
   const [editQuantity, setEditQuantity] = useState<any>(null);
-  const [deleteData, setDeleteData] = useState<string>(null);
+  const [deleteData, setDeleteData] = useState<string>("");
 
 
   const { data } = useReadRequestQuery('patientwaitlists');
   const [deletePatientwaitlist] = useDeleteRequestMutation();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async(id: string) => {
     setDeleteData(id);
   }
 
@@ -233,8 +233,9 @@ export default function PatientDataTable() {
         />
       )}
       {deleteData && (
-        <DeleteAlert deleteData ={ deleteData } handleCancel={handleCancel} />
+        <DeleteAlert deleteRecord ={ deleteData } handleCancel={handleCancel} />
       )}
+      
       
     </>
   );

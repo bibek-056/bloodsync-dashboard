@@ -4,28 +4,60 @@ import { useState } from "react";
 
 const DeleteAlert = ({ deleteRecord, handleCancel }) => {
   const [deleteInventory] = useDeleteRequestMutation();
-  const [ loading, setLoading ] = useState<boolean>(false);
-  console.log(deleteRecord);
+  const [deletePatientWaitlist] = useDeleteRequestMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleDelete = async (id: string) => {
+  const handleDeleteInventory = async (id: string) => {
     setLoading(true);
     try {
       await deleteInventory(`inventorys/${id}`);
-      toast.success("Successfully Deleted");
-    } catch (er) {
-      toast.error("error");
+      toast.success("Successfully Deleted from Inventory");
+    } catch (error) {
+      toast.error("Error deleting from Inventory");
     }
-    setLoading(false);
+    setLoading(false); 
     handleCancel();
   };
+
+  const handleDeletePatientWaitlist = async (id: string) => {
+    setLoading(true);
+    try {
+      await deletePatientWaitlist(`patientwaitlists/${id}`);
+      toast.success("Successfully Deleted from Patient Waitlist");
+    } catch (error) {
+      toast.error("Error deleting from Patient Waitlist");
+    }
+    setLoading(false); 
+    handleCancel();
+  };
+
+  const handleDeleteBoth = () => {
+    handleDeleteInventory(deleteRecord);
+    handleDeletePatientWaitlist(deleteRecord);
+  };
+
   return (
-    <div className="flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
-        <div className="bg-white flex flex-col items-center justify-center p-10 rounded-md w-1/3 gap-8">
-            <p className="font-semibold text-lg leading-5">Are you sure to delete this?</p>
-            <p className="font-medium leading-5">Data cannot be reterived once you have deleted. Only delete if you are aboslutely sure to.</p>
-            <button className="w-full h-12 text-white bg-red-500 font-medium rounded disabled:bg-gray-500" disabled={ loading } onClick={() => handleDelete(deleteRecord)}>Yes, I am Sure.</button>
-            <button className="w-full h-12 text-white bg-green-500 font-medium rounded" disabled={ loading }onClick={handleCancel}>No, Go Back.</button>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-60 bg-gray-900">
+      <div className="bg-white rounded-lg w-96 p-6 shadow-lg">
+        <h2 className="text-2xl font-bold mb-4">Confirm Deletion</h2>
+        <p className="text-gray-600 mb-6">Are you sure you want to delete this record?</p>
+        <div className="flex justify-between">
+          <button
+            className="w-44 h-12 text-white bg-red-500 rounded hover:bg-red-600 transition-colors duration-300"
+            disabled={loading}
+            onClick={handleDeleteBoth}
+          >
+            {loading ? "Deleting..." : "Yes, I'm Sure"}
+          </button>
+          <button
+            className="w-44 h-12 text-white bg-green-500 rounded hover-bg-green-600 transition-colors duration-300"
+            disabled={loading}
+            onClick={handleCancel}
+          >
+            No, Go Back
+          </button>
         </div>
+      </div>
     </div>
   );
 };

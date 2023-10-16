@@ -5,10 +5,11 @@ import PatientWaitlist from './pages/PatientWaitlist';
 import Hospital from './pages/Hospital';
 import Homepage from './pages/Homepage';
 import Inventory from './pages/Inventory';
+import CreateDonor from './components/Forms/CreateDonor';
+import EditDonor from './components/Forms/EditDonor';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import CreateDonor from './components/Forms/CreateDonor';
-import Admin from './pages/Admin';
+import HospitalProfile from './pages/HospitalProfile';
 
 const App = () => (
   <Router>
@@ -19,10 +20,12 @@ const App = () => (
         <Route path="/donor" element={<Donor />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/hospitals" element={<Hospital />} />
+        <Route path="/hospital" element={<HospitalProfile />} />
         <Route path="/create-donor" element={<CreateDonor />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/donor/edit/:donorId" element={<EditDonor />} />
       </Routes>
     </Navbar>
+    <ToastContainer />
   </Router>
 );
 
