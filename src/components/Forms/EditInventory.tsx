@@ -23,7 +23,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
     handleCloseEdit();
   };
   const form = useForm<editData>();
-  const { register, handleSubmit } = form;
+  const { register, handleSubmit, formState: { errors } } = form;
 
   const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
 
@@ -109,11 +109,21 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
             </div>
             <div className="flex flex-col gap-2">
               <input
-                className="w-full border rounded h-12 p-4"
+                className="w-full border rounded h-12 p-4 invalid:border-red-500 text-black"
                 type="string"
                 placeholder="Quantity"
-                {...register("quantity")}
+                {...register("quantity", {
+                  required: "Quantity is required",
+                })}
               />
+              {errors.quantity && (
+                <p
+                  className=" m-0 w-full items-start text-sm text-red-600"
+                  role="alert"
+                >
+                  *{errors.quantity.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
