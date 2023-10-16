@@ -23,6 +23,7 @@ const App = () => (
         <Route path="/hospital" element={<HospitalProfile />} />
         <Route path="/create-donor" element={<CreateDonor />} />
         <Route path="/donor/edit/:donorId" element={<EditDonor />} />
+        <Route path="/HospitalProfile/:hospitalId" element={<EditDonor />} />
       </Routes>
     </Navbar>
     <ToastContainer />

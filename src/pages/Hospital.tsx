@@ -12,6 +12,7 @@ import Loading from '../components/Loading';
 import AddHospital  from "../components/Forms/AddHospital";
 import { IoPersonAdd } from "react-icons/io5";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 interface Column {
   id: 'name' | 'address' | 'contact'| 'actions';
@@ -77,12 +78,14 @@ export default function Hospital() {
       item.hospitalAddress,
       item.contactInfo,
       <div className="flex gap-2 justify-between items-center">
+        <Link to="/HospitalProfile" className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium">
         <button
-          className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
+          
           
         >
-          Edit
+          Hospital Profile
         </button>
+        </Link>
         <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" >
           Delete
         </button>

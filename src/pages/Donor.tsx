@@ -181,15 +181,6 @@ function Donor() {
   });
 
   async function handleDelete(slug: string, id: string) {
-<<<<<<< HEAD
-    try {
-      console.log(id);
-      await deleteDonor(`${slug}/${id}`).unwrap();
-      toast.success('Sucessfully Deleted');
-    } catch (er) {
-      toast.error(`Failed to delete ${er} `);
-    }
-=======
     await deleteDonor(`${slug}/${id}`)
       .unwrap()
       .then((success) => {
@@ -199,7 +190,6 @@ function Donor() {
       .catch((error) => {
         toast.error(`Failed to delete ${error} `);
       });
->>>>>>> 5ae105e52bc55de367b060a8ce681332bc4f2c88
   }
   const [open, setOpen] = React.useState(false);
 
