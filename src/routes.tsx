@@ -49,7 +49,7 @@ const routes = [
     name: 'Hospital Profile',
     key: 'hospitalProfile',
     icon: <PersonIcon />,
-    route: '/HospitalProfile',
+    route: '/hospitalprofile',
     component: <HospitalProfile />,
   },
 ];
