@@ -166,7 +166,7 @@ function Donor() {
       item.emergencyContact,
       <div className="flex gap-2 justify-around items-center">
         <DeleteIcon
-          onClick={() => handleOpenDrawer(item.donorId)}
+          onClick={() => handleOpenDrawer(item.patientId)}
           className="cursor-pointer text-red-600"
         />
         <BorderColorIcon className="cursor-pointer" />
@@ -176,6 +176,7 @@ function Donor() {
 
   async function handleDelete(slug: string, id: string) {
     try {
+      console.log(id);
       await deleteDonor(`${slug}/${id}`).unwrap();
       toast.success('Sucessfully Deleted');
     } catch (er) {

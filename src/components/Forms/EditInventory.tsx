@@ -27,7 +27,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   const onSubmit = async (editData: editData) => {
     console.log(editData);
     const newElement = {
-      inventoryId : editElement.inventoryId,
+      inventoryId : editElement.inventory,
       bloodGroupId : editElement.bloodGroupId,
       inventoryName : editData.inventoryName,
       quantity : 12
