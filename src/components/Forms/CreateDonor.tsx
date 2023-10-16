@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 import {
   DonorData,
   BloodGroup,
@@ -7,19 +6,24 @@ import {
   Hospitals,
 } from '../../models/datamodels';
 import { useReadRequestQuery } from '../../api/apiHandler';
+import { useState } from 'react';
 
 export default function CreateDonor() {
   const form = useForm<DonorData>();
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = form;
   const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
   const { data: hospitals } = useReadRequestQuery('hospitals');
   const { data: userTypes } = useReadRequestQuery('userTypes');
-  const onSubmit: SubmitHandler<DonorData> = (data) => console.log(data);
+  const [disableButton, setDisableButton] = useState(false);
+  const onSubmit: SubmitHandler<DonorData> = (data) => {
+    setDisableButton(true);
+    console.log(data);
+  };
+  console.log(errors);
   return (
     <>
       <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
@@ -34,9 +38,11 @@ export default function CreateDonor() {
             Name
           </p>
           <input
-            className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
+            className={`w-4/5 px-4 py-2 text-xl text-black border ${
+              errors.name ? 'border-red-500' : 'border-slate-800'
+            } rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-4`}
             {...register('name', {
               required: 'Name is required',
               maxLength: {
@@ -90,7 +96,8 @@ export default function CreateDonor() {
             type="password"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-4
+           invalid:border-red-500"
             {...register('password', {
               required: 'Enter your password',
               maxLength: {
@@ -123,7 +130,8 @@ export default function CreateDonor() {
             type="text"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
-           focus:border-slate-100 mb-4"
+           focus:border-slate-100 mb-4
+           "
             {...register('address', {
               required: 'Address is required',
             })}
@@ -251,7 +259,7 @@ export default function CreateDonor() {
             transition duration-200 ease-in-out
            focus:border-slate-100 mb-4"
             {...register('emergencyContact', {
-              required: 'Phone number is required',
+              required: 'Emergency Contact is required',
               maxLength: {
                 value: 10,
                 message: 'Max Length is 10',
@@ -285,7 +293,9 @@ export default function CreateDonor() {
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
            focus:border-slate-100 mb-4"
-            {...register('hospitalId')}
+            {...register('hospitalId', {
+              required: 'Select a hospital',
+            })}
           >
             <option disabled> Select the usertype</option>
             {hospitals?.map((oneGroup: Hospitals) => (
@@ -295,8 +305,10 @@ export default function CreateDonor() {
             ))}
           </select>
           <button
+            disabled={disableButton}
             type="submit"
-            className="w-4/5 text-center  px-4 py-2 rounded text-white hover:bg-[#446eb6] bg-[#006EB9] text-base mb-1 font-thin"
+            className="cursor-pointer  w-4/5 text-center  px-4 py-2 rounded text-white hover:bg-[#446eb6] bg-[#006EB9] text-base mb-1 font-thin
+            disabled:bg-blue-700 disabled:cursor-not-allowed"
           >
             Create Donor
           </button>
