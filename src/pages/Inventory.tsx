@@ -103,7 +103,7 @@ export default function Inventory() {
           className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
           onClick={() => handleEditQuantity(item)}
         >
-          Add
+          Edit
         </button>
         <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" onClick={() => handleDelete(item.inventoryId)}>
           Delete

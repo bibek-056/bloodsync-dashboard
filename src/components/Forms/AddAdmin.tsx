@@ -1,9 +1,9 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { AddButton } from "../Buttons";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
 import { AddAdminDataModel } from "../../models/datamodels";
+import { useState } from "react";
 
 interface CreateAdminProps {
   handleOpenForm : () => void
@@ -12,6 +12,7 @@ interface CreateAdminProps {
 const CreateInventory: React.FC<CreateAdminProps> = (props) => {
 
   const [ addAdmin ] = useAddAdminMutation();
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<AddAdminDataModel>();
   const { register, control, handleSubmit } = form;
@@ -129,7 +130,15 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
             
           </div>
           <div className="w-full flex gap-4">
-            <AddButton />
+          <button
+              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500" 
+              disabled={ loading } 
+              type="submit"
+              
+            >
+              Add
+            </button>
+
             <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium" onClick={handelCloseForm}>
               Cancel
             </button>
