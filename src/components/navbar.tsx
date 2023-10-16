@@ -18,7 +18,7 @@ import ListItemText from '@mui/material/ListItemText';
 import routes from '../routes';
 import { Link } from 'react-router-dom';
 
-const drawerWidth = 210;
+const drawerWidth = 230;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
