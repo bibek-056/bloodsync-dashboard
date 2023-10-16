@@ -120,5 +120,6 @@ export const {
   useEditDonorMutation,
   useAddPatientMutation,
   useEditPatientMutation,
-  useAddHospitalMutation
+  useAddHospitalMutation,
+  useDeleteAdminMutation,
 } = AxiosClient;
