@@ -8,6 +8,7 @@ import PatientWaitlist from './pages/PatientWaitlist';
 import Inventory from './pages/Inventory';
 import Hospital from './pages/Hospital';
 import Admin from './pages/Admin';
+import HospitalProfile from './pages/HospitalProfile';
 const routes = [
   {
     name: 'Patient Waitlist',
@@ -43,6 +44,13 @@ const routes = [
     icon: <AdminPanelSettingsIcon />,
     route: '/admin',
     component: <Admin />,
+  },
+  {
+    name: 'Hospital Profile',
+    key: 'hospitalProfile',
+    icon: <PersonIcon />,
+    route: '/HospitalProfile',
+    component: <HospitalProfile />,
   },
 ];
 export default routes;

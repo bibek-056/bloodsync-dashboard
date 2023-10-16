@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  EditInventory,
+  EditInventoryData,
   InventoryData,
   AddAdminDataModel,
   PatientData,
   EditPatientwaitlist,
   DonorData,
   EditDonors,
+  HospitalDataModel,
 } from '../models/datamodels';
 
 export const AxiosClient = createApi({
@@ -29,6 +30,17 @@ export const AxiosClient = createApi({
       },
       invalidatesTags: ['Donors'],
     }),
+
+    deleteAdmin: builder.mutation<{ success: boolean; id: string }, string>({
+      query(slug: string) {
+        return {
+          url: `${slug}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Users'],
+    }),
+
     addInventory: builder.mutation<void, InventoryData>({
       query: (inventory) => ({
         url: 'inventorys',
@@ -37,7 +49,17 @@ export const AxiosClient = createApi({
       }),
       invalidatesTags: ['Donors'],
     }),
-    editInventory: builder.mutation<void, EditInventory>({
+
+    addHospital: builder.mutation<void, HospitalDataModel>({
+      query: (hospital) => ({
+        url: 'hospitals',
+        method: 'POST',
+        body: hospital,
+      }),
+      invalidatesTags: ['Hospitals'],
+    }),
+
+    editInventory: builder.mutation<void, EditInventoryData>({
       query: (inventory) => ({
         url: `inventorys/${inventory.inventoryId}`,
         method: 'PUT',
@@ -52,6 +74,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: patientwaitlists,
       }),
+      invalidatesTags: ['Donors'],
     }),
     editPatient: builder.mutation<void, EditPatientwaitlist>({
       query: (patientwaitlists) => ({
@@ -59,6 +82,7 @@ export const AxiosClient = createApi({
         method: 'PUT',
         body: patientwaitlists,
       }),
+      invalidatesTags: ['Donors'],
     }),
 
     addAdmin: builder.mutation<void, AddAdminDataModel>({
@@ -93,7 +117,8 @@ export const {
   useEditInventoryMutation,
   useAddAdminMutation,
   useAddDonorMutation,
+  useEditDonorMutation,
   useAddPatientMutation,
   useEditPatientMutation,
-  useEditDonorMutation,
+  useAddHospitalMutation
 } = AxiosClient;

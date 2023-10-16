@@ -3,7 +3,7 @@ import {
   DonorData,
   BloodGroup,
   UserTypes,
-  Hospitals,
+  HospitalDataModel,
 } from '../../models/datamodels';
 import { useAddDonorMutation, useReadRequestQuery } from '../../api/apiHandler';
 import { useState } from 'react';
@@ -343,7 +343,7 @@ export default function CreateDonor() {
             })}
           >
             <option disabled> Select the usertype</option>
-            {hospitals?.map((oneGroup: Hospitals) => (
+            {hospitals?.map((oneGroup: HospitalDataModel) => (
               <option label={oneGroup.hospitalName}>
                 {oneGroup.hospitalId}
               </option>

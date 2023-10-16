@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {
   BloodGroup,
   UserTypes,
-  Hospitals,
+  HospitalDataModel,
   EditDonors,
 } from '../../models/datamodels';
 import {
@@ -41,7 +41,7 @@ export default function EditDonor() {
     setDisableButton(true);
     try {
       await editDonor(data).unwrap();
-      console.log(data.hospitalId)
+      console.log(data.hospitalId);
       toast.success('Sucessfully Edited Donor');
       navigate('/donor');
     } catch (error) {
@@ -341,7 +341,7 @@ export default function EditDonor() {
               defaultValue={donorData?.hospital.hospitalId}
             >
               <option label="Select a hopsital"> </option>
-              {hospitals?.map((oneGroup: Hospitals) => (
+              {hospitals?.map((oneGroup: HospitalDataModel) => (
                 <option label={oneGroup.hospitalName}>
                   {oneGroup.hospitalId}
                 </option>

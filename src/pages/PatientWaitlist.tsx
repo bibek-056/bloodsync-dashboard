@@ -21,6 +21,7 @@ interface Column {
   id:
   | 'sno'
   | 'patientName'
+  | 'RequiredAmount'
   | 'inventoryItem'
   | 'dateCreated'
   | 'priority'
@@ -38,6 +39,7 @@ interface CreateInventoryProps {
 const columns: readonly Column[] = [
   { id: 'sno', label: 'S.No', minWidth: 50, align: 'center' },
   { id: 'patientName', label: 'Patient Name', minWidth: 170, align: 'center' },
+  { id: 'RequiredAmount', label: 'RequiredAmount', minWidth: 150, align: 'center' },
   {
     id: 'inventoryItem',
     label: 'Inventory Item',
@@ -58,6 +60,7 @@ const columns: readonly Column[] = [
 interface Data {
   sno: number;
   patientName: string;
+  RequiredAmount: string;
   inventoryItem: string;
   dateCreated: string;
   priority: string;
@@ -67,6 +70,7 @@ interface Data {
 function createData(
   sno: number,
   patientName: string,
+  RequiredAmount: string,
   inventoryItem: string,
   dateCreated: string,
   priority: string,
@@ -75,6 +79,7 @@ function createData(
   return {
     sno,
     patientName,
+    RequiredAmount,
     inventoryItem,
     dateCreated,
     priority,
@@ -86,13 +91,13 @@ export default function PatientDataTable() {
 
   const [createAddForm, setCreateAddForm] = useState<boolean>(false);
   const [editQuantity, setEditQuantity] = useState<any>(null);
-  const [deleteData, setDeleteData] = useState<string>(null);
+  const [deleteData, setDeleteData] = useState<string>("");
 
 
   const { data } = useReadRequestQuery('patientwaitlists');
   const [deletePatientwaitlist] = useDeleteRequestMutation();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async(id: string) => {
     setDeleteData(id);
   }
 
@@ -106,6 +111,7 @@ export default function PatientDataTable() {
     return createData(
       sno,
       item.patientName,
+      item.quantity,
       item.inventory.inventoryName,
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
@@ -233,8 +239,9 @@ export default function PatientDataTable() {
         />
       )}
       {deleteData && (
-        <DeleteAlert deleteData ={ deleteData } handleCancel={handleCancel} />
+        <DeleteAlert deleteRecord ={ deleteData } handleCancel={handleCancel} />
       )}
+      
       
     </>
   );
