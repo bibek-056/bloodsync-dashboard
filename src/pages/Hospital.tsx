@@ -9,12 +9,13 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useReadRequestQuery } from "../api/apiHandler";
 import Loading from '../components/Loading';
-import AddAdmin from "../components/Forms/AddAdmin";
+import AddHospital  from "../components/Forms/AddHospital";
 import { IoPersonAdd } from "react-icons/io5";
 import { useState } from "react";
+import { Link } from 'react-router-dom';
 
 interface Column {
-  id: 'name' | 'address' | 'contact';
+  id: 'name' | 'address' | 'contact'| 'actions';
   label: string;
   minWidth?: number;
   align?: 'center';
@@ -43,30 +44,52 @@ const columns: readonly Column[] = [
     align: 'center',
     format: (value: number) => value.toLocaleString('en-US'),
   },
+
+  {
+    id: "actions",
+    label: "Actions",
+    minWidth: 170,
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
+  },
 ];
 
 interface Data {
   name: string;
   address: string;
   contact: string;
+  actions: any;
 }
 
-function createData(name: string, address: string, contact: string): Data {
-  return { name, address, contact };
+function createData(name: string, address: string, contact: string, actions: any): Data {
+  return { name, address, contact, actions };
 }
 
 export default function Hospital() {
-  const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
+  
+  const [createForm, setCreateForm] = useState<boolean>(false);
 
-  {
-    hospitalData && console.log(hospitalData);
-  }
+  const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
+  
 
   const rows = hospitalData?.map((item: any) => {
     return createData(
       item.hospitalName,
       item.hospitalAddress,
-      item.contactInfo
+      item.contactInfo,
+      <div className="flex gap-2 justify-between items-center">
+        <Link to="/HospitalProfile" className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium">
+        <button
+          
+          
+        >
+          Hospital Profile
+        </button>
+        </Link>
+        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" >
+          Delete
+        </button>
+      </div>
     );
   });
   const [page, setPage] = React.useState(0);
@@ -83,11 +106,15 @@ export default function Hospital() {
     setPage(0);
   };
 
-  const [createAddAdmin, setCreateAddAdmin] = useState<boolean>(false);
-
-  function handleAddAdmin(event: React.MouseEvent<HTMLButtonElement>) {
-    setCreateAddAdmin(!createAddAdmin);
+  function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateForm(!createForm);
   }
+
+  const [createAddHospital, setCreateAddHospital] = useState<boolean>(false);
+
+  
+
+  
 
 
   return isLoading ?(
@@ -103,9 +130,9 @@ export default function Hospital() {
         
         <button
           className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
-          onClick={handleAddAdmin}
+          onClick={handleOpenForm}
         >
-          <IoPersonAdd className="text-lg" /> Add New Admin
+          <IoPersonAdd className="text-lg" /> Add New Hospital
         </button>
       </div>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -165,7 +192,7 @@ export default function Hospital() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      {createAddAdmin && <AddAdmin />}
+      {createForm && <AddHospital handleOpenForm={handleOpenForm} />}
     </>
   );
 }
