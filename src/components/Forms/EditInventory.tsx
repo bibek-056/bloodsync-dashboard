@@ -8,7 +8,6 @@ import {
 type editData = {
   inventoryName: string;
   quantity: string;
-  action: boolean;
   inventoryId: string;
   bloodGroupId: string;
 };
@@ -18,6 +17,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   handleCloseEdit,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [add, setAdd] = useState<boolean>(false);
 
   const handleClose = () => {
     handleCloseEdit();
@@ -33,7 +33,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
     setLoading(true);
     editData.inventoryId = editElement.inventoryId;
     {
-      editData.action
+      add
         ? (editData.quantity = (
             Number(editData.quantity) + Number(editElement.quantity)
           ).toString())
@@ -52,7 +52,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   return (
     <div className="flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
       <form
-        className="w-1/3 h-2/3 bg-white flex flex-col justify-between items-center p-10 rounded-md"
+        className="w-1/3 h-3/4 bg-white flex flex-col justify-between items-center p-10 rounded-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex w-full justify-between items-center">
@@ -90,16 +90,28 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
               )}
             </div>
           </div>
-          <div>
-            <div>
-              <input type="checkbox" {...register("action")} />
-              <label> Add </label>
+          <div className="flex flex-col gap-3 my-4 text-white">
+            <div className="flex w-full justify-stretch gap-0">
+              <button
+                className="w-full border flex justify-center items-center p-2 h-10 bg-slate-300 rounded disabled:bg-red-500"
+                disabled={!add}
+                onClick={() => setAdd(!add)}
+              >
+                Use Inventory
+              </button>
+              <button
+                className="w-full border flex justify-center items-center p-2 h-10 bg-slate-300 rounded disabled:bg-[#006EB9]"
+                disabled={add}
+                onClick={() => setAdd(!add)}
+              >
+                Add Inventory
+              </button>
             </div>
             <div className="flex flex-col gap-2">
-              <label>Amount to be Added:</label>
               <input
-                className="w-[45%] border rounded h-12 p-4"
+                className="w-full border rounded h-12 p-4"
                 type="string"
+                placeholder="Quantity"
                 {...register("quantity")}
               />
             </div>
