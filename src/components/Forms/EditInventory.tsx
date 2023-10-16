@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
-import { useEditInventoryMutation } from "../../api/apiHandler";
-import { actions } from "react-table";
+import { useForm } from 'react-hook-form';
+import { useEditInventoryMutation } from '../../api/apiHandler';
+import { actions } from 'react-table';
 
 type editData = {
   inventoryName: string;
@@ -27,14 +27,14 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   const onSubmit = async (editData: editData) => {
     console.log(editData);
     const newElement = {
-      inventoryId : editElement.inventoryId,
-      bloodGroupId : editElement.bloodGroupId,
-      inventoryName : editData.inventoryName,
-      quantity : 12
-    }
+      inventoryId: editElement.inventoryId,
+      bloodGroupId: editElement.bloodGroupId,
+      inventoryName: editData.inventoryName,
+      quantity: 12,
+    };
     try {
       await editInventory(newElement);
-    } catch(er) {
+    } catch (er) {
       console.log(er);
     }
   };
@@ -48,7 +48,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
           <input
             className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
             value={newElement.inventoryName}
-            {...register("inventoryName")}
+            {...register('inventoryName')}
           ></input>
           <button
             className="flex items-center justify-center w-1/10 h-10 p-4 bg-slate-500 text-white rounded"
@@ -76,7 +76,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
           </div>
           <div>
             <div>
-              <input type="checkbox" {...register("action")} />
+              <input type="checkbox" {...register('action')} />
               <label> Add </label>
             </div>
             <div className="flex flex-col gap-2">
@@ -84,7 +84,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
               <input
                 className="w-[45%] border rounded h-12 p-4"
                 type="number"
-                {...register("quantity")}
+                {...register('quantity')}
               />
             </div>
           </div>

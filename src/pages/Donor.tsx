@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Loading from '../components/Loading';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+import moment from 'moment';
 import { toast } from 'react-toastify';
 import {
   useDeleteRequestMutation,
@@ -24,7 +25,7 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 interface Column {
   id:
     | 'index'
@@ -144,10 +145,10 @@ function Donor() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [donorId, setDonorId] = React.useState('');
+  const navigate = useNavigate();
   const handleOpenDrawer = (id: string) => {
     setOpenDrawer(true);
     setDonorId(id);
-    console.log(donorId);
   };
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
@@ -157,7 +158,7 @@ function Donor() {
       index + 1,
       item.user.name,
       item.bloodGroup.bloodGroupName,
-      item.lastDonated,
+      moment(item.lastDonated).format('L'),
       item.phoneNumber,
       item.district,
       item.municipality,
@@ -169,18 +170,26 @@ function Donor() {
           onClick={() => handleOpenDrawer(item.donorId)}
           className="cursor-pointer text-red-600"
         />
-        <BorderColorIcon className="cursor-pointer" />
+        <BorderColorIcon
+          className="cursor-pointer"
+          onClick={() => {
+            navigate(`/donor/edit/${item.donorId}`);
+          }}
+        />
       </div>
     );
   });
 
   async function handleDelete(slug: string, id: string) {
-    try {
-      await deleteDonor(`${slug}/${id}`).unwrap();
-      toast.success('Sucessfully Deleted');
-    } catch (er) {
-      toast.error(`Failed to delete ${er} `);
-    }
+    await deleteDonor(`${slug}/${id}`)
+      .unwrap()
+      .then((success) => {
+        console.log(success);
+        toast.success('Sucessfully Deleted');
+      })
+      .catch((error) => {
+        toast.error(`Failed to delete ${error} `);
+      });
   }
   const [open, setOpen] = React.useState(false);
 

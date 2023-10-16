@@ -68,7 +68,7 @@ export const AxiosClient = createApi({
 
     addDonor: builder.mutation<void, DonorData>({
       query: (donor) => ({
-        url: 'donors',
+        url: 'userdonor',
         method: 'POST',
         body: donor,
       }),
