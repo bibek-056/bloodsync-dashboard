@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   useEditInventoryMutation,
   useReadRequestQuery,
@@ -26,7 +26,7 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   const form = useForm<editData>();
   const { register, handleSubmit, formState: { errors } } = form;
 
-  const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
+  const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
 
   const [editInventory] = useEditInventoryMutation();
 
@@ -60,9 +60,9 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
           <input
             className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9]"
             defaultValue={editElement.inventoryName}
-            {...register("inventoryName")}
+            {...register('inventoryName')}
           ></input>
-          <select className="w-20 h-12" {...register("bloodGroupId")}>
+          <select className="w-20 h-12" {...register('bloodGroupId')}>
             {bloodGroups?.map((oneGroup) => (
               <option
                 key={oneGroup.bloodGroupId}

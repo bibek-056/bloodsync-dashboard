@@ -8,11 +8,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
 import { IoMdAddCircleOutline } from "react-icons/io";
-import CreateInventory from "../components/Forms/CreateInventory";
-import EditInventory from "../components/Forms/EditInventory";
-import DeleteAlert from "../components/Alert/DeleteAlert";
+import AddAdmin from "../components/Forms/AddAdmin";
+import {  useReadRequestQuery } from "../api/apiHandler";
+
 
 interface Column {
   id: "name" | "email" | "address" | "hospitalName" | "actions";
@@ -20,6 +19,10 @@ interface Column {
   minWidth?: number;
   align?: "center";
   format?: (value: number) => string;
+}
+
+interface AddAdminProps {
+  handleOpenForm: () => void;
 }
 
 
@@ -78,7 +81,7 @@ function createData(
 }
 
 export default function Admin() {
- 
+  const [createForm, setCreateForm] = useState<boolean>(false);
 
 
   const { data: adminData } = useReadRequestQuery("users");
@@ -120,7 +123,9 @@ export default function Admin() {
   };
 
   
-
+  function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
+    setCreateForm(!createForm);
+  }
   
 
   
@@ -134,7 +139,7 @@ export default function Admin() {
         ></input>
         <button
           className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-[#006EB9] text-white font-medium"
-          
+          onClick={handleOpenForm}
         >
           <IoMdAddCircleOutline className="text-lg" /> Add New Admin
         </button>
@@ -196,6 +201,8 @@ export default function Admin() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+
+      {createForm && <AddAdmin handleOpenForm={handleOpenForm} />}
 
       
     </>
