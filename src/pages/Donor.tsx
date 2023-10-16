@@ -138,7 +138,7 @@ function createData(
   };
 }
 function Donor() {
-  const { data, isLoading } = useReadRequestQuery('donors');
+  const { data, isLoading, error } = useReadRequestQuery('donors');
   const [deleteDonor] = useDeleteRequestMutation();
   const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state
   const [page, setPage] = React.useState(0);
@@ -199,111 +199,117 @@ function Donor() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  return isLoading ? (
-    <Loading />
-  ) : (
-    <>
-      <div className="flex w-[100%] justify-between items-center">
-        <input
-          placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border"
-        ></input>
-        {/* <BigButton/> */}
-        <Link to="/create-donor">
-          <button
-            className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
-            // onClick={handleOpenForm}
-          >
-            <IoMdAddCircleOutline className="text-lg" /> Add New Donor
-          </button>
-        </Link>
-      </div>
-
-      <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
-        <TableContainer
-          style={{
-            backgroundColor: '#F1F5F9',
-          }}
-        >
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={index}
-                    align={column.align}
-                    style={{
-                      // minWidth: column.minWidth,
-                      backgroundColor: '#F1F5F9',
-                    }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index: number) => {
-                  return (
-                    <TableRow
-                      hover
-                      // tabIndex={-1}
-                      key={row.index}
-                      className={index % 2 === 0 ? 'bg-white' : 'bg-slate-100'}
-                    >
-                      {columns.map((column, index) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={index} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          className="bg-slate-100"
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-        <Dialog
-          open={openDrawer}
-          onClose={handleCloseDrawer}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Are you sure you want to delete this record?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDrawer}>Cancel</Button>
-            <Button
-              onClick={() => {
-                handleCloseDrawer();
-                handleDelete('donors', donorId);
-              }}
-              autoFocus
+  if (error) {
+    return <p>Contact your admin sorry</p>;
+  } else if (isLoading) {
+    return <Loading />;
+  } else {
+    return (
+      <>
+        <div className="flex w-[100%] justify-between items-center">
+          <input
+            placeholder="Search Here"
+            className="w-2/5 h-12 p-4 rounded border"
+          ></input>
+          {/* <BigButton/> */}
+          <Link to="/create-donor">
+            <button
+              className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
+              // onClick={handleOpenForm}
             >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Paper>
-    </>
-  );
+              <IoMdAddCircleOutline className="text-lg" /> Add New Donor
+            </button>
+          </Link>
+        </div>
+
+        <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
+          <TableContainer
+            style={{
+              backgroundColor: '#F1F5F9',
+            }}
+          >
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column, index) => (
+                    <TableCell
+                      key={index}
+                      align={column.align}
+                      style={{
+                        // minWidth: column.minWidth,
+                        backgroundColor: '#F1F5F9',
+                      }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index: number) => {
+                    return (
+                      <TableRow
+                        hover
+                        // tabIndex={-1}
+                        key={row.index}
+                        className={
+                          index % 2 === 0 ? 'bg-white' : 'bg-slate-100'
+                        }
+                      >
+                        {columns.map((column, index) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell key={index} align={column.align}>
+                              {value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            className="bg-slate-100"
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+          <Dialog
+            open={openDrawer}
+            onClose={handleCloseDrawer}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Are you sure you want to delete this record?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDrawer}>Cancel</Button>
+              <Button
+                onClick={() => {
+                  handleCloseDrawer();
+                  handleDelete('donors', donorId);
+                }}
+                autoFocus
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Paper>
+      </>
+    );
+  }
 }
 export default Donor;

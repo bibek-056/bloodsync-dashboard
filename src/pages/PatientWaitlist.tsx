@@ -1,50 +1,56 @@
-import * as React from "react";
-import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Loading from "../components/Loading";
-import { IoPersonAdd } from "react-icons/io5";
+import * as React from 'react';
+import { useState } from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { IoPersonAdd } from 'react-icons/io5';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { useReadRequestQuery } from "../api/apiHandler";
+import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
 import CreatePatient from "../components/Forms/AddPatient";
+import DeleteAlert from "../components/Alert/DeleteAlert";
+import EditPatientwaitlist from '../components/Forms/EditPatient';
+
 
 interface Column {
   id:
-  | "sno"
-  | "patientName"
-  | "inventoryItem"
-  | "dateCreated"
-  | "priority"
-  | "actions";
+  | 'sno'
+  | 'patientName'
+  | 'inventoryItem'
+  | 'dateCreated'
+  | 'priority'
+  | 'actions';
   label: string;
   minWidth?: number;
-  align?: "center";
+  align?: 'center';
   format?: (value: any) => string;
 }
 
-const columns: Column[] = [
-  { id: "sno", label: "S.No", minWidth: 50, align: "center" },
-  { id: "patientName", label: "Patient Name", minWidth: 170, align: "center" },
+interface CreateInventoryProps {
+  handleOpenForm: () => void;
+}
+
+const columns: readonly Column[] = [
+  { id: 'sno', label: 'S.No', minWidth: 50, align: 'center' },
+  { id: 'patientName', label: 'Patient Name', minWidth: 170, align: 'center' },
   {
-    id: "inventoryItem",
-    label: "Inventory Item",
+    id: 'inventoryItem',
+    label: 'Inventory Item',
     minWidth: 100,
-    align: "center",
+    align: 'center',
   },
-  { id: "dateCreated", label: "Date Created", minWidth: 150, align: "center" },
-  { id: "priority", label: "Priority", minWidth: 100, align: "center" },
+  { id: 'dateCreated', label: 'Date Created', minWidth: 150, align: 'center' },
+  { id: 'priority', label: 'Priority', minWidth: 100, align: 'center' },
   {
-    id: "actions",
-    label: "Actions",
+    id: 'actions',
+    label: 'Actions',
     minWidth: 170,
-    align: "center",
+    align: 'center',
     format: (value: any) => value,
   },
 ];
@@ -64,7 +70,7 @@ function createData(
   inventoryItem: string,
   dateCreated: string,
   priority: string,
-  actions: React.ReactNode
+  actions: any
 ): Data {
   return {
     sno,
@@ -77,7 +83,22 @@ function createData(
 }
 
 export default function PatientDataTable() {
-  const { data } = useReadRequestQuery("patientwaitlists");
+
+  const [createAddForm, setCreateAddForm] = useState<boolean>(false);
+  const [editQuantity, setEditQuantity] = useState<any>(null);
+  const [deleteData, setDeleteData] = useState<string>(null);
+
+
+  const { data } = useReadRequestQuery('patientwaitlists');
+  const [deletePatientwaitlist] = useDeleteRequestMutation();
+
+  const handleDelete = async (id: string) => {
+    setDeleteData(id);
+  }
+
+  const handleCancel = () => {
+    setDeleteData(null);
+  }
 
   let snoCounter = 1;
   const rows = data?.map((item: any) => {
@@ -88,27 +109,27 @@ export default function PatientDataTable() {
       item.inventory.inventoryName,
       item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
-      <div className="flex justify-around items-center">
-        <DeleteIcon className="cursor-pointer text-red-600" />
-        <BorderColorIcon className="cursor-pointer" />
-      </div>
-
+         <div className="flex justify-center gap-4 items-center">
+      <BorderColorIcon
+        className="cursor-pointer text-[#006EB9] m-0 p-0"
+        onClick={() => handleEditQuantity(item)}
+      />
+      <DeleteIcon
+        className="cursor-pointer text-red-600 m-0 p-0"
+        onClick={() => handleDelete(item.patientId)}
+      />
+    </div>
     );
   });
+
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [isLoading, setIsLoading] = useState(false);
 
-  // const [showForm, setShowForm] = useState(false);
-
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-  };
+  };;
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -117,15 +138,20 @@ export default function PatientDataTable() {
     setPage(0);
   };
 
-  const [createAddForm, setCreateAddForm] = useState<boolean>(false);
-
   function handleAddForm(event: React.MouseEvent<HTMLButtonElement>) {
     setCreateAddForm(!createAddForm);
   }
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  function handleCloseEdit(event: React.MouseEvent<HTMLButtonElement>) {
+    setEditQuantity(null);
+  }
+
+  const handleEditQuantity = (item: any) => {
+    setEditQuantity(item);
+  };
+
+
+  return (
     <>
       <div className="flex w-full justify-between items-center">
         <input
@@ -140,8 +166,8 @@ export default function PatientDataTable() {
           <IoPersonAdd className="text-lg" /> Add New Patient
         </button>
       </div>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: "75vh" }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -170,14 +196,14 @@ export default function PatientDataTable() {
                         role="checkbox"
                         tabIndex={-1}
                         className={
-                          index % 2 === 0 ? "bg-white" : "bg-slate-100"
+                          index % 2 === 0 ? 'bg-white' : 'bg-slate-100'
                         }
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
+                              {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : value}
                             </TableCell>
@@ -200,7 +226,17 @@ export default function PatientDataTable() {
         />
       </Paper>
       {createAddForm && <CreatePatient handleOpenForm={handleAddForm} />}
-
+      {editQuantity && (
+        <EditPatientwaitlist
+          editElement={editQuantity}
+          handleCloseEdit={handleCloseEdit}
+        />
+      )}
+      {deleteData && (
+        <DeleteAlert deleteData ={ deleteData } handleCancel={handleCancel} />
+      )}
+      
     </>
   );
 }
+
