@@ -4,6 +4,7 @@ import {
   useEditInventoryMutation,
   useReadRequestQuery,
 } from "../../api/apiHandler";
+import { CircularProgress } from "@mui/material";
 
 type editData = {
   inventoryName: string;
@@ -65,10 +66,11 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
             {bloodGroups?.map((oneGroup) => (
               <option
                 key={oneGroup.bloodGroupId}
-                value={oneGroup.bloodGroupId}
+                label={oneGroup.bloodGroupName}
+                defaultValue={editElement.bloodGroupId}
                 selected={oneGroup.bloodGroupId === editElement.bloodGroupId}
               >
-                {oneGroup.bloodGroupName}
+                {oneGroup.bloodGroupId}
               </option>
             ))}
           </select>
@@ -129,14 +131,15 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
         </div>
         <div className="flex gap-4 w-full">
           <button
-            className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-500"
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-[#006EB9] text-white rounded disabled:bg-slate-300"
             type="submit"
             disabled={loading}
           >
-            Save Changes
+            { loading ? <CircularProgress/> :
+            <p>Save Changes</p> }
           </button>
           <button
-            className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-500"
+            className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-300"
             disabled={loading}
             onClick={handleClose}
           >

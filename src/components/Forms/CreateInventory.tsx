@@ -127,7 +127,7 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
           </div>
           <div className="w-full flex gap-4">
             <button
-              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500"
+              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-slate-300"
               disabled={loading}
               type="submit"
             >
