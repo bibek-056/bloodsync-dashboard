@@ -31,14 +31,6 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
   const [editInventory] = useEditInventoryMutation();
 
   const onSubmit = async (editData: editData) => {
-<<<<<<< HEAD
-    console.log(editData);
-    const newElement = {
-      inventoryId : editElement.inventory,
-      bloodGroupId : editElement.bloodGroupId,
-      inventoryName : editData.inventoryName,
-      quantity : 12
-=======
     setLoading(true);
     editData.inventoryId = editElement.inventoryId;
     {
@@ -49,7 +41,6 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
         : (editData.quantity = (
             Number(editElement.quantity) - Number(editData.quantity)
           ).toString());
->>>>>>> 5ae105e52bc55de367b060a8ce681332bc4f2c88
     }
     try {
       await editInventory(editData);

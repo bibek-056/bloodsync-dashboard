@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
-  EditInventory,
+  EditInventoryData,
   InventoryData,
   AddAdminDataModel,
   PatientData,
@@ -36,7 +36,7 @@ export const AxiosClient = createApi({
       }),
       invalidatesTags: ["Donors"],
     }),
-    editInventory: builder.mutation<void, EditInventory>({
+    editInventory: builder.mutation<void, EditInventoryData>({
       query: (inventory) => ({
         url: `inventorys/${inventory.inventoryId}`,
         method: 'PUT',
