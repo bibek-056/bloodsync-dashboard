@@ -5,10 +5,10 @@ export type InventoryData = {
 };
 
 export type EditInventoryData = {
-    inventoryId: string;
-    inventoryName: string;
-    quantity: string;
-    bloodGroupId: string;
+  inventoryId: string;
+  inventoryName: string;
+  quantity: string;
+  bloodGroupId: string;
 };
 export type PatientData = {
   patientName: string;
@@ -16,13 +16,12 @@ export type PatientData = {
   inventoryId: string;
   priorityId: string;
 };
-export type EditPatientwaitlist= {
+export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
   quantity: number;
   priorityId: string;
   inventoryId: string;
-  
 };
 
 export type DonorData = {
@@ -42,11 +41,13 @@ export type DonorData = {
   emergencyContact: string;
 };
 
-export type EditDonor = {
+export type EditDonors = {
   donorId: string;
   userId: string;
   bloodGroupId: string;
-  usertypeId: string;
+  userTypeId: string;
+  hospitalId: string;
+  address: string;
   name: string;
   email: string;
   lastDonated: string;
@@ -55,6 +56,7 @@ export type EditDonor = {
   wardNo: number;
   phoneNumber: string;
   emergencyContact: string;
+  password: string;
 };
 
 export type BloodGroup = {
@@ -79,12 +81,12 @@ export type Hospitals = {
   dateModified: Date;
 };
 export type AddAdminDataModel = {
-    userId: string;
-    hospitalId: string;
-    userTypeId: string;
-    name: string;
-    hospitalName: string;
-    address: string;
-    email: string;
-    password: string;
+  userId: string;
+  hospitalId: string;
+  userTypeId: string;
+  name: string;
+  hospitalName: string;
+  address: string;
+  email: string;
+  password: string;
 };

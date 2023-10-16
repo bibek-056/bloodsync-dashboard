@@ -232,7 +232,7 @@ export default function CreateDonor() {
             transition duration-200 mb-2 ease-in-out
            focus:border-slate-100 "
             {...register('bloodGroupId', {
-              required: 'Blood Group ID is needed',
+              required: 'Blood Group is needed',
             })}
           >
             <option disabled> Select a bloodgroup</option>
