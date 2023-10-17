@@ -10,6 +10,7 @@ import EditDonor from './components/Forms/EditDonor';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HospitalProfile from './pages/HospitalProfile';
+import Admin from './pages/Admin';
 
 const App = () => (
   <Router>
@@ -20,10 +21,10 @@ const App = () => (
         <Route path="/donor" element={<Donor />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/hospitals" element={<Hospital />} />
-        <Route path="/hospitalprofile" element={<HospitalProfile />} />
         <Route path="/create-donor" element={<CreateDonor />} />
         <Route path="/donor/edit/:donorId" element={<EditDonor />} />
-        <Route path="/hospitalProfile/:hospitalId" element={<EditDonor />} />
+        <Route path="/hospitalProfile/:hospitalId" element={<HospitalProfile />} />
+        <Route path="/admin" element={<Admin/>}/>
       </Routes>
     </Navbar>
     <ToastContainer />

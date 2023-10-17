@@ -7,7 +7,7 @@ import {
   EditPatientwaitlist,
   DonorData,
   EditDonors,
-  Hospitals,
+  Hospital,
 } from '../models/datamodels';
 
 export const AxiosClient = createApi({
@@ -61,7 +61,7 @@ export const AxiosClient = createApi({
       invalidatesTags: ['Donors'],
     }),
 
-    addHospital: builder.mutation<void, Hospitals>({
+    addHospital: builder.mutation<void, Hospital>({
       query: (hospital) => ({
         url: 'hospitals',
         method: 'POST',
@@ -113,7 +113,7 @@ export const AxiosClient = createApi({
       }),
     }),
     editDonor: builder.mutation<void, EditDonors>({
-      query: (donor) => ({
+        query: (donor) => ({
         url: `users/${donor.userId}`,
         method: 'PUT',
         body: donor,
