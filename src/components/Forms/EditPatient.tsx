@@ -4,7 +4,7 @@ import {
   useEditPatientMutation,
   useReadRequestQuery,
 } from "../../api/apiHandler";
-import { EditPatientProps } from "../../models/datamodels";
+import { EditPatientProps, SendEditPatientData } from "../../models/datamodels";
 
 type EditData = {
   patientId: string;
@@ -23,7 +23,7 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
   const { data: priorities } = useReadRequestQuery("Priority");
   const { data: inventoryItems } = useReadRequestQuery("inventorys");
 
-  const onSubmit = async (editData: EditData) => {
+  const onSubmit = async (editData: SendEditPatientData) => {
     editData.patientId = editElement.patientId;
     try {
       await editPatient(editData);
@@ -66,8 +66,8 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
               <option
                 key={item.priorityId}
                 label={item.priorityLevelName}
-                defaultValue={editElement.priority.priorityId}
-                selected={item.priorityId === editElement.priority.priorityId}
+                defaultValue={editElement.priorityId}
+                selected={item.priorityId === editElement.priorityId}
               >
                 {item.priorityId}
               </option>
@@ -82,8 +82,8 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
               <option
                 key={item.inventoryId}
                 label={item.inventoryName}
-                defaultValue={editElement.inventory.inventoryId}
-                selected={item.inventoryId === editElement.inventory.inventoryId}
+                defaultValue={editElement.inventoryId}
+                selected={item.inventoryId === editElement.inventoryId}
               >
                 {item.inventoryId}
               </option>
