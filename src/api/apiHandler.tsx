@@ -121,13 +121,15 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: donor,
       }),
+      invalidatesTags: ['Donors'],
     }),
     editDonor: builder.mutation<void, EditDonors>({
       query: (donor) => ({
-        url: `users/${donor.userId}`,
+        url: `userdonor/${donor.userId}`,
         method: 'PUT',
         body: donor,
       }),
+      invalidatesTags: ['Donors'],
     }),
   }),
 });

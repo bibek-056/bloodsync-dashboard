@@ -1,60 +1,60 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 import {
   useDeleteHospitalMutation,
   useReadRequestQuery,
-} from "../api/apiHandler";
-import Loading from "../components/Loading";
-import AddHospital from "../components/Forms/AddHospital";
-import { IoPersonAdd } from "react-icons/io5";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import DeleteHospital from "../components/Alert/DeleteHospital";
+} from '../api/apiHandler';
+import Loading from '../components/Loading/Loading';
+import AddHospital from '../components/Forms/AddHospital';
+import { IoPersonAdd } from 'react-icons/io5';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import DeleteHospital from '../components/Alert/DeleteHospital';
 
 interface Column {
-  id: "name" | "address" | "contact" | "actions";
+  id: 'name' | 'address' | 'contact' | 'actions';
   label: string;
   minWidth?: number;
-  align?: "center";
+  align?: 'center';
   format?: (value: number) => string;
 }
 
 const columns: readonly Column[] = [
   {
-    id: "name",
-    label: "Hospital Name",
+    id: 'name',
+    label: 'Hospital Name',
     minWidth: 170,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: "address",
-    label: "Hospital Address",
+    id: 'address',
+    label: 'Hospital Address',
     minWidth: 50,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
   {
-    id: "contact",
-    label: "Hospital Contact",
+    id: 'contact',
+    label: 'Hospital Contact',
     minWidth: 120,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
 
   {
-    id: "actions",
-    label: "Actions",
+    id: 'actions',
+    label: 'Actions',
     minWidth: 170,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
 ];
 
@@ -77,7 +77,7 @@ function createData(
 export default function Hospital() {
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [deleteRecord, setDeleteRecord] = useState<string>(null);
-  const { data: hospitalData, isLoading } = useReadRequestQuery("hospitals");
+  const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
 
   const [deleteHospital] = useDeleteHospitalMutation();
 
@@ -145,8 +145,8 @@ export default function Hospital() {
           <IoPersonAdd className="text-lg" /> Add New Hospital
         </button>
       </div>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <TableContainer sx={{ maxHeight: "75vh" }}>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -174,13 +174,13 @@ export default function Hospital() {
                         role="checkbox"
                         tabIndex={-1}
                         key={row?.name}
-                        className={index % 2 == 0 ? "bg-white" : "bg-slate-100"}
+                        className={index % 2 == 0 ? 'bg-white' : 'bg-slate-100'}
                       >
                         {columns.map((column) => {
                           const value = row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
+                              {column.format && typeof value === 'number'
                                 ? column.format(value)
                                 : value}
                             </TableCell>
