@@ -15,7 +15,12 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
   const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<AddAdminDataModel>();
-  const { register, control, handleSubmit } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const onSubmit = async (data: AddAdminDataModel) => {
     setLoading(true);
@@ -34,6 +39,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
 
   const { data: hospitals } = useReadRequestQuery("hospitals");
   const { data: userTypes } = useReadRequestQuery("userTypes");
+  console.log(errors);
 
   return (
     <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
@@ -60,8 +66,27 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="name"
-                {...register("name")}
+                {...register("name", {
+                  required: "Full Name is required",
+                  pattern: {
+                    value: /[A-Za-z]{4}/,
+                    message:
+                      "Full Name should contain at least 4 alphabetic characters.",
+                  },
+                  validate: (value) => {
+                    if (!value.includes(" ")) {
+                      return "Please enter both first name and last name";
+                    }
+                    if (/\d/.test(value)) {
+                      return "First name should not contain numbers.";
+                    }
+                    return true;
+                  },
+                })}
               />
+              {errors.name && (
+                <span className="text-red-500">{errors.name.message}</span>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -72,8 +97,18 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="userAddress"
-                {...register("address")}
+                {...register("address", {
+                  required: "Full Name is required",
+                  pattern: {
+                    value: /[A-Za-z]{4}/,
+                    message:
+                      "Full Name should contain at least 4 alphabetic characters.",
+                  },
+                })}
               />
+              {errors.address && (
+                <span className="text-red-500">{errors.address.message}</span>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -84,8 +119,18 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="AdminEmail"
-                {...register("email")}
+                {...register("email", {
+                  required: "Full Name is required",
+                  pattern: {
+                    value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+                    message:
+                      "Email should contain be in item@gmail.com, item@hotmail.com format",
+                  },
+                })}
               />
+              {errors.email && (
+                <span className="text-red-500">{errors.email.message}</span>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -96,8 +141,22 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="password"
-                {...register("password")}
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters long",
+                  },
+                  pattern: {
+                    value: /^(?=.*[A-Z])(?=.*\d)/,
+                    message:
+                      "Password must contain at least 1 capital letter and 1 number",
+                  },
+                })}
               />
+              {errors.password && (
+                <span className="text-red-500">{errors.password.message}</span>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -107,7 +166,10 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 px-4 border"
                 id="hospitalId"
-                {...register("hospitalId")}
+                {...register("hospitalId", {
+                  required: "Hospital Name is required",
+                 
+                })}
               >
                 <option>Select an organization name</option>
                 {hospitals?.map((oneGroup) => (
@@ -116,6 +178,13 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                   </option>
                 ))}
               </select>
+              {errors.hospitalId && (
+                <p
+                  className=" m-0 w-full items-start text-sm text-red-600"
+                >
+                  *{errors.hospitalId.message}
+                </p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -125,7 +194,13 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               <select
                 className="w-full rounded-md h-12 px-4 border"
                 id="userType"
-                {...register("userTypeId")}
+                {...register("userTypeId", {
+                  required: "User Type is required",
+                  pattern: {
+                    value: /[A-Za-z]/,
+                    message: "This is required field",
+                  },
+                })}
               >
                 <option>Select UserType</option>
                 {userTypes?.map((oneGroup) => (
@@ -134,6 +209,13 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                   </option>
                 ))}
               </select>
+              {errors.userTypeId && (
+                <p
+                  className=" m-0 w-full items-start text-sm text-red-600"
+                >
+                  *{errors.userTypeId.message}
+                </p>
+              )}
             </div>
           </div>
           <div className="w-full flex gap-4">
