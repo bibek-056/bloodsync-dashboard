@@ -1,10 +1,14 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React from 'react';
+import { useForm } from 'react-hook-form';
 import {
   useEditPatientMutation,
   useReadRequestQuery,
+<<<<<<< HEAD
 } from "../../api/apiHandler";
 import { EditPatientProps, SendEditPatientData } from "../../models/datamodels";
+=======
+} from '../../api/apiHandler';
+>>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
 
 type EditData = {
   patientId: string;
@@ -20,8 +24,8 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
 }) => {
   const { handleSubmit, register } = useForm<EditData>();
   const [editPatient] = useEditPatientMutation();
-  const { data: priorities } = useReadRequestQuery("Priority");
-  const { data: inventoryItems } = useReadRequestQuery("inventorys");
+  const { data: priorities } = useReadRequestQuery('Priority');
+  const { data: inventoryItems } = useReadRequestQuery('inventorys');
 
   const onSubmit = async (editData: SendEditPatientData) => {
     editData.patientId = editElement.patientId;
@@ -43,25 +47,32 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
           Edit Patientwaitlist
         </h2>
         <div className="mb-4">
-          <label className="text-sm text-[#006EB9] block mb-2">Patient Name *</label>
+          <label className="text-sm text-[#006EB9] block mb-2">
+            Patient Name *
+          </label>
           <input
             className="w-full border-b-2 border-[#006EB9] py-2"
             defaultValue={editElement.patientName}
-            {...register("patientName", { required: true })}
+            {...register('patientName', { required: true })}
           />
         </div>
         <div className="mb-4">
-          <label className="text-sm text-[#006EB9] block mb-2">Quantity *</label>
+          <label className="text-sm text-[#006EB9] block mb-2">
+            Quantity *
+          </label>
           <input
             className="w-full border-b-2 border-[#006EB9] py-2 text-black"
             type="text"
             defaultValue={editElement.quantity}
-            {...register("quantity", { required: true })}
+            {...register('quantity', { required: true })}
           />
         </div>
         <div className="mb-4">
           <label className="text-sm text-[#006EB9] block mb-2">Priority</label>
-          <select className="w-full border-b-2 border-[#006EB9] py-2" {...register("priorityId", { required: true })}>
+          <select
+            className="w-full border-b-2 border-[#006EB9] py-2"
+            {...register('priorityId', { required: true })}
+          >
             {priorities?.map((item) => (
               <option
                 key={item.priorityId}
@@ -76,14 +87,26 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
         </div>
 
         <div className="mb-4">
-          <label className="text-sm text-[#006EB9] block mb-2">Inventory Item</label>
-          <select className="w-full border-b-2 border-[#006EB9] py-2" {...register("inventoryId", { required: true })}>
+          <label className="text-sm text-[#006EB9] block mb-2">
+            Inventory Item
+          </label>
+          <select
+            className="w-full border-b-2 border-[#006EB9] py-2"
+            {...register('inventoryId', { required: true })}
+          >
             {inventoryItems?.map((item) => (
               <option
                 key={item.inventoryId}
                 label={item.inventoryName}
+<<<<<<< HEAD
                 defaultValue={editElement.inventoryId}
                 selected={item.inventoryId === editElement.inventoryId}
+=======
+                defaultValue={editElement.inventory.inventoryId}
+                selected={
+                  item.inventoryId === editElement.inventory.inventoryId
+                }
+>>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
               >
                 {item.inventoryId}
               </option>
@@ -92,10 +115,16 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
         </div>
 
         <div className="flex justify-between items-center">
-          <button className="w-1/3 py-2 bg-[#006EB9] text-white rounded hover:bg-[#0056A9]" type="submit">
+          <button
+            className="w-1/3 py-2 bg-[#006EB9] text-white rounded hover:bg-[#0056A9]"
+            type="submit"
+          >
             Save Changes
           </button>
-          <button className="w-1/3 py-2 bg-slate-500 text-white rounded hover-bg-slate-600" onClick={handleCloseEdit}>
+          <button
+            className="w-1/3 py-2 bg-slate-500 text-white rounded hover-bg-slate-600"
+            onClick={handleCloseEdit}
+          >
             Cancel
           </button>
         </div>
