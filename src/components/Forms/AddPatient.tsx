@@ -55,20 +55,28 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
                 Full Name
               </label>
               <input
-                className={`w-full rounded-md h-12 p-3 border ${errors.fullName ? 'border-red-500' : ''}`}
+                className={`w-full rounded-md h-12 p-3 border ${errors.patientName ? 'border-red-500' : ''}`}
                 type="text"
                 id="patientName"
                 {...register("patientName", {
                   required: "Full Name is required",
+                  pattern: {
+                    value: /[A-Za-z]{4}/,
+                    message: "Full Name should contain at least 4 alphabetic characters."
+                  },
                   validate: (value) => {
                     if (!value.includes(" ")) {
                       return "Please enter both first name and last name";
+                    }
+                    if (/\d/.test(value)) {
+                      return "First name should not contain numbers.";
                     }
                     return true;
                   },
                 })}
               />
               {errors.patientName && <span className="text-red-500">{errors.patientName.message}</span>}
+
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-lg text-[#006EB9]">
