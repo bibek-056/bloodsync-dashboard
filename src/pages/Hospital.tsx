@@ -7,12 +7,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useReadRequestQuery } from "../api/apiHandler";
+import { useDeleteHospitalMutation,useReadRequestQuery } from "../api/apiHandler";
 import Loading from '../components/Loading';
 import AddHospital  from "../components/Forms/AddHospital";
 import { IoPersonAdd } from "react-icons/io5";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
+import DeleteHospital from "../components/Alert/DeleteHospital";
 
 interface Column {
   id: 'name' | 'address' | 'contact'| 'actions';
@@ -68,8 +69,19 @@ function createData(name: string, address: string, contact: string, actions: any
 export default function Hospital() {
   
   const [createForm, setCreateForm] = useState<boolean>(false);
-
+  const [deleteRecord, setDeleteRecord] = useState<string>(null);
   const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
+  
+  const[deleteHospital] = useDeleteHospitalMutation();
+
+  const handleDelete = async(id: string) => {
+    setDeleteRecord(id);
+  }
+
+  const handleCancel = () => {
+    setDeleteRecord(null);
+  }
+
   
 
   const rows = hospitalData?.map((item: any) => {
@@ -78,7 +90,7 @@ export default function Hospital() {
       item.hospitalAddress,
       item.contactInfo,
       <div className="flex gap-2 justify-between items-center">
-        <Link to="/HospitalProfile" className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium">
+        <Link to={`/hospitalProfile/${item.hospitalId}`} className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium">
         <button
           
           
@@ -86,7 +98,9 @@ export default function Hospital() {
           Hospital Profile
         </button>
         </Link>
-        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" >
+        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" 
+         onClick={() => handleDelete(item.hospitalId)}>
+        
           Delete
         </button>
       </div>
@@ -110,7 +124,7 @@ export default function Hospital() {
     setCreateForm(!createForm);
   }
 
-  const [createAddHospital, setCreateAddHospital] = useState<boolean>(false);
+  
 
   
 
@@ -193,6 +207,9 @@ export default function Hospital() {
         />
       </Paper>
       {createForm && <AddHospital handleOpenForm={handleOpenForm} />}
+      {deleteRecord && (
+        <DeleteHospital deleteRecord={ deleteRecord } handleCancel={handleCancel}/>
+      )}
     </>
   );
 }
