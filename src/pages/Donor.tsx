@@ -26,6 +26,7 @@ import {
 } from '@mui/material';
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
+import { Donors, DonorTable } from '../models/datamodels';
 interface Column {
   id:
     | 'index'
@@ -153,7 +154,7 @@ function Donor() {
   const handleCloseDrawer = () => {
     setOpenDrawer(false);
   };
-  const rows = data?.map((item: any, index: number) => {
+  const rows = data?.map((item: Donors, index: number) => {
     return createData(
       index + 1,
       item.user.name,
@@ -167,7 +168,7 @@ function Donor() {
       item.emergencyContact,
       <div className="flex gap-2 justify-around items-center">
         <DeleteIcon
-          onClick={() => handleOpenDrawer(item.patientId)}
+          onClick={() => handleOpenDrawer(item.donorId)}
           className="cursor-pointer text-red-600"
         />
         <BorderColorIcon
@@ -191,14 +192,7 @@ function Donor() {
         toast.error(`Failed to delete ${error} `);
       });
   }
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -208,6 +202,7 @@ function Donor() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  console.log(data);
   if (error) {
     return <p>Contact your admin sorry</p>;
   } else if (isLoading) {
@@ -257,7 +252,7 @@ function Donor() {
               <TableBody>
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index: number) => {
+                  .map((row: DonorTable, index: number) => {
                     return (
                       <TableRow
                         hover
