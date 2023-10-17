@@ -111,7 +111,7 @@ export default function Navbar({ children }: Props) {
             width: drawerWidth,
             boxSizing: 'border-box',
             //To change color of navbar
-            backgroundColor: '#F1F5F9',
+            backgroundColor: '	#e0e6ec',
           },
         }}
         variant="persistent"
@@ -128,15 +128,21 @@ export default function Navbar({ children }: Props) {
           </IconButton>
         </DrawerHeader>
         <Divider />
-        <List className="bg-slate-100">
+        <List>
           {routes.map((route) => (
             <Link to={`${route.route}`} key={route.key}>
-              <ListItem key={route.key} disablePadding>
-                <ListItemButton>
+              <ListItem className="w-[90%]" key={route.key}>
+                <ListItemButton className="flex gap-2 items-center align-middle justify-center ">
                   {route.icon}
                   <ListItemText primary={route.name} />
                 </ListItemButton>
               </ListItem>
+              <Divider
+                sx={{
+                  width: '70%',
+                }}
+                variant="middle"
+              />
             </Link>
           ))}
         </List>
