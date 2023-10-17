@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useReadRequestQuery } from "../api/apiHandler";
+import logo from "../assets/logo.png";
 
 const HospitalProfile = () => {
   const { hospitalId } = useParams();
@@ -13,8 +14,8 @@ const HospitalProfile = () => {
     <div className="flex flex-col w-100vw h-full border-2 rounded-md p-8 shadow-2xl gap-4">
       <div className="flex justify-between items-center border-0 border-b-2 p-3 shadow-sm">
         <div className="flex justify-start gap-4 items-center">
-          <div className="w-20 h-20 rounded-full border-2 shadow-lg flex justify-center items-center">
-            logo
+          <div className="w-20 h-20 rounded-full border-2 shadow-lg flex justify-center items-center object-cover">
+            <img src={logo} alt="logo" className="w-full h-full rounded-full "/>
           </div>
           <div>
             <p className="font-medium text-lg">
