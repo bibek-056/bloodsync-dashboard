@@ -4,6 +4,7 @@ import {
   useEditPatientMutation,
   useReadRequestQuery,
 } from "../../api/apiHandler";
+import { EditPatientProps } from "../../models/datamodels";
 
 type EditData = {
   patientId: string;
@@ -13,7 +14,7 @@ type EditData = {
   inventoryId: string;
 };
 
-const EditPatientwaitlist: React.FC<CreatePatientProps> = ({
+const EditPatientwaitlist: React.FC<EditPatientProps> = ({
   editElement,
   handleCloseEdit,
 }) => {
