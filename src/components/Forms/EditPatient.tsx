@@ -3,12 +3,7 @@ import { useForm } from 'react-hook-form';
 import {
   useEditPatientMutation,
   useReadRequestQuery,
-<<<<<<< HEAD
-} from "../../api/apiHandler";
-import { EditPatientProps, SendEditPatientData } from "../../models/datamodels";
-=======
 } from '../../api/apiHandler';
->>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
 
 type EditData = {
   patientId: string;
@@ -98,15 +93,10 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
               <option
                 key={item.inventoryId}
                 label={item.inventoryName}
-<<<<<<< HEAD
-                defaultValue={editElement.inventoryId}
-                selected={item.inventoryId === editElement.inventoryId}
-=======
                 defaultValue={editElement.inventory.inventoryId}
                 selected={
                   item.inventoryId === editElement.inventory.inventoryId
                 }
->>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
               >
                 {item.inventoryId}
               </option>

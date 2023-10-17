@@ -37,11 +37,9 @@ export default function EditDonor() {
     data.userId = donorData.user.userId;
     data.donorId = donorData.donorId;
     data.password = 'fghjksjaj';
-    console.log(data);
     setDisableButton(true);
     try {
       await editDonor(data).unwrap();
-      console.log(data.hospitalId);
       toast.success('Sucessfully Edited Donor');
       navigate('/donor');
     } catch (error) {
