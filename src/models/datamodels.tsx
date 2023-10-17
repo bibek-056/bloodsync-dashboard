@@ -91,6 +91,15 @@ export type AddAdminDataModel = {
   password: string;
 };
 
+export type EditAdminDataModel = {
+  userId: string;
+  name: string;
+  hospitalId: string;
+  address: string;
+  email: string;
+  
+};
+
 export type User = {
   userId: string;
   name: string;
@@ -101,6 +110,7 @@ export type User = {
   userTypeId: string;
   // userType: UserTypes;
 };
+
 
 export type Donors = {
   index: number;
