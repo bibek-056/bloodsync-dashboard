@@ -10,9 +10,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import AddAdmin from "../components/Forms/AddAdmin";
-import {  useDeleteAdminMutation, useReadRequestQuery } from "../api/apiHandler";
+import { useDeleteAdminMutation, useReadRequestQuery } from "../api/apiHandler";
 import DeleteAdmin from "../components/Alert/DeleteAdmin";
-
+import EditHospital from "../components/Forms/EditAdmin";
 
 interface Column {
   id: "name" | "email" | "address" | "hospitalName" | "actions";
@@ -26,7 +26,6 @@ interface AddAdminProps {
   handleOpenForm: () => void;
 }
 
-
 const columns: readonly Column[] = [
   {
     id: "name",
@@ -35,10 +34,12 @@ const columns: readonly Column[] = [
     align: "center",
     format: (value: number) => value.toLocaleString("en-US"),
   },
-  { id: "email", 
-    label: "Email", 
-    minWidth: 50, align: "center",
-   format: (value: number) => value.toLocaleString("en-US"),
+  {
+    id: "email",
+    label: "Email",
+    minWidth: 50,
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
     id: "address",
@@ -83,20 +84,20 @@ function createData(
 
 export default function Admin() {
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const [ deleteRecord, setDeleteRecord ] = useState<string>(null);
-
+  const [deleteRecord, setDeleteRecord] = useState<string>(null);
+  const [editQuantity, setEditQuantity] = useState<any>(null);
   const { data: adminData } = useReadRequestQuery("users");
 
-  const[deleteAdmin] = useDeleteAdminMutation();
+  const [deleteAdmin] = useDeleteAdminMutation();
 
-  const handleDelete = async(id: string) => {
+  const handleDelete = async (id: string) => {
     setDeleteRecord(id);
-  }
+  };
 
   const handleCancel = () => {
     setDeleteRecord(null);
-  }
-  
+  };
+
   const rows = adminData?.map((item: any) => {
     return createData(
       item.name,
@@ -106,12 +107,14 @@ export default function Admin() {
       <div className="flex gap-2 justify-between items-center">
         <button
           className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
-          
+          onClick={() => handleEditQuantity(item)}
         >
           Edit
         </button>
-        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
-         onClick={() => handleDelete(item.userId)}>
+        <button
+          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+          onClick={() => handleDelete(item.userId)}
+        >
           Delete
         </button>
       </div>
@@ -131,14 +134,17 @@ export default function Admin() {
     setPage(0);
   };
 
-  
   function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
     setCreateForm(!createForm);
   }
-  
-  
 
-  
+  function handleCloseEdit(event: React.MouseEvent<HTMLButtonElement>) {
+    setEditQuantity(null);
+  }
+
+  const handleEditQuantity = (item: any) => {
+    setEditQuantity(item);
+  };
 
   return (
     <>
@@ -214,11 +220,15 @@ export default function Admin() {
 
       {createForm && <AddAdmin handleOpenForm={handleOpenForm} />}
       {deleteRecord && (
-        <DeleteAdmin deleteRecord={ deleteRecord } handleCancel={handleCancel}/>
+        <DeleteAdmin deleteRecord={deleteRecord} handleCancel={handleCancel} />
       )}
-      
+
+      {editQuantity && (
+        <EditHospital
+          editElement={editQuantity}
+          handleCloseEdit={handleCloseEdit}
+        />
+      )}
     </>
   );
 }
-
-

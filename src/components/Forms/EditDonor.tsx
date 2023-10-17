@@ -12,7 +12,7 @@ import {
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router';
-import Loading from '../Loading';
+import Loading from '../Loading/Loading';
 
 export default function EditDonor() {
   const form = useForm<EditDonors>();
@@ -311,7 +311,7 @@ export default function EditDonor() {
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
               {...register('userTypeId')}
-              defaultValue={donorData?.user.userTypeId}
+              defaultValue={donorData?.user.userType.userTypeId}
             >
               <option label="Select the usertype"> Select the usertype</option>
               {userTypes?.map((oneGroup: UserTypes) => (
