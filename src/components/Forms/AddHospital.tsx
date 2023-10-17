@@ -1,10 +1,10 @@
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { DevTool } from '@hookform/devtools';
-import { useAddHospitalMutation } from '../../api/apiHandler';
-import { Hospital } from '../../models/datamodels';
-import { toast } from 'react-toastify';
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { DevTool } from "@hookform/devtools";
+import { useAddHospitalMutation } from "../../api/apiHandler";
+import { Hospital } from "../../models/datamodels";
+import { toast } from "react-toastify";
 
 interface CreateHospitalProps {
   handleOpenForm: () => void;
@@ -21,9 +21,9 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
     setLoading(true);
     try {
       await addHospital(data);
-      toast.success('Successfully Added new patient');
+      toast.success("Successfully Added new patient");
     } catch (er) {
-      toast.error('Failed to Add new Patient');
+      toast.error("Failed to Add new Patient");
     }
     props.handleOpenForm();
   };
@@ -57,7 +57,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalName"
-                {...register('hospitalName')}
+                {...register("hospitalName")}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -68,7 +68,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalName"
-                {...register('hospitalAddress')}
+                {...register("hospitalAddress")}
               />
             </div>
 
@@ -80,7 +80,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="logoUrl"
-                {...register('logoUrl')}
+                {...register("logoUrl")}
               />
             </div>
 
@@ -92,7 +92,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalDescription"
-                {...register('hospitalDescription')}
+                {...register("hospitalDescription")}
               />
             </div>
 
@@ -104,7 +104,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="contactInfo"
-                {...register('contactInfo')}
+                {...register("contactInfo")}
               />
             </div>
           </div>

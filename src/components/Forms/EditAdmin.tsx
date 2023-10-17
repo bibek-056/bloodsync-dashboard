@@ -20,22 +20,16 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
   handleCloseEdit,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  
 
   const handleClose = () => {
     handleCloseEdit();
   };
   const form = useForm<editData>();
-  const {
-    register,
-    handleSubmit,
-    
-  } = form;
+  const { register, handleSubmit } = form;
 
   const { data: hospitals } = useReadRequestQuery("hospitals");
 
   const [editAdmin] = useEditAdminMutation();
-  
 
   const onSubmit = async (editData: editData) => {
     console.log(editData);
@@ -71,8 +65,6 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
               {...register("address")}
             ></input>
           </div>
-
-         
 
           <div className="w-full flex items-center justify-between">
             <input

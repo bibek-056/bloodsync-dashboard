@@ -7,36 +7,34 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 interface CreateAdminProps {
-  handleOpenForm : () => void;
+  handleOpenForm: () => void;
 }
 
 const CreateInventory: React.FC<CreateAdminProps> = (props) => {
-
-  const [ addAdmin ] = useAddAdminMutation();
+  const [addAdmin] = useAddAdminMutation();
   const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<AddAdminDataModel>();
   const { register, control, handleSubmit } = form;
 
   const onSubmit = async (data: AddAdminDataModel) => {
-    setLoading(true)
-    try{
+    setLoading(true);
+    try {
       await addAdmin(data);
-      toast.success("Successfully Created Inventory Item")
-    } catch(er) {
-      toast.error("Failed to create Inventory")
+      toast.success("Successfully Created Inventory Item");
+    } catch (er) {
+      toast.error("Failed to create Inventory");
     }
     props.handleOpenForm();
   };
 
   const handelCloseForm = () => {
     props.handleOpenForm();
-  }
+  };
 
-  const { data: hospitals } = useReadRequestQuery("hospitals")
-  const { data: userTypes } = useReadRequestQuery("userTypes")
+  const { data: hospitals } = useReadRequestQuery("hospitals");
+  const { data: userTypes } = useReadRequestQuery("userTypes");
 
-  
   return (
     <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
       <div className="w-2/5 h-screen bg-white flex justify-center items-center">
@@ -48,7 +46,10 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
             <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
               Create a new Admin
             </p>
-            <AiOutlineCloseCircle className="text-[#006EB9] text-xl cursor-pointer" onClick={handelCloseForm} />
+            <AiOutlineCloseCircle
+              className="text-[#006EB9] text-xl cursor-pointer"
+              onClick={handelCloseForm}
+            />
           </div>
           <div className=" w-full flex flex-col gap-10">
             <div className="flex flex-col gap-2">
@@ -99,8 +100,6 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               />
             </div>
 
-
-
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
                 Organization Name
@@ -112,9 +111,11 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               >
                 <option>Select an organization name</option>
                 {hospitals?.map((oneGroup) => (
-                  <option label={oneGroup.hospitalName}>{oneGroup.hospitalId}</option>
+                  <option label={oneGroup.hospitalName}>
+                    {oneGroup.hospitalId}
+                  </option>
                 ))}
-                </select>
+              </select>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -128,25 +129,26 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               >
                 <option>Select UserType</option>
                 {userTypes?.map((oneGroup) => (
-                  <option label={oneGroup.userTypeName}>{oneGroup.userTypeId}</option>
+                  <option label={oneGroup.userTypeName}>
+                    {oneGroup.userTypeId}
+                  </option>
                 ))}
-                </select>
+              </select>
             </div>
-
-
-            
           </div>
           <div className="w-full flex gap-4">
-          <button
-              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500" 
-              disabled={ loading } 
+            <button
+              className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500"
+              disabled={loading}
               type="submit"
-              
             >
               Add
             </button>
 
-            <button className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium" onClick={handelCloseForm}>
+            <button
+              className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium"
+              onClick={handelCloseForm}
+            >
               Cancel
             </button>
           </div>
