@@ -160,3 +160,29 @@ export type DonorTable = {
   emergencyContact: number;
   actions: JSX.Element;
 };
+
+export interface EditInventoryProps {
+  editElement: PresentInventoryData;
+  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export interface CreateInventoryProps {
+  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export type SendEditData = {
+  inventoryName: string;
+  quantity: string;
+  inventoryId: string;
+  bloodGroupId: string;
+};
+
+export type PresentInventoryData = {
+  inventoryName: string;
+  quantity: string;
+  inventoryId: string;
+  bloodGroupId: string;
+  dateModified: string;
+  dateCreated: string;
+}
+
