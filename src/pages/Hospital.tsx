@@ -7,12 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { useReadRequestQuery } from '../api/apiHandler';
+import {
+  useDeleteHospitalMutation,
+  useReadRequestQuery,
+} from '../api/apiHandler';
 import Loading from '../components/Loading/Loading';
 import AddHospital from '../components/Forms/AddHospital';
 import { IoPersonAdd } from 'react-icons/io5';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import DeleteHospital from '../components/Alert/DeleteHospital';
 
 interface Column {
   id: 'name' | 'address' | 'contact' | 'actions';
@@ -72,8 +76,18 @@ function createData(
 
 export default function Hospital() {
   const [createForm, setCreateForm] = useState<boolean>(false);
-
+  const [deleteRecord, setDeleteRecord] = useState<string>(null);
   const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
+
+  const [deleteHospital] = useDeleteHospitalMutation();
+
+  const handleDelete = async (id: string) => {
+    setDeleteRecord(id);
+  };
+
+  const handleCancel = () => {
+    setDeleteRecord(null);
+  };
 
   const rows = hospitalData?.map((item: any) => {
     return createData(
@@ -82,12 +96,15 @@ export default function Hospital() {
       item.contactInfo,
       <div className="flex gap-2 justify-between items-center">
         <Link
-          to="/HospitalProfile"
+          to={`/hospitalProfile/${item.hospitalId}`}
           className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
         >
           <button>Hospital Profile</button>
         </Link>
-        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium">
+        <button
+          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+          onClick={() => handleDelete(item.hospitalId)}
+        >
           Delete
         </button>
       </div>
@@ -110,8 +127,6 @@ export default function Hospital() {
   function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
     setCreateForm(!createForm);
   }
-
-  const [createAddHospital, setCreateAddHospital] = useState<boolean>(false);
 
   return isLoading ? (
     <Loading />
@@ -188,6 +203,12 @@ export default function Hospital() {
         />
       </Paper>
       {createForm && <AddHospital handleOpenForm={handleOpenForm} />}
+      {deleteRecord && (
+        <DeleteHospital
+          deleteRecord={deleteRecord}
+          handleCancel={handleCancel}
+        />
+      )}
     </>
   );
 }

@@ -1,36 +1,41 @@
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   useEditInventoryMutation,
   useReadRequestQuery,
 } from "../../api/apiHandler";
 import { CircularProgress } from "@mui/material";
+import {
+  BloodGroup,
+  EditInventoryProps,
+  SendEditData,
+} from "../../models/datamodels";
 
-type editData = {
-  inventoryName: string;
-  quantity: string;
-  inventoryId: string;
-  bloodGroupId: string;
-};
-
-const EditInventory: React.FC<CreateInventoryProps> = ({
+const EditInventory: React.FC<EditInventoryProps> = ({
   editElement,
   handleCloseEdit,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [add, setAdd] = useState<boolean>(false);
 
-  const handleClose = () => {
-    handleCloseEdit();
+  const handleClose = (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    handleCloseEdit(e);
   };
-  const form = useForm<editData>();
-  const { register, handleSubmit, formState: { errors } } = form;
 
-  const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
+  const form = useForm<SendEditData>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
+
+  console.log(bloodGroups);
 
   const [editInventory] = useEditInventoryMutation();
 
-  const onSubmit = async (editData: editData) => {
+  const onSubmit = async (editData: SendEditData) => {
     setLoading(true);
     editData.inventoryId = editElement.inventoryId;
     {
@@ -60,10 +65,10 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
           <input
             className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
             defaultValue={editElement.inventoryName}
-            {...register('inventoryName')}
+            {...register("inventoryName")}
           ></input>
-          <select className="w-20 h-12" {...register('bloodGroupId')}>
-            {bloodGroups?.map((oneGroup) => (
+          <select className="w-20 h-12" {...register("bloodGroupId")}>
+            {bloodGroups?.map((oneGroup: BloodGroup) => (
               <option
                 key={oneGroup.bloodGroupId}
                 label={oneGroup.bloodGroupName}
@@ -135,13 +140,12 @@ const EditInventory: React.FC<CreateInventoryProps> = ({
             type="submit"
             disabled={loading}
           >
-            { loading ? <CircularProgress/> :
-            <p>Save Changes</p> }
+            {loading ? <CircularProgress /> : <p>Save Changes</p>}
           </button>
           <button
             className="flex items-center justify-center w-1/2 h-12 p-4 bg-gray-500 text-white rounded disabled:bg-slate-300"
             disabled={loading}
-            onClick={handleClose}
+            onClick={(e) => handleClose(e)}
           >
             Cancel
           </button>

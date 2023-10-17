@@ -9,15 +9,13 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {
-  useDeleteRequestMutation,
   useReadRequestQuery,
-} from '../api/apiHandler';
-import { IoMdAddCircleOutline } from 'react-icons/io';
-import CreateInventory from '../components/Forms/CreateInventory';
-import EditInventory from '../components/Forms/EditInventory';
-import DeleteAlert from '../components/Alert/DeleteAlert';
-import { LinearProgress } from '@mui/material';
-import Loading from '../components/Loading/Loading';
+} from "../api/apiHandler";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import CreateInventory from "../components/Forms/CreateInventory";
+import EditInventory from "../components/Forms/EditInventory";
+import DeleteAlert from "../components/Alert/DeleteAlert";
+import { LinearProgress } from "@mui/material";
 
 interface Column {
   id: 'inventoryItem' | 'bloodGroup' | 'amount' | 'lastUsed' | 'actions';
@@ -25,10 +23,6 @@ interface Column {
   minWidth?: number;
   align?: 'center';
   format?: (value: number) => string;
-}
-
-interface CreateInventoryProps {
-  handleOpenForm: () => void;
 }
 
 const columns: readonly Column[] = [
@@ -83,19 +77,17 @@ function createData(
 export default function Inventory() {
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editQuantity, setEditQuantity] = useState<any>(null);
-  const [deleteRecord, setDeleteRecord] = useState<string>(null);
+  const [deleteRecord, setDeleteRecord] = useState<string>("");
 
   const { data: inventoryData, isLoading: inventorysLoading } =
     useReadRequestQuery('inventorys');
-
-  const [deleteInventory] = useDeleteRequestMutation();
 
   const handleDelete = async (id: string) => {
     setDeleteRecord(id);
   };
 
   const handleCancel = () => {
-    setDeleteRecord(null);
+    setDeleteRecord("");
   };
   const rows = inventoryData?.map((item: any) => {
     return createData(
@@ -123,6 +115,7 @@ export default function Inventory() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) => {
+    event.preventDefault();
     setPage(newPage);
   };
 
@@ -133,11 +126,13 @@ export default function Inventory() {
     setPage(0);
   };
 
-  function handleOpenForm(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleOpenForm(event?: React.MouseEvent<HTMLButtonElement>) {
+    event?.preventDefault();
     setCreateForm(!createForm);
   }
 
-  function handleCloseEdit(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleCloseEdit(event?: React.MouseEvent<HTMLButtonElement>) {
+    event?.preventDefault();
     setEditQuantity(null);
   }
 
