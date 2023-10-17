@@ -7,7 +7,8 @@ import {
   EditPatientwaitlist,
   DonorData,
   EditDonors,
-  HospitalDataModel,
+  Hospital,
+  EditAdminDataModel
 } from '../models/datamodels';
 
 export const AxiosClient = createApi({
@@ -41,6 +42,17 @@ export const AxiosClient = createApi({
       invalidatesTags: ['Users'],
     }),
 
+    deleteHospital: builder.mutation<{ success: boolean; id: string }, string>({
+      query(slug: string) {
+        return {
+          url: `${slug}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Hospitals'],
+    }),
+
+
     addInventory: builder.mutation<void, InventoryData>({
       query: (inventory) => ({
         url: 'inventorys',
@@ -50,13 +62,13 @@ export const AxiosClient = createApi({
       invalidatesTags: ['Donors'],
     }),
 
-    addHospital: builder.mutation<void, HospitalDataModel>({
+    addHospital: builder.mutation<void, Hospital>({
       query: (hospital) => ({
         url: 'hospitals',
         method: 'POST',
         body: hospital,
       }),
-      invalidatesTags: ['Hospitals'],
+      invalidatesTags: ['Donors'],
     }),
 
     editInventory: builder.mutation<void, EditInventoryData>({
@@ -64,6 +76,15 @@ export const AxiosClient = createApi({
         url: `inventorys/${inventory.inventoryId}`,
         method: 'PUT',
         body: inventory,
+      }),
+      invalidatesTags: ['Donors'],
+    }),
+
+    editAdmin: builder.mutation<void, EditAdminDataModel>({
+      query: (user) => ({
+        url: `users/${user.userId}`,
+        method: 'PUT',
+        body: user,
       }),
       invalidatesTags: ['Donors'],
     }),
@@ -91,6 +112,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: user,
       }),
+      invalidatesTags: ['Donors'],
     }),
 
     addDonor: builder.mutation<void, DonorData>({
@@ -99,13 +121,15 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: donor,
       }),
+      invalidatesTags: ['Donors'],
     }),
     editDonor: builder.mutation<void, EditDonors>({
       query: (donor) => ({
-        url: `users/${donor.userId}`,
+        url: `userdonor/${donor.userId}`,
         method: 'PUT',
         body: donor,
       }),
+      invalidatesTags: ['Donors'],
     }),
   }),
 });
@@ -122,4 +146,6 @@ export const {
   useEditPatientMutation,
   useAddHospitalMutation,
   useDeleteAdminMutation,
+  useDeleteHospitalMutation,
+  useEditAdminMutation,
 } = AxiosClient;

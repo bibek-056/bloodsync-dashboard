@@ -1,40 +1,41 @@
-import PersonIcon from '@mui/icons-material/Person';
-import ViewListIcon from '@mui/icons-material/ViewList';
 import BloodtypeIcon from '@mui/icons-material/Bloodtype';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import { BsReverseListColumnsReverse } from 'react-icons/bs';
+import { CiHospital1 } from 'react-icons/ci';
+import { FiUsers } from 'react-icons/fi';
+import { RiProfileLine } from 'react-icons/ri';
 import Donor from './pages/Donor';
 import PatientWaitlist from './pages/PatientWaitlist';
 import Inventory from './pages/Inventory';
 import Hospital from './pages/Hospital';
 import Admin from './pages/Admin';
-import HospitalProfile from './pages/HospitalProfile';
+
 const routes = [
   {
     name: 'Patient Waitlist',
     key: 'patientwaitlist',
-    icon: <ViewListIcon />,
+    icon: <BsReverseListColumnsReverse />,
     route: '/patientwaitlist',
     component: <PatientWaitlist />,
   },
   {
     name: 'Inventory',
     key: 'inventory',
-    icon: <BloodtypeIcon />,
+    icon: <BloodtypeIcon className="text-2xl" />,
     route: '/inventory',
     component: <Inventory />,
   },
   {
     name: 'Hospital',
     key: 'hospital',
-    icon: <LocalHospitalIcon />,
+    icon: <CiHospital1 className="text-2xl" />,
     route: '/hospitals',
     component: <Hospital />,
   },
   {
     name: 'Donor',
     key: 'donor',
-    icon: <PersonIcon />,
+    icon: <FiUsers className="text-xl mr-1" />,
     route: '/donor',
     component: <Donor />,
   },
@@ -44,13 +45,6 @@ const routes = [
     icon: <AdminPanelSettingsIcon />,
     route: '/admin',
     component: <Admin />,
-  },
-  {
-    name: 'Hospital Profile',
-    key: 'hospitalProfile',
-    icon: <PersonIcon />,
-    route: '/HospitalProfile',
-    component: <HospitalProfile />,
-  },
+  }
 ];
 export default routes;

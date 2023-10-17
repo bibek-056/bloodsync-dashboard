@@ -1,21 +1,25 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import { useReadRequestQuery } from "../api/apiHandler";
-import Loading from '../components/Loading';
-import AddHospital  from "../components/Forms/AddHospital";
-import { IoPersonAdd } from "react-icons/io5";
-import { useState } from "react";
+import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import {
+  useDeleteHospitalMutation,
+  useReadRequestQuery,
+} from '../api/apiHandler';
+import Loading from '../components/Loading/Loading';
+import AddHospital from '../components/Forms/AddHospital';
+import { IoPersonAdd } from 'react-icons/io5';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import DeleteHospital from '../components/Alert/DeleteHospital';
 
 interface Column {
-  id: 'name' | 'address' | 'contact'| 'actions';
+  id: 'name' | 'address' | 'contact' | 'actions';
   label: string;
   minWidth?: number;
   align?: 'center';
@@ -46,11 +50,11 @@ const columns: readonly Column[] = [
   },
 
   {
-    id: "actions",
-    label: "Actions",
+    id: 'actions',
+    label: 'Actions',
     minWidth: 170,
-    align: "center",
-    format: (value: number) => value.toLocaleString("en-US"),
+    align: 'center',
+    format: (value: number) => value.toLocaleString('en-US'),
   },
 ];
 
@@ -61,16 +65,29 @@ interface Data {
   actions: any;
 }
 
-function createData(name: string, address: string, contact: string, actions: any): Data {
+function createData(
+  name: string,
+  address: string,
+  contact: string,
+  actions: any
+): Data {
   return { name, address, contact, actions };
 }
 
 export default function Hospital() {
-  
   const [createForm, setCreateForm] = useState<boolean>(false);
-
+  const [deleteRecord, setDeleteRecord] = useState<string>(null);
   const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
-  
+
+  const [deleteHospital] = useDeleteHospitalMutation();
+
+  const handleDelete = async (id: string) => {
+    setDeleteRecord(id);
+  };
+
+  const handleCancel = () => {
+    setDeleteRecord(null);
+  };
 
   const rows = hospitalData?.map((item: any) => {
     return createData(
@@ -78,15 +95,16 @@ export default function Hospital() {
       item.hospitalAddress,
       item.contactInfo,
       <div className="flex gap-2 justify-between items-center">
-        <Link to="/HospitalProfile" className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium">
-        <button
-          
-          
+        <Link
+          to={`/hospitalProfile/${item.hospitalId}`}
+          className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
         >
-          Hospital Profile
-        </button>
+          <button>Hospital Profile</button>
         </Link>
-        <button className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium" >
+        <button
+          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+          onClick={() => handleDelete(item.hospitalId)}
+        >
           Delete
         </button>
       </div>
@@ -110,24 +128,16 @@ export default function Hospital() {
     setCreateForm(!createForm);
   }
 
-  const [createAddHospital, setCreateAddHospital] = useState<boolean>(false);
-
-  
-
-  
-
-
-  return isLoading ?(
-    <Loading/>):(
-    
+  return isLoading ? (
+    <Loading />
+  ) : (
     <>
       <div className="flex w-full justify-between items-center">
         <input
           placeholder="Search Here"
-          className="w-2/5 h-12 p-4 rounded border">
-        </input>
+          className="w-2/5 h-12 p-4 rounded border"
+        ></input>
 
-        
         <button
           className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
           onClick={handleOpenForm}
@@ -193,6 +203,12 @@ export default function Hospital() {
         />
       </Paper>
       {createForm && <AddHospital handleOpenForm={handleOpenForm} />}
+      {deleteRecord && (
+        <DeleteHospital
+          deleteRecord={deleteRecord}
+          handleCancel={handleCancel}
+        />
+      )}
     </>
   );
 }

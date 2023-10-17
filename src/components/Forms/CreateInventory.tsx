@@ -5,16 +5,12 @@ import {
   useReadRequestQuery,
   useAddInventoryMutation,
 } from "../../api/apiHandler";
-import { InventoryData } from "../../models/datamodels";
+import { BloodGroup, InventoryData, CreateInventoryProps } from "../../models/datamodels";
 import { toast } from "react-toastify";
-
-interface CreateInventoryProps {
-  handleOpenForm: () => void;
-}
 
 const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
   const [addInventory] = useAddInventoryMutation();
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<InventoryData>();
   const {
@@ -34,8 +30,8 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
     props.handleOpenForm();
   };
 
-  const handelCloseForm = () => {
-    props.handleOpenForm();
+  const handelCloseForm = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    props.handleOpenForm(e);
   };
 
   const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
@@ -53,7 +49,7 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
             </p>
             <AiOutlineCloseCircle
               className="text-[#006EB9] text-xl cursor-pointer"
-              onClick={handelCloseForm}
+              onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handelCloseForm(e)}
             />
           </div>
           <div className=" w-full flex flex-col gap-10">
@@ -89,7 +85,7 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
                 })}
               >
                 <option label="Select a blood group"></option>
-                {bloodGroups?.map((oneGroup) => (
+                {bloodGroups?.map((oneGroup: BloodGroup) => (
                   <option label={oneGroup.bloodGroupName}>
                     {oneGroup.bloodGroupId}
                   </option>
@@ -128,8 +124,8 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
           <div className="w-full flex gap-4">
             <button
               className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-slate-300"
-              disabled={loading}
               type="submit"
+              disabled={loading}
             >
               Add
             </button>

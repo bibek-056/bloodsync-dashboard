@@ -7,26 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Loading from '../components/Loading';
+import Loading from '../components/Loading/Loading';
 import DeleteIcon from '@mui/icons-material/Delete';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import moment from 'moment';
-import { toast } from 'react-toastify';
-import {
-  useDeleteRequestMutation,
-  useReadRequestQuery,
-} from '../api/apiHandler';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+import { useReadRequestQuery } from '../api/apiHandler';
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { Donors, DonorTable } from '../models/datamodels';
+import DeleteDonor from '../components/Alert/DeleteDonor';
 interface Column {
   id:
     | 'index'
@@ -141,19 +130,19 @@ function createData(
 }
 function Donor() {
   const { data, isLoading, error } = useReadRequestQuery('donors');
-  const [deleteDonor] = useDeleteRequestMutation();
-  const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false); // Drawer state
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [donorId, setDonorId] = React.useState('');
   const navigate = useNavigate();
-  const handleOpenDrawer = (id: string) => {
-    setOpenDrawer(true);
+  const handleOpenDeleteDialog = (id: string) => {
+    setOpenDeleteDialog(true);
     setDonorId(id);
   };
-  const handleCloseDrawer = () => {
-    setOpenDrawer(false);
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
   };
+
   const rows = data?.map((item: Donors, index: number) => {
     return createData(
       index + 1,
@@ -168,7 +157,7 @@ function Donor() {
       item.emergencyContact,
       <div className="flex gap-2 justify-around items-center">
         <DeleteIcon
-          onClick={() => handleOpenDrawer(item.donorId)}
+          onClick={() => handleOpenDeleteDialog(item.donorId)}
           className="cursor-pointer text-red-600"
         />
         <BorderColorIcon
@@ -180,18 +169,6 @@ function Donor() {
       </div>
     );
   });
-
-  async function handleDelete(slug: string, id: string) {
-    await deleteDonor(`${slug}/${id}`)
-      .unwrap()
-      .then((success) => {
-        console.log(success);
-        toast.success('Sucessfully Deleted');
-      })
-      .catch((error) => {
-        toast.error(`Failed to delete ${error} `);
-      });
-  }
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -215,12 +192,8 @@ function Donor() {
             placeholder="Search Here"
             className="w-2/5 h-12 p-4 rounded border"
           ></input>
-          {/* <BigButton/> */}
           <Link to="/create-donor">
-            <button
-              className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-green-500 text-white font-medium m-5"
-              // onClick={handleOpenForm}
-            >
+            <button className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-[#006EB9] text-white font-medium m-5">
               <IoMdAddCircleOutline className="text-lg" /> Add New Donor
             </button>
           </Link>
@@ -286,31 +259,12 @@ function Donor() {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
-          <Dialog
-            open={openDrawer}
-            onClose={handleCloseDrawer}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Are you sure you want to delete this record?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseDrawer}>Cancel</Button>
-              <Button
-                onClick={() => {
-                  handleCloseDrawer();
-                  handleDelete('donors', donorId);
-                }}
-                autoFocus
-              >
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
+          <DeleteDonor
+            open={openDeleteDialog}
+            onClose={handleCloseDeleteDialog}
+            slug="donors"
+            id={donorId}
+          />
         </Paper>
       </>
     );

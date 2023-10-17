@@ -91,6 +91,15 @@ export type AddAdminDataModel = {
   password: string;
 };
 
+export type EditAdminDataModel = {
+  userId: string;
+  name: string;
+  hospitalId: string;
+  address: string;
+  email: string;
+  
+};
+
 export type User = {
   userId: string;
   name: string;
@@ -101,6 +110,7 @@ export type User = {
   userTypeId: string;
   // userType: UserTypes;
 };
+
 
 export type Donors = {
   index: number;
@@ -150,6 +160,7 @@ export type DonorTable = {
   emergencyContact: number;
   actions: JSX.Element;
 };
+
 export interface EditInventoryProps {
   editElement: PresentInventoryData;
   handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -174,27 +185,4 @@ export type PresentInventoryData = {
   dateModified: string;
   dateCreated: string;
 }
-export interface EditPatientProps {
-  editElement: PresentPatientData;
-  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
 
-export interface CreatePatientProps {
-  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
-
-export type SendEditPatientData = {
-  patientName: string;
-  quantity: string;
-  inventoryId: string;
-  priorityId: string;
-};
-
-export type PresentPatientData = {
-  patientId: string;
-  patientName: string;
-  quantity: string;
-  inventoryId: string;
-  priorityId: string;
-  dateCreated: string;
-}
