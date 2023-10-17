@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { DevTool } from "@hookform/devtools";
-import { useReadRequestQuery, useAddHospitalMutation } from "../../api/apiHandler";
-import { HospitalDataModel } from "../../models/datamodels";
-import { toast } from "react-toastify";
+import { DevTool } from '@hookform/devtools';
+import { useAddHospitalMutation } from '../../api/apiHandler';
+import { Hospital } from '../../models/datamodels';
+import { toast } from 'react-toastify';
 
 interface CreateHospitalProps {
   handleOpenForm: () => void;
@@ -14,26 +14,24 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
   const [addHospital] = useAddHospitalMutation();
   const [loading, setLoading] = useState<Boolean>(false);
 
-  const form = useForm<HospitalDataModel>();
+  const form = useForm<Hospital>();
   const { register, control, handleSubmit } = form;
 
-   const onSubmit = async (data: HospitalDataModel) => {
-    setLoading(true)
-    try{
+  const onSubmit = async (data: Hospital) => {
+    setLoading(true);
+    try {
       await addHospital(data);
-      toast.success("Successfully Added new patient")
-    } catch(er) {
-      toast.error("Failed to Add new Patient")
+      toast.success('Successfully Added new patient');
+    } catch (er) {
+      toast.error('Failed to Add new Patient');
     }
     props.handleOpenForm();
   };
 
-
   const handleCloseForm = () => {
     props.handleOpenForm();
-  }
+  };
 
-  
   return (
     <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
       <div className="w-2/5 h-screen bg-white flex justify-center items-center">
@@ -45,8 +43,10 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
             <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
               Add a new Hospital
             </p>
-            <AiOutlineCloseCircle className="text-[#006EB9] text-xl cursor-pointer" 
-            onClick={handleCloseForm} />
+            <AiOutlineCloseCircle
+              className="text-[#006EB9] text-xl cursor-pointer"
+              onClick={handleCloseForm}
+            />
           </div>
           <div className="w-full flex flex-col gap-10">
             <div className="flex flex-col gap-2">
@@ -57,7 +57,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalName"
-                {...register("hospitalName")}
+                {...register('hospitalName')}
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -68,11 +68,9 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalName"
-                {...register("hospitalAddress")}
+                {...register('hospitalAddress')}
               />
             </div>
-
-            
 
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
@@ -82,7 +80,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="logoUrl"
-                {...register("logoUrl")}
+                {...register('logoUrl')}
               />
             </div>
 
@@ -94,7 +92,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalDescription"
-                {...register("hospitalDescription")}
+                {...register('hospitalDescription')}
               />
             </div>
 
@@ -106,17 +104,14 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="contactInfo"
-                {...register("contactInfo")}
+                {...register('contactInfo')}
               />
             </div>
-           
-
-           
           </div>
           <div className="w-full flex gap-4">
-          <button
+            <button
               className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium disabled:bg-gray-500"
-              disabled={ loading }
+              disabled={loading}
               type="submit"
             >
               Add

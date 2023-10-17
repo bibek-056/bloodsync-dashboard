@@ -5,10 +5,10 @@ export type InventoryData = {
 };
 
 export type EditInventoryData = {
-    inventoryId: string;
-    inventoryName: string;
-    quantity: string;
-    bloodGroupId: string;
+  inventoryId: string;
+  inventoryName: string;
+  quantity: string;
+  bloodGroupId: string;
 };
 export type PatientData = {
   patientName: string;
@@ -16,13 +16,12 @@ export type PatientData = {
   inventoryId: string;
   priorityId: string;
 };
-export type EditPatientwaitlist= {
+export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
   quantity: number;
   priorityId: string;
   inventoryId: string;
-  
 };
 
 export type DonorData = {
@@ -38,23 +37,26 @@ export type DonorData = {
   district: string;
   municipality: string;
   wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
+  phoneNumber: number;
+  emergencyContact: number;
 };
 
-export type EditDonor = {
+export type EditDonors = {
   donorId: string;
   userId: string;
   bloodGroupId: string;
-  usertypeId: string;
+  userTypeId: string;
+  hospitalId: string;
+  address: string;
   name: string;
   email: string;
   lastDonated: string;
   district: string;
   municipality: string;
   wardNo: number;
-  phoneNumber: string;
-  emergencyContact: string;
+  phoneNumber: number;
+  emergencyContact: number;
+  password: string;
 };
 
 export type BloodGroup = {
@@ -68,7 +70,7 @@ export type UserTypes = {
   dateCreated: Date;
 };
 
-export type HospitalDataModel = {
+export type Hospital = {
   hospitalId: string;
   hospitalName: string;
   hospitalAddress: string;
@@ -79,12 +81,72 @@ export type HospitalDataModel = {
   dateModified: Date;
 };
 export type AddAdminDataModel = {
-    userId: string;
-    hospitalId: string;
-    userTypeId: string;
-    name: string;
-    hospitalName: string;
-    address: string;
-    email: string;
-    password: string;
+  userId: string;
+  hospitalId: string;
+  userTypeId: string;
+  name: string;
+  hospitalName: string;
+  address: string;
+  email: string;
+  password: string;
+};
+
+export type User = {
+  userId: string;
+  name: string;
+  address: string;
+  email: string;
+  password: string;
+  hospital: Hospital;
+  userTypeId: string;
+  // userType: UserTypes;
+};
+
+export type Donors = {
+  index: number;
+  name: string;
+  hospitalAffiliated: string;
+  donorId: string;
+  lastDonated: string;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  phoneNumber: number;
+  emergencyContact: number;
+  dateCreated: Date;
+  hospital: Hospital;
+  user: User;
+  bloodGroup: BloodGroup;
+};
+
+export type DonorDatata = {
+  index: number;
+  name: string;
+  hospitalAffiliated: string;
+  donorId: string;
+  lastDonated: string;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  phoneNumber: number;
+  emergencyContact: number;
+  dateCreated: Date;
+  hospital: Hospital;
+  user: User;
+  bloodGroup: BloodGroup;
+  actions: JSX.Element;
+};
+
+export type DonorTable = {
+  index: number;
+  donorName: string;
+  bloodGroup: string;
+  lastDonated: string;
+  phoneNumber: number;
+  district: string;
+  municipality: string;
+  wardNo: number;
+  hospitalAffiliated: string;
+  emergencyContact: number;
+  actions: JSX.Element;
 };

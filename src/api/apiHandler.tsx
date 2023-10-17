@@ -6,6 +6,7 @@ import {
   PatientData,
   EditPatientwaitlist,
   DonorData,
+  EditDonors,
   HospitalDataModel,
 } from '../models/datamodels';
 
@@ -46,7 +47,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: inventory,
       }),
-      invalidatesTags: ["Donors"],
+      invalidatesTags: ['Donors'],
     }),
 
     addHospital: builder.mutation<void, HospitalDataModel>({
@@ -55,7 +56,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: hospital,
       }),
-      invalidatesTags: ["Hospitals"],
+      invalidatesTags: ['Hospitals'],
     }),
 
     editInventory: builder.mutation<void, EditInventoryData>({
@@ -64,7 +65,7 @@ export const AxiosClient = createApi({
         method: 'PUT',
         body: inventory,
       }),
-      invalidatesTags: ["Donors"],
+      invalidatesTags: ['Donors'],
     }),
 
     addPatient: builder.mutation<void, PatientData>({
@@ -73,7 +74,7 @@ export const AxiosClient = createApi({
         method: 'POST',
         body: patientwaitlists,
       }),
-      invalidatesTags: ["Donors"],
+      invalidatesTags: ['Donors'],
     }),
     editPatient: builder.mutation<void, EditPatientwaitlist>({
       query: (patientwaitlists) => ({
@@ -81,7 +82,7 @@ export const AxiosClient = createApi({
         method: 'PUT',
         body: patientwaitlists,
       }),
-      invalidatesTags: ["Donors"],
+      invalidatesTags: ['Donors'],
     }),
 
     addAdmin: builder.mutation<void, AddAdminDataModel>({
@@ -99,6 +100,13 @@ export const AxiosClient = createApi({
         body: donor,
       }),
     }),
+    editDonor: builder.mutation<void, EditDonors>({
+      query: (donor) => ({
+        url: `users/${donor.userId}`,
+        method: 'PUT',
+        body: donor,
+      }),
+    }),
   }),
 });
 
@@ -109,8 +117,9 @@ export const {
   useEditInventoryMutation,
   useAddAdminMutation,
   useAddDonorMutation,
+  useEditDonorMutation,
   useAddPatientMutation,
   useEditPatientMutation,
-  useDeleteAdminMutation,
   useAddHospitalMutation,
+  useDeleteAdminMutation,
 } = AxiosClient;
