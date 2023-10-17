@@ -10,7 +10,6 @@ import EditDonor from './components/Forms/EditDonor';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HospitalProfile from './pages/HospitalProfile';
-import Admin from './pages/Admin';
 
 const App = () => (
   <Router>
