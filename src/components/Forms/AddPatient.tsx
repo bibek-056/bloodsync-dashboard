@@ -102,7 +102,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
                   {...register("priorityId", { required: "Priority is required" })}
                 >
                   <option value="">Select a priority</option>
-                  {priorities?.map((priority) => (
+                  {priorities?.map((priority: any) => (
                     <option value={priority.priorityId} key={priority.priorityId}>
                       {priority.priorityLevelName}
                     </option>
@@ -121,7 +121,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
                   {...register("inventoryId", { required: "Inventory Item is required" })}
                 >
                   <option value="">Select an inventory item</option>
-                  {inventoryItems?.map((item) => (
+                  {inventoryItems?.map((item :any) => (
                     <option value={item.inventoryId} key={item.inventoryId}>
                       {item.inventoryName}
                     </option>
@@ -140,7 +140,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
                   {...register("hospitalId", { required: "Hospital Name is required" })}
                 >
                   <option value="">Select Hospital</option>
-                  {hospital?.map((item) => (
+                  {hospital?.map((item :any) => (
                     <option value={item.hospitalId} key={item.hospitalId}>
                       {item.hospitalName}
                     </option>

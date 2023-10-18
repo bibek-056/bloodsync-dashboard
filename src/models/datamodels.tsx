@@ -14,18 +14,18 @@ export type EditInventoryData = {
 };
 export type PatientData = {
   patientName: string;
-  hospitalId: string;
+  dueDate: Date,
   inventoryId: string;
   priorityId: string;
-  dueDate: Date
+  hospitalId: string;
 };
 export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
-  dueDate: Date
-  hospitalId: string;
+  dueDate: Date,
   priorityId: string;
   inventoryId: string;
+  hospitalId: string;
 };
 
 export type DonorData = {
@@ -236,9 +236,8 @@ export interface CreatePatientProps {
 
 export type SendEditPatientData = {
   patientId: string;
+  dueDate: Date,
   patientName: string;
-  dueDate: Date;
-  hospitalId: string;
   inventoryId: string;
   priorityId: string;
   hospitalId: string;
@@ -247,11 +246,11 @@ export type SendEditPatientData = {
 export type PresentPatientData = {
   patientId: string;
   patientName: string;
-  dueDate: Date;
-  hospitalId: string;
+  dueDate: Date,
+  quantity: string;
   inventoryId: string;
   priorityId: string;
   dateCreated: string;
   hospitalId: string;
-};
+}
 

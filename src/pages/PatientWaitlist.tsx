@@ -9,12 +9,12 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { IoPersonAdd } from 'react-icons/io5';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
 import CreatePatient from "../components/Forms/AddPatient";
 import DeleteAlert from "../components/Alert/DeleteAlert";
 import EditPatientwaitlist from '../components/Forms/EditPatient';
+import moment from "moment";
+import { MdEditSquare, MdDelete } from "react-icons/md";
 
 
 interface Column {
@@ -132,16 +132,22 @@ export default function PatientDataTable() {
       item.priority.priorityLevelName,
       item.hospital.hospitalName,
       item.dueDate,
-      item.dateModified ? item.dateModified : item.dateCreated,
-      <div className="flex justify-center gap-4 items-center">
-        <BorderColorIcon
-          className="cursor-pointer text-[#006EB9] m-0 p-0"
+     item.dateModified
+        ? moment(item.dateModified).format("L")
+        : moment(item.dateCreated).format("L"),
+<div className="flex justify-center gap-4 items-center">
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer"
           onClick={() => handleEditQuantity(item)}
-        />
-        <DeleteIcon
-          className="cursor-pointer text-red-600 m-0 p-0"
+        >
+          <MdEditSquare className="text-xl font-medium text-[#006EB9] hover:text-2xl ease-in-out duration-100" />
+        </div>
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
           onClick={() => handleDelete(item.patientId)}
-        />
+        >
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
       </div>
     );
   });
