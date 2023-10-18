@@ -3,19 +3,16 @@ import { useForm } from 'react-hook-form';
 import {
   useEditPatientMutation,
   useReadRequestQuery,
-<<<<<<< HEAD
 } from "../../api/apiHandler";
 import { EditPatientProps, SendEditPatientData } from "../../models/datamodels";
-=======
-} from '../../api/apiHandler';
->>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
 
 type EditData = {
   patientId: string;
+  dueDate: Date;
   patientName: string;
-  quantity: string;
   priorityId: string;
   inventoryId: string;
+  hospitalId: string;
 };
 
 const EditPatientwaitlist: React.FC<EditPatientProps> = ({
@@ -24,8 +21,12 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
 }) => {
   const { handleSubmit, register } = useForm<EditData>();
   const [editPatient] = useEditPatientMutation();
+
   const { data: priorities } = useReadRequestQuery('Priority');
   const { data: inventoryItems } = useReadRequestQuery('inventorys');
+  const { data: hospital } = useReadRequestQuery('Hospitals');
+
+
 
   const onSubmit = async (editData: SendEditPatientData) => {
     editData.patientId = editElement.patientId;
@@ -55,17 +56,17 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
             defaultValue={editElement.patientName}
             {...register('patientName', { required: true })}
           />
-        </div>
-        <div className="mb-4">
-          <label className="text-sm text-[#006EB9] block mb-2">
-            Quantity *
-          </label>
-          <input
-            className="w-full border-b-2 border-[#006EB9] py-2 text-black"
-            type="text"
-            defaultValue={editElement.quantity}
-            {...register('quantity', { required: true })}
-          />
+
+          <div className="mb-4">
+            <label className="text-sm text-[#006EB9] block mb-2">Due Date *</label>
+            <input
+              className="w-full border-b-2 border-[#006EB9] py-2 text-black"
+              type="Date"
+              defaultValue={editElement.dueDate}
+              {...register("dueDate", { required: true })}
+            />
+          </div>
+
         </div>
         <div className="mb-4">
           <label className="text-sm text-[#006EB9] block mb-2">Priority</label>
@@ -98,17 +99,35 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
               <option
                 key={item.inventoryId}
                 label={item.inventoryName}
-<<<<<<< HEAD
                 defaultValue={editElement.inventoryId}
-                selected={item.inventoryId === editElement.inventoryId}
-=======
-                defaultValue={editElement.inventory.inventoryId}
                 selected={
-                  item.inventoryId === editElement.inventory.inventoryId
+                  item.inventoryId === editElement.inventoryId
                 }
->>>>>>> 86ba6d48a94cf4f389416535614bda0c1cec2a4d
               >
                 {item.inventoryId}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label className="text-sm text-[#006EB9] block mb-2">
+            Hospital Name
+          </label>
+          <select
+            className="w-full border-b-2 border-[#006EB9] py-2"
+            {...register('hospitalId', { required: true })}
+          >
+            {hospital?.map((item) => (
+              <option
+                key={item.hospitalId}
+                label={item.hospitalName}
+                defaultValue={editElement.hospitalId}
+                selected={
+                  item.hospitalId === editElement.hospitalId
+                }
+              >
+                {item.hospitalId}
               </option>
             ))}
           </select>
