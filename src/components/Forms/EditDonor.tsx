@@ -130,6 +130,7 @@ export default function EditDonor() {
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2`}
               {...register('name', registerConditions.name)}
+              defaultValue={donorData?.user.name}
             />
             {errors.name && <RequiredField message={errors.name.message} />}
 
@@ -177,16 +178,14 @@ export default function EditDonor() {
               <RequiredField message={errors.address.message} />
             )}
             {/* District Municipality and Ward No */}
-            <div className=" w-4/5 lg:w-full lg:ml-[90px] items-center flex lg:flex-row flex-col justify-center lg:gap-2 ">
-              <div className="w-auto">
-                <p className=" text-[#006EB9] text-base mb-1 font-semibold">
+            <div className="w-4/5 grid grid-cols-2 gap-4 ">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   District
                 </p>
                 <input
                   type="text"
-                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded
-                  transition duration-200 ease-in-out
-                 focus:border-slate-100 mb-2"
+                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('district', {
                     required: 'This field is required',
                   })}
@@ -194,20 +193,20 @@ export default function EditDonor() {
                 />
                 {errors.district && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
                     *{errors.district.message}
                   </p>
                 )}
               </div>
-              <div className="">
-                <p className="  text-[#006EB9] text-base mb-1 font-semibold">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   Municipality
                 </p>
                 <input
                   type="text"
-                  className=" w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('municipality', {
                     required: 'This field is required',
                   })}
@@ -215,31 +214,31 @@ export default function EditDonor() {
                 />
                 {errors.municipality && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
                     *{errors.municipality.message}
                   </p>
                 )}
               </div>
-              <div className="m-0 p-0">
-                <p className="  text-[#006EB9] text-base mb-1 font-semibold">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   Ward
                 </p>
                 <input
                   type="text"
-                  className=" w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+                  className="w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('wardNo', {
                     required: 'This field is required',
                   })}
                   defaultValue={donorData.wardNo}
                 />
-                {errors.municipality && (
+                {errors.wardNo && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
-                    *{errors.municipality.message}
+                    *{errors.wardNo.message}
                   </p>
                 )}
               </div>
