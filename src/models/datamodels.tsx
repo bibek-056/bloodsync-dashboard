@@ -14,16 +14,18 @@ export type EditInventoryData = {
 };
 export type PatientData = {
   patientName: string;
-  quantity: number;
+  dueDate: Date,
   inventoryId: string;
   priorityId: string;
+  hospitalId: string;
 };
 export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
-  quantity: string;
+  dueDate: Date,
   priorityId: string;
   inventoryId: string;
+  hospitalId: string;
 };
 
 export type DonorData = {
@@ -64,6 +66,16 @@ export type EditDonors = {
 export type BloodGroup = {
   bloodGroupId: string;
   bloodGroupName: string;
+};
+
+export type Hospitals = {
+  hospitalId: string;
+  hospitalName: string;
+};
+
+export type UserType = {
+  userTypeId: string;
+  userTypeName: string;
 };
 
 export type UserTypes = {
@@ -168,9 +180,16 @@ export interface EditInventoryProps {
   handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+export interface EditHospitalProps {
+  editElement: PresentHospitalData;
+  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
 export interface CreateInventoryProps {
   handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+
 
 export type SendEditData = {
   inventoryName: string;
@@ -187,6 +206,23 @@ export type PresentInventoryData = {
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
+
+};
+
+export type PresentHospitalData = {
+  userId: string;
+  name: string;
+  hospitalId: string;
+  address: string;
+  email: string;
+  
+};
+
+
+
+export interface CreateAdminProps {
+  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+
   hospitalId: string
 }
 export interface EditPatientProps {
@@ -200,8 +236,8 @@ export interface CreatePatientProps {
 
 export type SendEditPatientData = {
   patientId: string;
+  dueDate: Date,
   patientName: string;
-  quantity: number;
   inventoryId: string;
   priorityId: string;
   hospitalId: string;
@@ -210,6 +246,7 @@ export type SendEditPatientData = {
 export type PresentPatientData = {
   patientId: string;
   patientName: string;
+  dueDate: Date,
   quantity: string;
   inventoryId: string;
   priorityId: string;

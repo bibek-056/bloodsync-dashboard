@@ -39,7 +39,7 @@ export const AxiosClient = createApi({
           method: 'DELETE',
         };
       },
-      invalidatesTags: ['Users'],
+      invalidatesTags: ['Donors'],
     }),
 
     deleteHospital: builder.mutation<{ success: boolean; id: string }, string>({
