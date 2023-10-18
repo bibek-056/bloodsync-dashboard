@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import {
   useEditPatientMutation,
   useReadRequestQuery,
-} from "../../api/apiHandler";
+} from '../../api/apiHandler';
 import { EditPatientProps, SendEditPatientData } from "../../models/datamodels";
 
 type EditData = {

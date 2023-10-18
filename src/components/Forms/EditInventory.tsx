@@ -38,14 +38,11 @@ const EditInventory: React.FC<EditInventoryProps> = ({
   const onSubmit = async (editData: SendEditData) => {
     setLoading(true);
     editData.inventoryId = editElement.inventoryId;
+    editData.hospitalId = editElement.hospitalId;
     {
       add
-        ? (editData.quantity = (
-            Number(editData.quantity) + Number(editElement.quantity)
-          ).toString())
-        : (editData.quantity = (
-            Number(editElement.quantity) - Number(editData.quantity)
-          ).toString());
+        ? (editData.quantity = Number(editData.quantity) + Number(editElement.quantity))
+        : (editData.quantity = editElement.quantity - editData.quantity);
     }
     try {
       await editInventory(editData);
@@ -117,10 +114,18 @@ const EditInventory: React.FC<EditInventoryProps> = ({
             <div className="flex flex-col gap-2">
               <input
                 className="w-full border rounded h-12 p-4 invalid:border-red-500 text-black"
-                type="string"
+                type="number"
                 placeholder="Quantity"
                 {...register("quantity", {
                   required: "Quantity is required",
+                  min: {
+                    value: 0,
+                    message: "Value cannot be less than 0"
+                  },
+                  max: {
+                    value: editElement.quantity,
+                    message: "Cannot use more inventory than available",
+                  }
                 })}
               />
               {errors.quantity && (

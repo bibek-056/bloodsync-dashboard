@@ -1,58 +1,58 @@
-import * as React from 'react';
-import { useState } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import {
-  useReadRequestQuery,
-} from "../api/apiHandler";
+import * as React from "react";
+import { useState } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import { useReadRequestQuery } from "../api/apiHandler";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import CreateInventory from "../components/Forms/CreateInventory";
 import EditInventory from "../components/Forms/EditInventory";
 import DeleteAlert from "../components/Alert/DeleteAlert";
 import { LinearProgress } from "@mui/material";
+import moment from "moment";
+import { MdEditSquare, MdDelete } from "react-icons/md";
 
 interface Column {
-  id: 'inventoryItem' | 'bloodGroup' | 'amount' | 'lastUsed' | 'actions';
+  id: "inventoryItem" | "bloodGroup" | "amount" | "lastUsed" | "actions";
   label: string;
   minWidth?: number;
-  align?: 'center';
+  align?: "center";
   format?: (value: number) => string;
 }
 
 const columns: readonly Column[] = [
   {
-    id: 'inventoryItem',
-    label: 'Inventory Item',
+    id: "inventoryItem",
+    label: "Inventory Item",
     minWidth: 170,
-    align: 'center',
+    align: "center",
   },
-  { id: 'bloodGroup', label: 'Blood Group', minWidth: 50, align: 'center' },
+  { id: "bloodGroup", label: "Blood Group", minWidth: 50, align: "center" },
   {
-    id: 'amount',
-    label: 'Amount',
+    id: "amount",
+    label: "Amount",
     minWidth: 120,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: 'lastUsed',
-    label: 'Last Used',
+    id: "lastUsed",
+    label: "Last Used",
     minWidth: 170,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
   {
-    id: 'actions',
-    label: 'Actions',
-    minWidth: 170,
-    align: 'center',
-    format: (value: number) => value.toLocaleString('en-US'),
+    id: "actions",
+    label: "Actions",
+    minWidth: 120,
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
   },
 ];
 
@@ -80,7 +80,7 @@ export default function Inventory() {
   const [deleteRecord, setDeleteRecord] = useState<string>("");
 
   const { data: inventoryData, isLoading: inventorysLoading } =
-    useReadRequestQuery('inventorys');
+    useReadRequestQuery("inventorys");
 
   const handleDelete = async (id: string) => {
     setDeleteRecord(id);
@@ -94,20 +94,22 @@ export default function Inventory() {
       item.inventoryName,
       item.bloodGroup.bloodGroupName,
       item.quantity,
-      item.dateModified ? item.dateModified : item.dateCreated,
-      <div className="flex gap-2 justify-between items-center">
-        <button
-          className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
+      item.dateModified
+        ? moment(item.dateModified).format("L")
+        : moment(item.dateCreated).format("L"),
+      <div className="flex w-full items-center justify-evenly">
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer"
           onClick={() => handleEditQuantity(item)}
         >
-          Edit
-        </button>
-        <button
-          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+          <MdEditSquare className="text-xl font-medium text-[#006EB9] hover:text-2xl ease-in-out duration-100" />
+        </div>
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
           onClick={() => handleDelete(item.inventoryId)}
         >
-          Delete
-        </button>
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
       </div>
     );
   });
@@ -115,7 +117,6 @@ export default function Inventory() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    event.preventDefault();
     setPage(newPage);
   };
 
@@ -154,8 +155,8 @@ export default function Inventory() {
           <IoMdAddCircleOutline className="text-lg" /> Add New Inventory
         </button>
       </div>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: '75vh' }}>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <TableContainer sx={{ maxHeight: "75vh" }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -187,14 +188,14 @@ export default function Inventory() {
                           tabIndex={-1}
                           key={row.inventoryItem}
                           className={
-                            index % 2 == 0 ? 'bg-white' : 'bg-slate-100'
+                            index % 2 == 0 ? "bg-white" : "bg-slate-100"
                           }
                         >
                           {columns.map((column) => {
                             const value = row[column.id];
                             return (
                               <TableCell key={column.id} align={column.align}>
-                                {column.format && typeof value === 'number'
+                                {column.format && typeof value === "number"
                                   ? column.format(value)
                                   : value}
                               </TableCell>

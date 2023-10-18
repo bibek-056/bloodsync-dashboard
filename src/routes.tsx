@@ -3,7 +3,6 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { BsReverseListColumnsReverse } from 'react-icons/bs';
 import { CiHospital1 } from 'react-icons/ci';
 import { FiUsers } from 'react-icons/fi';
-import { RiProfileLine } from 'react-icons/ri';
 import Donor from './pages/Donor';
 import PatientWaitlist from './pages/PatientWaitlist';
 import Inventory from './pages/Inventory';
