@@ -1,14 +1,16 @@
 export type InventoryData = {
   inventoryName: string;
-  bloodGroupId: number;
+  bloodGroupId: string;
+  hospitalId: string
   quantity: number;
 };
 
 export type EditInventoryData = {
   inventoryId: string;
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   bloodGroupId: string;
+  hospitalId: string;
 };
 export type PatientData = {
   patientName: string;
@@ -172,18 +174,20 @@ export interface CreateInventoryProps {
 
 export type SendEditData = {
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   inventoryId: string;
   bloodGroupId: string;
+  hospitalId: string;
 };
 
 export type PresentInventoryData = {
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   inventoryId: string;
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
+  hospitalId: string
 }
 export interface EditPatientProps {
   editElement: PresentPatientData;
@@ -197,9 +201,10 @@ export interface CreatePatientProps {
 export type SendEditPatientData = {
   patientId: string;
   patientName: string;
-  quantity: string;
+  quantity: number;
   inventoryId: string;
   priorityId: string;
+  hospitalId: string;
 };
 
 export type PresentPatientData = {
@@ -209,5 +214,6 @@ export type PresentPatientData = {
   inventoryId: string;
   priorityId: string;
   dateCreated: string;
+  hospitalId: string;
 }
 

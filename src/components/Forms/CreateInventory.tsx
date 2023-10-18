@@ -105,10 +105,14 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
               </label>
               <input
                 className="w-full rounded-md h-12 p-4 border"
-                type="text"
+                type="number"
                 id="bloodGroup"
                 {...register("quantity", {
                   required: "Quantity is required",
+                  min: {
+                    value: 0,
+                    message: "Value cannot be less than 0"
+                  }
                 })}
               />
               {errors.quantity && (
