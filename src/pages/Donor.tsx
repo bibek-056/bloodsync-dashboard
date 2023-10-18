@@ -28,6 +28,7 @@ interface Column {
     | 'wardNo'
     | 'hospitalAffiliated'
     | 'emergencyContact'
+    | 'registrationId'
     | 'actions';
   label: string;
   minWidth?: number;
@@ -78,6 +79,11 @@ const columns: readonly Column[] = [
     align: 'center',
   },
   {
+    id: 'registrationId',
+    label: 'Registration Number',
+    align: 'center',
+  },
+  {
     id: 'emergencyContact',
     label: 'Emergency Contact',
     align: 'center',
@@ -98,6 +104,7 @@ interface Data {
   municipality: string;
   wardNo: number;
   hospitalAffiliated: string;
+  registrationId: number;
   emergencyContact: number;
   actions: React.ReactNode;
 }
@@ -111,6 +118,7 @@ function createData(
   municipality: string,
   wardNo: number,
   hospitalAffiliated: string,
+  registrationId: number,
   emergencyContact: number,
   actions: JSX.Element
 ): Data {
@@ -124,6 +132,7 @@ function createData(
     municipality,
     wardNo,
     hospitalAffiliated,
+    registrationId,
     emergencyContact,
     actions,
   };
@@ -154,10 +163,13 @@ function Donor() {
       item.municipality,
       item.wardNo,
       item.hospital.hospitalName,
+      item.registrationId,
       item.emergencyContact,
       <div className="flex gap-2 justify-around items-center">
         <DeleteIcon
-          onClick={() => handleOpenDeleteDialog(item.donorId)}
+          onClick={() => {
+            handleOpenDeleteDialog(item.user.userId);
+          }}
           className="cursor-pointer text-red-600"
         />
         <BorderColorIcon
@@ -262,7 +274,7 @@ function Donor() {
           <DeleteDonor
             open={openDeleteDialog}
             onClose={handleCloseDeleteDialog}
-            slug="donors"
+            slug="users"
             id={donorId}
           />
         </Paper>
