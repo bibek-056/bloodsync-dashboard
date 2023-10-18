@@ -37,11 +37,9 @@ export default function EditDonor() {
     data.userId = donorData.user.userId;
     data.donorId = donorData.donorId;
     data.password = 'fghjksjaj';
-    console.log(data);
     setDisableButton(true);
     try {
       await editDonor(data).unwrap();
-      console.log(data.hospitalId);
       toast.success('Sucessfully Edited Donor');
       navigate('/donor');
     } catch (error) {
@@ -136,7 +134,7 @@ export default function EditDonor() {
               {...register('address', {
                 required: 'Address is required',
               })}
-              defaultValue={donorData.user.address}
+              defaultValue={donorData?.user.address}
             />
             {errors.address && (
               <p
@@ -160,7 +158,7 @@ export default function EditDonor() {
                   {...register('district', {
                     required: 'This field is required',
                   })}
-                  defaultValue={donorData.district}
+                  defaultValue={donorData?.district}
                 />
                 {errors.district && (
                   <p
@@ -293,7 +291,7 @@ export default function EditDonor() {
                   message: 'Minimum length is 9',
                 },
               })}
-              defaultValue={donorData.emergencyContact}
+              defaultValue={donorData?.emergencyContact}
             />
             {errors.emergencyContact && (
               <p

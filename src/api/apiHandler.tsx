@@ -8,7 +8,7 @@ import {
   DonorData,
   EditDonors,
   Hospital,
-  EditAdminDataModel
+  EditAdminDataModel,
 } from '../models/datamodels';
 
 export const AxiosClient = createApi({
@@ -51,7 +51,6 @@ export const AxiosClient = createApi({
       },
       invalidatesTags: ['Hospitals'],
     }),
-
 
     addInventory: builder.mutation<void, InventoryData>({
       query: (inventory) => ({

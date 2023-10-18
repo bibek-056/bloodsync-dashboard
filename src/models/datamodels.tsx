@@ -1,14 +1,16 @@
 export type InventoryData = {
   inventoryName: string;
-  bloodGroupId: number;
+  bloodGroupId: string;
+  hospitalId: string
   quantity: number;
 };
 
 export type EditInventoryData = {
   inventoryId: string;
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   bloodGroupId: string;
+  hospitalId: string;
 };
 export type PatientData = {
   patientName: string;
@@ -19,7 +21,7 @@ export type PatientData = {
 export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
-  quantity: number;
+  quantity: string;
   priorityId: string;
   inventoryId: string;
 };
@@ -189,18 +191,20 @@ export interface CreateInventoryProps {
 
 export type SendEditData = {
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   inventoryId: string;
   bloodGroupId: string;
+  hospitalId: string;
 };
 
 export type PresentInventoryData = {
   inventoryName: string;
-  quantity: string;
+  quantity: number;
   inventoryId: string;
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
+<<<<<<< HEAD
 };
 
 export type PresentHospitalData = {
@@ -216,5 +220,35 @@ export type PresentHospitalData = {
 
 export interface CreateAdminProps {
   handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+=======
+  hospitalId: string
+}
+export interface EditPatientProps {
+  editElement: PresentPatientData;
+  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export interface CreatePatientProps {
+  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export type SendEditPatientData = {
+  patientId: string;
+  patientName: string;
+  quantity: number;
+  inventoryId: string;
+  priorityId: string;
+  hospitalId: string;
+};
+
+export type PresentPatientData = {
+  patientId: string;
+  patientName: string;
+  quantity: string;
+  inventoryId: string;
+  priorityId: string;
+  dateCreated: string;
+  hospitalId: string;
+>>>>>>> 4fe2e5ac834f747769ffdde3b49af1252382f3b8
 }
 
