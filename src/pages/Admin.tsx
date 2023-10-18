@@ -13,17 +13,14 @@ import AddAdmin from "../components/Forms/AddAdmin";
 import { useDeleteAdminMutation, useReadRequestQuery } from "../api/apiHandler";
 import DeleteAdmin from "../components/Alert/DeleteAdmin";
 import EditHospital from "../components/Forms/EditAdmin";
+import { MdEditSquare, MdDelete } from "react-icons/md";
 
 interface Column {
-  id: "name" | "email" | "address" | "hospitalName" | "actions";
+  id: "name" | "email" | "address" | "hospitalName" | "userType" | "actions";
   label: string;
   minWidth?: number;
   align?: "center";
   format?: (value: number) => string;
-}
-
-interface AddAdminProps {
-  handleOpenForm: () => void;
 }
 
 const columns: readonly Column[] = [
@@ -55,10 +52,18 @@ const columns: readonly Column[] = [
     align: "center",
     format: (value: number) => value.toLocaleString("en-US"),
   },
+
+  {
+    id: "userType",
+    label: "User Type",
+    minWidth: 120,
+    align: "center",
+    format: (value: number) => value.toLocaleString("en-US"),
+  },
   {
     id: "actions",
     label: "Actions",
-    minWidth: 170,
+    minWidth: 120,
     align: "center",
     format: (value: number) => value.toLocaleString("en-US"),
   },
@@ -69,6 +74,7 @@ interface Data {
   email: string;
   address: string;
   hospitalName: string;
+  userType: string;
   actions: any;
 }
 
@@ -77,9 +83,10 @@ function createData(
   email: string,
   address: string,
   hospitalName: string,
+  userType: string,
   actions: any
 ): Data {
-  return { name, email, address, hospitalName, actions };
+  return { name, email, address, hospitalName, userType, actions };
 }
 
 export default function Admin() {
@@ -87,6 +94,8 @@ export default function Admin() {
   const [deleteRecord, setDeleteRecord] = useState<string>(null);
   const [editQuantity, setEditQuantity] = useState<any>(null);
   const { data: adminData } = useReadRequestQuery("users");
+  const userTypesToDisplay = ["Nagarpalika Admin", "Redcross Admin", "Hospital Admin"];
+
 
   const [deleteAdmin] = useDeleteAdminMutation();
 
@@ -98,25 +107,26 @@ export default function Admin() {
     setDeleteRecord(null);
   };
 
-  const rows = adminData?.map((item: any) => {
+  const rows = adminData?.filter((item) => userTypesToDisplay.includes(item.userType.userTypeName)).map((item: any) => {
     return createData(
       item.name,
       item.email,
       item.address,
       item.hospital.hospitalName,
-      <div className="flex gap-2 justify-between items-center">
-        <button
-          className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
+      item.userType.userTypeName,
+      <div className="flex w-full items-center justify-evenly">
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer"
           onClick={() => handleEditQuantity(item)}
         >
-          Edit
-        </button>
-        <button
-          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+          <MdEditSquare className="text-xl font-medium text-[#006EB9] hover:text-2xl ease-in-out duration-100" />
+        </div>
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer"
           onClick={() => handleDelete(item.userId)}
         >
-          Delete
-        </button>
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
       </div>
     );
   });
@@ -181,6 +191,7 @@ export default function Admin() {
             <TableBody>
               {rows &&
                 rows
+                  
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: any, index: any) => {
                     return (

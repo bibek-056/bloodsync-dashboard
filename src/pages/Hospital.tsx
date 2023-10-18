@@ -17,6 +17,7 @@ import { IoPersonAdd } from 'react-icons/io5';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DeleteHospital from '../components/Alert/DeleteHospital';
+import {  MdDelete } from "react-icons/md";
 
 interface Column {
   id: 'name' | 'address' | 'contact' | 'actions';
@@ -76,7 +77,7 @@ function createData(
 
 export default function Hospital() {
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const [deleteRecord, setDeleteRecord] = useState<string>(null);
+  const [deleteRecord, setDeleteRecord] = useState<string>("");
   const { data: hospitalData, isLoading } = useReadRequestQuery('hospitals');
 
   const [deleteHospital] = useDeleteHospitalMutation();
@@ -86,7 +87,7 @@ export default function Hospital() {
   };
 
   const handleCancel = () => {
-    setDeleteRecord(null);
+    setDeleteRecord("");
   };
 
   const rows = hospitalData?.map((item: any) => {
@@ -101,12 +102,12 @@ export default function Hospital() {
         >
           <button>Hospital Profile</button>
         </Link>
-        <button
-          className="border w-full h-10 rounded p-2 bg-red-500 text-white font-medium"
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
           onClick={() => handleDelete(item.hospitalId)}
         >
-          Delete
-        </button>
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
       </div>
     );
   });
