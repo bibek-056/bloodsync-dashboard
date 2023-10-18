@@ -206,7 +206,7 @@ export type PresentInventoryData = {
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
-
+  hospitalId: string;
 };
 
 export type PresentHospitalData = {
