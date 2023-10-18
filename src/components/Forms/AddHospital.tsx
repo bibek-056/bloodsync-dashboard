@@ -15,7 +15,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
   const [loading, setLoading] = useState<Boolean>(false);
 
   const form = useForm<Hospital>();
-  const { register, control, handleSubmit } = form;
+  const { register, control, handleSubmit, formState:{errors}, } = form;
 
   const onSubmit = async (data: Hospital) => {
     setLoading(true);
@@ -57,8 +57,17 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalName"
-                {...register("hospitalName")}
+                {...register("hospitalName",
+                 {
+                    required: "Hospital Name is required",
+                    maxLength: {
+                      value: 55,
+                      message: "Name should not exceed 55 characters.",
+                    },
+                  })
+                }
               />
+              {errors.hospitalName && <span className="text-red-500">{errors.hospitalName.message}</span>}
             </div>
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
@@ -67,9 +76,16 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
               <input
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
-                id="hospitalName"
-                {...register("hospitalAddress")}
+                id="hospitalAddress"
+                {...register("hospitalAddress",
+                 {required: "Hospital Name is required",
+                 maxLength: {
+                  value: 55,
+                  message: "Address should not exceed 55 characters.",
+                },
+              })}
               />
+              {errors.hospitalAddress && <span className="text-red-500">{errors.hospitalAddress.message}</span>}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -80,8 +96,10 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="logoUrl"
-                {...register("logoUrl")}
+                {...register("logoUrl",
+                 {required: "Logo Url is required",})}
               />
+              {errors.logoUrl && <span className="text-red-500">{errors.logoUrl.message}</span>}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -92,8 +110,14 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="hospitalDescription"
-                {...register("hospitalDescription")}
+                {...register("hospitalDescription",
+                {required: "Hospital Description is required",
+                 maxLength: {
+                  value: 1000,
+                  message: "Address should not exceed 1000 characters.",
+                },})}
               />
+              {errors.hospitalDescription && <span className="text-red-500">{errors.hospitalDescription.message}</span>}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -104,8 +128,23 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 className="w-full rounded-md h-12 p-4 border"
                 type="text"
                 id="contactInfo"
-                {...register("contactInfo")}
+                {...register("contactInfo", {
+                  required: "Contact Info is required",
+                  maxLength: {
+                    value: 10,
+                    message: "Contact Info should not exceed 10 characters.",
+                  },
+                  minLength: {
+                    value: 9,
+                    message: 'Min length is 9',
+                  },
+                  pattern: {
+                    value: /^\d+$/,
+                    message: "Contact Info should contain only numbers.",
+                  },
+                })}
               />
+              {errors.contactInfo && <span className="text-red-500">{errors.contactInfo.message}</span>}
             </div>
           </div>
           <div className="w-full flex gap-4">
@@ -118,6 +157,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
             </button>
             <button
               className="border w-full h-10 rounded p-2 bg-gray-500 text-white font-medium"
+              
               onClick={handleCloseForm}
             >
               Cancel

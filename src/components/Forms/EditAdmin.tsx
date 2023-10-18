@@ -25,7 +25,11 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
     handleCloseEdit();
   };
   const form = useForm<editData>();
-  const { register, handleSubmit } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const { data: hospitals } = useReadRequestQuery("hospitals");
 
@@ -45,33 +49,87 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
   };
   return (
     <div className="flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
-      <div className="w-2/5 h-screen bg-white flex justify-center items-center">
+      <div className="w-1/3 h-3/4 bg-white flex flex-col justify-between items-center p-10 rounded-md">
         <form
           className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10 overflow-y-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="w-full flex items-center justify-between">
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+              Admin Name
+            </label>
             <input
-              className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
+              className="w-full rounded-md h-12 p-4 border"
+              type="text"
+              id="name"
               defaultValue={editElement.name}
-              {...register("name")}
-            ></input>
+              {...register("name", {
+                required: "Full Name is required",
+                pattern: {
+                  value: /[A-Za-z]{4}/,
+                  message:
+                    "Full Name should contain at least 4 alphabetic characters.",
+                },
+                validate: (value) => {
+                  if (!value.includes(" ")) {
+                    return "Please enter both first name and last name";
+                  }
+                  if (/\d/.test(value)) {
+                    return "First name should not contain numbers.";
+                  }
+                  return true;
+                },
+              })}
+            />
+
+            {errors.name && (
+              <span className="text-red-500">{errors.name.message}</span>
+            )}
           </div>
 
-          <div className="w-full flex items-center justify-between">
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+              User address
+            </label>
             <input
-              className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
+              className="w-full rounded-md h-12 p-4 border"
+              type="text"
+                id="userAddress"
               defaultValue={editElement.address}
-              {...register("address")}
-            ></input>
+              {...register("address", {
+                required: "Full Address is required",
+                pattern: {
+                  value: /[A-Za-z]{4}/,
+                  message:
+                    "Full Address should contain at least 4 alphabetic characters.",
+                },
+              })}
+            />
+            {errors.address && (
+              <span className="text-red-500">{errors.address.message}</span>
+            )}
           </div>
 
-          <div className="w-full flex items-center justify-between">
+          <div className="flex flex-col gap-2">
+          <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                Admin Email
+              </label>
             <input
-              className="text-lg font-medium leading-5 tracking-wide text-[#006EB9] border-b-2 border-[#006EB9] w-2/5 p-1"
+              className="w-full rounded-md h-12 p-4 border"
+              
               defaultValue={editElement.email}
-              {...register("email")}
-            ></input>
+              {...register("email", {
+                required: "This field is required",
+                pattern: {
+                  value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
+                  message:
+                    "Email should contain be in item@gmail.com, item@hotmail.com format",
+                },
+              })}
+            />
+            {errors.email && (
+              <span className="text-red-500">{errors.email.message}</span>
+            )}
           </div>
 
           <div className="flex flex-col gap-2">
@@ -80,7 +138,9 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
             </label>
             <select
               className="w-full rounded-md h-12 px-4 border"
-              {...register("hospitalId")}
+              {...register("hospitalId", {
+                required: "Hospital Name is required",
+              })}
             >
               {hospitals?.map((oneGroup) => (
                 <option
@@ -93,6 +153,11 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
                 </option>
               ))}
             </select>
+            {errors.hospitalId && (
+              <p className=" m-0 w-full items-start text-sm text-red-600">
+                *{errors.hospitalId.message}
+              </p>
+            )}
           </div>
 
           <div className="flex gap-4 w-full">

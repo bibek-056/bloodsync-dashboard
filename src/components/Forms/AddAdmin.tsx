@@ -2,13 +2,11 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
-import { AddAdminDataModel } from "../../models/datamodels";
+import { AddAdminDataModel, CreateAdminProps, Hospitals, UserType} from "../../models/datamodels";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-interface CreateAdminProps {
-  handleOpenForm: () => void;
-}
+
 
 const CreateInventory: React.FC<CreateAdminProps> = (props) => {
   const [addAdmin] = useAddAdminMutation();
@@ -26,9 +24,9 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
     setLoading(true);
     try {
       await addAdmin(data);
-      toast.success("Successfully Created Inventory Item");
+      toast.success("Successfully Created New Admin");
     } catch (er) {
-      toast.error("Failed to create Inventory");
+      toast.error("Failed to create Admin");
     }
     props.handleOpenForm();
   };
@@ -98,11 +96,11 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 type="text"
                 id="userAddress"
                 {...register("address", {
-                  required: "Full Name is required",
+                  required: "Full Address is required",
                   pattern: {
                     value: /[A-Za-z]{4}/,
                     message:
-                      "Full Name should contain at least 4 alphabetic characters.",
+                      "Full Address should contain at least 4 alphabetic characters.",
                   },
                 })}
               />
@@ -120,7 +118,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 type="text"
                 id="AdminEmail"
                 {...register("email", {
-                  required: "Full Name is required",
+                  required: "This field is required",
                   pattern: {
                     value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
                     message:
@@ -172,7 +170,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 })}
               >
                 <option>Select an organization name</option>
-                {hospitals?.map((oneGroup) => (
+                {hospitals?.map((oneGroup: Hospitals) => (
                   <option label={oneGroup.hospitalName}>
                     {oneGroup.hospitalId}
                   </option>
@@ -203,7 +201,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 })}
               >
                 <option>Select UserType</option>
-                {userTypes?.map((oneGroup) => (
+                {userTypes?.map((oneGroup: UserType) => (
                   <option label={oneGroup.userTypeName}>
                     {oneGroup.userTypeId}
                   </option>

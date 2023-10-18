@@ -64,6 +64,16 @@ export type BloodGroup = {
   bloodGroupName: string;
 };
 
+export type Hospitals = {
+  hospitalId: string;
+  hospitalName: string;
+};
+
+export type UserType = {
+  userTypeId: string;
+  userTypeName: string;
+};
+
 export type UserTypes = {
   userTypeId: string;
   userTypeName: string;
@@ -166,9 +176,16 @@ export interface EditInventoryProps {
   handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+export interface EditHospitalProps {
+  editElement: PresentHospitalData;
+  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
 export interface CreateInventoryProps {
   handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+
 
 export type SendEditData = {
   inventoryName: string;
@@ -184,5 +201,20 @@ export type PresentInventoryData = {
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
+};
+
+export type PresentHospitalData = {
+  userId: string;
+  name: string;
+  hospitalId: string;
+  address: string;
+  email: string;
+  
+};
+
+
+
+export interface CreateAdminProps {
+  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
