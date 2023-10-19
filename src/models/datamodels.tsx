@@ -1,4 +1,5 @@
 export type InventoryData = {
+  inventroyId: string;
   inventoryName: string;
   bloodGroupId: string;
   hospitalId: string;
@@ -171,6 +172,13 @@ export interface EditHospitalProps {
   ) => void;
 }
 
+export interface EditHospitalProfileProps {
+  editElement: Hospital;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+}
+
 export interface CreateInventoryProps {
   handleOpenForm: (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -212,6 +220,9 @@ export interface CreateAdminProps {
 }
 export interface EditPatientProps {
   editElement: PresentPatientData;
+  priority: Priority;
+  inventory: Inventory;
+  hospital: Hospital;
   handleCloseEdit: (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
@@ -241,4 +252,19 @@ export type PresentPatientData = {
   priorityId: string;
   dateCreated: string;
   hospitalId: string;
-};
+  priority:Priority;
+  inventory: Inventory;  
+  hospital: Hospital;
+}
+
+export type Priority={
+  dateCreated : Date;
+  priorityId: string;
+  priorityLevelName:string;
+
+}
+export type Inventory = {
+  dateCreated : Date;
+  inventoryId: string;
+  inventoryName: string;
+}

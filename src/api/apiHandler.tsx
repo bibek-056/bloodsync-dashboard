@@ -70,6 +70,15 @@ export const AxiosClient = createApi({
       invalidatesTags: ['Donors'],
     }),
 
+    editHospital: builder.mutation<void, Hospital>({
+      query: (hospital) => ({
+        url: `hospitals/${hospital.hospitalId}`,
+        method: 'PUT',
+        body: hospital,
+      }),
+      invalidatesTags: ['Donors'],
+    }),
+
     editInventory: builder.mutation<void, EditInventoryData>({
       query: (inventory) => ({
         url: `inventorys/${inventory.inventoryId}`,
@@ -144,6 +153,7 @@ export const {
   useAddPatientMutation,
   useEditPatientMutation,
   useAddHospitalMutation,
+  useEditHospitalMutation,
   useDeleteAdminMutation,
   useDeleteHospitalMutation,
   useEditAdminMutation,

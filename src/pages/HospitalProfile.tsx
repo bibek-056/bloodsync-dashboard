@@ -5,6 +5,9 @@ import { MdEditSquare } from "react-icons/md";
 import BloodtypeIcon from "@mui/icons-material/Bloodtype";
 import { FiUsers } from "react-icons/fi";
 import { BsReverseListColumnsReverse } from "react-icons/bs";
+import { useState } from "react";
+import { Hospital } from "../models/datamodels";
+import EditHospital from "../components/Forms/EditHospital";
 
 const HospitalProfile = () => {
   const { hospitalId } = useParams();
@@ -13,7 +16,15 @@ const HospitalProfile = () => {
     `hospitals/${hospitalId}`
   );
 
-  console.log(hospitalProfile);
+  const [editData, setEditData] = useState<Hospital | null>();
+
+  const handleEdit = () => {
+    setEditData(hospitalProfile);
+  };
+
+  const handleCloseEdit = () => {
+    setEditData(null);
+  };
   return (
     <div className="flex flex-col w-100vw border-2 rounded-md p-8 shadow-2xl gap-4">
       <div className="flex justify-between items-center border-0 border-b-2 p-3 shadow-sm border-[#006EB9]">
@@ -32,7 +43,10 @@ const HospitalProfile = () => {
           </div>
         </div>
         <div>
-          <button className="flex items-center justify-center gap-2 border w-64 h-14 rounded p-4 bg-[#006EB9] text-white font-medium">
+          <button
+            className="flex items-center justify-center gap-2 border w-64 h-14 rounded p-4 bg-[#006EB9] text-white font-medium"
+            onClick={handleEdit}
+          >
             <MdEditSquare className="text-lg font-medium text-white hover:text-xl ease-in-out duration-100" />
             <p className="font-medium leading-6 text-lg">
               Edit Hospital Profile
@@ -42,22 +56,18 @@ const HospitalProfile = () => {
       </div>
       <div className="flex justify-between w-full ">
         <div className="w-1/2 p-4 h-full my-auto">
-          {/* <p>{hospitalProfile.hospitalDescription}</p> */}
-          <p className="w-9/10 h-full leading-6 text-base text-justify text-[rgba(44,39,36,0.75)]">
-            CHR is situated in one of the most remote and rural regions of
-            Nepal. It is located in the centre of three districts (Rukum,
-            Jajarkot, Salyan) in the mid-western region of Nepal. The aim of the
-            hospital is to mainly provide quality and affordable medical
-            services to the underprivileged and marginalized communities of
-            people of Rukum and its surrounding districts.
-            <br /> <br />
-            CHR is situated in one of the most remote and rural regions of
-            Nepal. It is located in the centre of three districts (Rukum,
-            Jajarkot, Salyan) in the mid-western region of Nepal. The aim of the
-            hospital is to mainly provide quality and affordable medical
-            services to the underprivileged and marginalized communities of
-            people of Rukum and its surrounding districts.
-          </p>
+          <div className="w-9/10 h-full">
+            {hospitalProfile?.hospitalDescription
+              .split("\n")
+              .map((paragraph:string, index :number) => (
+                <p
+                  key={index}
+                  className="leading-6 text-base text-justify text-[rgba(44,39,36,0.75)]"
+                >
+                  {paragraph} <br/>
+                </p>
+              ))}
+          </div>
         </div>
         <div className="w-1/2 p-4 h-full flex flex-col gap-6">
           <p className="text-xl font-semibold leading-6 p-4 border-b text-[#006EB9] border-[#006EB9]">
@@ -86,23 +96,35 @@ const HospitalProfile = () => {
               <div className="flex flex-col justify-center items-center w-1/3 h-1/3 border-2 rounded-full border-[#006EB9]">
                 <FiUsers className="text-[#006EB9] text-lg" />
               </div>
-              <p className="text-center text-[rgba(44,39,36,0.75)]">Total Available Donors: <br/> 123</p>
+              <p className="text-center text-[rgba(44,39,36,0.75)]">
+                Total Available Donors: <br /> 123
+              </p>
             </div>
             <div className="w-1/3 h-40 flex flex-col justify-center items-center border shadow-md rounded-lg gap-4 border-[#006EB9]">
               <div className="flex justify-center items-center w-1/3 h-1/3 border-2 rounded-full border-[#006EB9]">
                 <BloodtypeIcon className="text-[#006EB9] text-lg" />
               </div>
-              <p className="text-center text-[rgba(44,39,36,0.75)]">Available Inventory Units: <br/> 123</p>
+              <p className="text-center text-[rgba(44,39,36,0.75)]">
+                Available Inventory Units: <br /> 123
+              </p>
             </div>
             <div className="w-1/3 h-40 flex flex-col justify-center items-center border shadow-md rounded-lg gap-4 border-[#006EB9]">
               <div className="flex justify-center items-center w-1/3 h-1/3 border-2 rounded-full border-[#006EB9]">
                 <BsReverseListColumnsReverse className="text-[#006EB9] text-lg" />
               </div>
-              <p className="text-center text-[rgba(44,39,36,0.75)]">Registered requests: <br/> 123</p>
+              <p className="text-center text-[rgba(44,39,36,0.75)]">
+                Registered requests: <br /> 123
+              </p>
             </div>
           </div>
         </div>
       </div>
+      {editData && (
+        <EditHospital
+          editElement={editData}
+          handleCloseEdit={handleCloseEdit}
+        />
+      )}
     </div>
   );
 };
