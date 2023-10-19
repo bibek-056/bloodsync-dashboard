@@ -171,6 +171,13 @@ export interface EditHospitalProps {
   ) => void;
 }
 
+export interface EditHospitalProfileProps {
+  editElement: Hospital;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+}
+
 export interface CreateInventoryProps {
   handleOpenForm: (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
