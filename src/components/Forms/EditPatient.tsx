@@ -4,7 +4,7 @@ import {
   useEditPatientMutation,
   useReadRequestQuery,
 } from '../../api/apiHandler';
-import { EditPatientProps, Priority, SendEditPatientData } from "../../models/datamodels";
+import { EditPatientProps, Hospital, Inventory, Priority, SendEditPatientData } from "../../models/datamodels";
 
 type EditData = {
   patientId: string;
@@ -75,7 +75,7 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
             {...register('priorityId', { required: true })}
             defaultValue={editElement.priority.priorityId}
           >
-            {priorities?.map((item) => (
+            {priorities?.map((item: Priority) => (
               <option
                 key={item.priorityId}
                 label={item.priorityLevelName}
@@ -97,7 +97,7 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
             {...register('inventoryId', { required: true })}
             defaultValue={editElement.inventory.inventoryId}
           >
-            {inventoryItems?.map((item) => (
+            {inventoryItems?.map((item: Inventory) => (
               <option
                 key={item.inventoryId}
                 label={item.inventoryName}
@@ -120,7 +120,7 @@ const EditPatientwaitlist: React.FC<EditPatientProps> = ({
             {...register('hospitalId', { required: true })}
             defaultValue={editElement.hospital.hospitalId}
           >
-            {hospital?.map((item) => (
+            {hospital?.map((item: Hospital) => (
               <option
                 key={item.hospitalId}
                 label={item.hospitalName}
