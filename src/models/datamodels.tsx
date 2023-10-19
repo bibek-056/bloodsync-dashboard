@@ -204,7 +204,7 @@ export type PresentInventoryData = {
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
-<<<<<<< HEAD
+
 };
 
 export type PresentHospitalData = {
@@ -220,7 +220,7 @@ export type PresentHospitalData = {
 
 export interface CreateAdminProps {
   handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-=======
+
   hospitalId: string
 }
 export interface EditPatientProps {
@@ -249,6 +249,6 @@ export type PresentPatientData = {
   priorityId: string;
   dateCreated: string;
   hospitalId: string;
->>>>>>> 4fe2e5ac834f747769ffdde3b49af1252382f3b8
+
 }
 

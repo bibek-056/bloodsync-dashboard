@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { DevTool } from "@hookform/devtools";
 import { useAddHospitalMutation } from "../../api/apiHandler";
 import { Hospital } from "../../models/datamodels";
 import { toast } from "react-toastify";
@@ -10,12 +9,12 @@ interface CreateHospitalProps {
   handleOpenForm: () => void;
 }
 
-const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
+const AddHospital: React.FC<CreateHospitalProps> = (props) => {
   const [addHospital] = useAddHospitalMutation();
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<Hospital>();
-  const { register, control, handleSubmit, formState:{errors}, } = form;
+  const { register, handleSubmit, formState:{errors}, } = form;
 
   const onSubmit = async (data: Hospital) => {
     setLoading(true);
@@ -33,11 +32,11 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
   };
 
   return (
-    <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
-      <div className="w-2/5 h-screen bg-white flex justify-center items-center">
+    <div className="flex justify-end fixed top-0 left-0 w-[100vw] top-[64px] h-[100vh] bg-[#0000007A] z-50 mx-auto">
+      <div className=" w-2/5 h-screen bg-white flex justify-center items-center top-0">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10"
+          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10 overflow-y-auto"
         >
           <div className="w-full flex items-center justify-between">
             <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
@@ -48,13 +47,13 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
               onClick={handleCloseForm}
             />
           </div>
-          <div className="w-full flex flex-col gap-10">
+          <div className="w-full flex flex-col gap-2 top-0">
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
                 Name
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="hospitalName"
                 {...register("hospitalName",
@@ -74,7 +73,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 Address
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="hospitalAddress"
                 {...register("hospitalAddress",
@@ -93,7 +92,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 Logo Url
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="logoUrl"
                 {...register("logoUrl",
@@ -107,7 +106,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 Hospital Description
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="hospitalDescription"
                 {...register("hospitalDescription",
@@ -125,7 +124,7 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
                 Contact Info
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="contactInfo"
                 {...register("contactInfo", {
@@ -164,10 +163,10 @@ const CreateHospital: React.FC<CreateHospitalProps> = (props) => {
             </button>
           </div>
         </form>
-        <DevTool control={control} />
+        
       </div>
     </div>
   );
 };
 
-export default CreateHospital;
+export default AddHospital;

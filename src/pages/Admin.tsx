@@ -47,7 +47,7 @@ const columns: readonly Column[] = [
   },
   {
     id: "hospitalName",
-    label: "Hospital Name",
+    label: "Organization Name",
     minWidth: 170,
     align: "center",
     format: (value: number) => value.toLocaleString("en-US"),
@@ -91,7 +91,7 @@ function createData(
 
 export default function Admin() {
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const [deleteRecord, setDeleteRecord] = useState<string>(null);
+  const [deleteRecord, setDeleteRecord] = useState<string>("");
   const [editQuantity, setEditQuantity] = useState<any>(null);
   const { data: adminData } = useReadRequestQuery("users");
   const userTypesToDisplay = ["Nagarpalika Admin", "Redcross Admin", "Hospital Admin"];
@@ -104,7 +104,7 @@ export default function Admin() {
   };
 
   const handleCancel = () => {
-    setDeleteRecord(null);
+    setDeleteRecord("");
   };
 
   const rows = adminData?.filter((item) => userTypesToDisplay.includes(item.userType.userTypeName)).map((item: any) => {

@@ -1,6 +1,5 @@
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { useReadRequestQuery, useAddAdminMutation } from "../../api/apiHandler";
 import { AddAdminDataModel, CreateAdminProps, Hospitals, UserType} from "../../models/datamodels";
 import { useState } from "react";
@@ -8,14 +7,13 @@ import { toast } from "react-toastify";
 
 
 
-const CreateInventory: React.FC<CreateAdminProps> = (props) => {
+const AddAdmin: React.FC<CreateAdminProps> = (props) => {
   const [addAdmin] = useAddAdminMutation();
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const form = useForm<AddAdminDataModel>();
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = form;
@@ -40,14 +38,14 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
   console.log(errors);
 
   return (
-    <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
-      <div className="w-2/5 h-screen bg-white flex justify-center items-center">
+    <div className="flex justify-end fixed top-0 left-0 w-[100vw] top-[64px] h-[100vh] bg-[#0000007A] z-50 mx-auto">
+      <div className="w-2/5 h-screen bg-white flex justify-center items-center  top-0">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10 overflow-y-auto"
+          className="w-4/5 h-5/6 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-5  top-0 overflow-y-auto "
         >
           <div className="w-full flex items-center justify-between">
-            <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
+            <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9] gap-2">
               Create a new Admin
             </p>
             <AiOutlineCloseCircle
@@ -55,13 +53,13 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
               onClick={handelCloseForm}
             />
           </div>
-          <div className=" w-full flex flex-col gap-10">
+          <div className=" w-full flex flex-col gap-0 top-0">
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
                 Admin Name
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="name"
                 {...register("name", {
@@ -92,7 +90,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 User address
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="userAddress"
                 {...register("address", {
@@ -114,7 +112,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 Admin Email
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="AdminEmail"
                 {...register("email", {
@@ -136,7 +134,7 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
                 password
               </label>
               <input
-                className="w-full rounded-md h-12 p-4 border"
+                className="w-full rounded-md h-12 p-4 border border-slate-800"
                 type="text"
                 id="password"
                 {...register("password", {
@@ -233,10 +231,9 @@ const CreateInventory: React.FC<CreateAdminProps> = (props) => {
             </button>
           </div>
         </form>
-        <DevTool control={control} />
       </div>
     </div>
   );
 };
 
-export default CreateInventory;
+export default AddAdmin;

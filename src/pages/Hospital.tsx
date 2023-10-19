@@ -30,21 +30,21 @@ interface Column {
 const columns: readonly Column[] = [
   {
     id: 'name',
-    label: 'Hospital Name',
+    label: 'Organization Name',
     minWidth: 170,
     align: 'center',
     format: (value: number) => value.toLocaleString('en-US'),
   },
   {
     id: 'address',
-    label: 'Hospital Address',
+    label: ' Address',
     minWidth: 50,
     align: 'center',
     format: (value: number) => value.toLocaleString('en-US'),
   },
   {
     id: 'contact',
-    label: 'Hospital Contact',
+    label: ' Contact',
     minWidth: 120,
     align: 'center',
     format: (value: number) => value.toLocaleString('en-US'),
@@ -100,7 +100,7 @@ export default function Hospital() {
           to={`/hospitalProfile/${item.hospitalId}`}
           className="border w-full h-10 rounded p-2 bg-[#006EB9] text-white font-medium"
         >
-          <button>Hospital Profile</button>
+          <button>Profile</button>
         </Link>
         <div
           className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
@@ -143,20 +143,22 @@ export default function Hospital() {
           className="flex items-center justify-center gap-2 border w-64 h-12 rounded p-4 bg-purple-500 text-white font-medium m-5"
           onClick={handleOpenForm}
         >
-          <IoPersonAdd className="text-lg" /> Add New Hospital
+          <IoPersonAdd className="text-lg" /> Add New Organization
         </button>
       </div>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: '75vh' }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
+              <TableRow >
                 {columns.map((column) => (
                   <TableCell
+                    className="text-xl"
                     key={column.id}
                     align={column.align}
                     style={{
                       minWidth: column.minWidth,
+                      fontSize: '1.25rem',
                     }}
                   >
                     {column.label}

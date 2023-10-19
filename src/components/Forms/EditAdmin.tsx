@@ -5,6 +5,7 @@ import {
   useReadRequestQuery,
 } from "../../api/apiHandler";
 import { CircularProgress } from "@mui/material";
+import { EditHospitalProps, Hospitals } from "../../models/datamodels";
 
 type editData = {
   userId: string;
@@ -15,7 +16,7 @@ type editData = {
   password: string;
 };
 
-const EditHospital: React.FC<CreateHospitalProps> = ({
+const EditHospital: React.FC<EditHospitalProps> = ({
   editElement,
   handleCloseEdit,
 }) => {
@@ -49,12 +50,12 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
   };
   return (
     <div className="flex justify-center items-center fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
-      <div className="w-1/3 h-3/4 bg-white flex flex-col justify-between items-center p-10 rounded-md">
+      <div className="w-1/3 h-3/4 bg-white flex flex-col justify-between items-center p-10 top-0 rounded-md">
         <form
-          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-10 overflow-y-auto"
+          className="w-9/10 h-9/10 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-2 top-0 overflow-y-auto"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col  gap-0 top-0 ">
             <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
               Admin Name
             </label>
@@ -94,7 +95,7 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
             <input
               className="w-full rounded-md h-12 p-4 border"
               type="text"
-                id="userAddress"
+              id="userAddress"
               defaultValue={editElement.address}
               {...register("address", {
                 required: "Full Address is required",
@@ -111,12 +112,11 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
           </div>
 
           <div className="flex flex-col gap-2">
-          <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
-                Admin Email
-              </label>
+            <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+              Admin Email
+            </label>
             <input
               className="w-full rounded-md h-12 p-4 border"
-              
               defaultValue={editElement.email}
               {...register("email", {
                 required: "This field is required",
@@ -134,17 +134,18 @@ const EditHospital: React.FC<CreateHospitalProps> = ({
 
           <div className="flex flex-col gap-2">
             <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
-              Hospital Name
+              Organization Name
             </label>
             <select
               className="w-full rounded-md h-12 px-4 border"
               {...register("hospitalId", {
-                required: "Hospital Name is required",
+                required: "Organization Name is required",
               })}
             >
-              {hospitals?.map((oneGroup) => (
+              <option label="Select Organization"></option>
+              {hospitals?.map((oneGroup: Hospitals) => (
                 <option
-                  key={oneGroup.hopspitalId}
+                  key={oneGroup.hospitalId}
                   label={oneGroup.hospitalName}
                   defaultValue={editElement.hospitalId}
                   selected={oneGroup.hospitalId === editElement.hospitalId}
