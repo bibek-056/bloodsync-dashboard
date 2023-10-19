@@ -14,6 +14,8 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router';
 import Loading from '../Loading/Loading';
 import RequiredField from '../Alert/RequiredField';
+import { Link } from 'react-router-dom';
+import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 
 export default function EditDonor() {
   const form = useForm<EditDonors>();
@@ -112,6 +114,13 @@ export default function EditDonor() {
   } else {
     return (
       <>
+        <Link
+          to="/donor"
+          className="flex hover:underline cursor-pointer items-center align-middle gap-2 w-auto"
+        >
+          <MdOutlineKeyboardBackspace className="hover:underline" />
+          <p>Go back</p>
+        </Link>
         <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
           <h1 className="text-3xl text-[#006EB9] text-center mt-6 font-bold">
             Edit a donor
@@ -243,7 +252,6 @@ export default function EditDonor() {
                 )}
               </div>
             </div>
-
             {/* BloodGroup */}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Bloodgroup

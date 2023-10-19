@@ -15,6 +15,8 @@ import {
   getDistrictsByProvinceName,
   getMunicipalitiesByDistrictName,
 } from '../../data/province';
+import { MdOutlineKeyboardBackspace } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 export default function CreateDonor() {
   const form = useForm<DonorData>();
@@ -103,6 +105,13 @@ export default function CreateDonor() {
 
   return (
     <>
+      <Link
+        to="/donor"
+        className="flex hover:underline cursor-pointer items-center align-middle gap-2 w-auto"
+      >
+        <MdOutlineKeyboardBackspace className="hover:underline" />
+        <p>Go back</p>
+      </Link>
       <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
         <h1 className="text-3xl text-[#006EB9] text-center mt-6 font-bold">
           Create a Donor
