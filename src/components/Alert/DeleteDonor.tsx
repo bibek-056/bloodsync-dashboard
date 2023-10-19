@@ -27,8 +27,7 @@ function DeleteDonor({
   async function handleDelete(slug: string, id: string) {
     await deleteDonor(`${slug}/${id}`)
       .unwrap()
-      .then((success) => {
-        console.log(success);
+      .then(() => {
         toast.success('Sucessfully Deleted');
       })
       .catch((error) => {
