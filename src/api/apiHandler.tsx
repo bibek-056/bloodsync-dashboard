@@ -49,7 +49,7 @@ export const AxiosClient = createApi({
           method: 'DELETE',
         };
       },
-      invalidatesTags: ['Hospitals'],
+      invalidatesTags: ['Donors'],
     }),
 
     addInventory: builder.mutation<void, InventoryData>({
