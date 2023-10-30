@@ -161,7 +161,7 @@ const AddAdmin: React.FC<CreateAdminProps> = (props) => {
               </label>
               <select
                 className="w-full rounded-md h-12 px-4 border"
-                id="hospitalId"
+                
                 {...register("hospitalId", {
                   required: "Hospital Name is required",
                  
@@ -169,8 +169,11 @@ const AddAdmin: React.FC<CreateAdminProps> = (props) => {
               >
                 <option>Select an organization name</option>
                 {hospitals?.map((oneGroup: Hospitals) => (
-                  <option label={oneGroup.hospitalName}>
-                    {oneGroup.hospitalId}
+                  <option 
+                  label={oneGroup.hospitalName}
+                  key= {oneGroup.hospitalId}
+                  
+                  >
                   </option>
                 ))}
               </select>
