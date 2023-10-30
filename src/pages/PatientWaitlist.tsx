@@ -9,23 +9,26 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { IoPersonAdd } from 'react-icons/io5';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import { useDeleteRequestMutation, useReadRequestQuery } from "../api/apiHandler";
-import CreatePatient from "../components/Forms/AddPatient";
-import DeleteAlert from "../components/Alert/DeleteAlert";
+import {
+  useDeleteRequestMutation,
+  useReadRequestQuery,
+} from '../api/apiHandler';
+import CreatePatient from '../components/Forms/AddPatient';
+import DeleteAlert from '../components/Alert/DeleteAlert';
 import EditPatientwaitlist from '../components/Forms/EditPatient';
-
+import moment from 'moment';
+import { MdEditSquare, MdDelete } from 'react-icons/md';
 
 interface Column {
   id:
-  | 'sno'
-  | 'patientName'
-  | 'RequiredAmount'
-  | 'inventoryItem'
-  | 'dateCreated'
-  | 'priority'
-  | 'actions';
+    | 'sno'
+    | 'patientName'
+    | 'inventoryItem'
+    | 'priority'
+    | 'hospital'
+    | 'duedate'
+    | 'dateCreated'
+    | 'actions';
   label: string;
   minWidth?: number;
   align?: 'center';
@@ -39,15 +42,26 @@ interface CreateInventoryProps {
 const columns: readonly Column[] = [
   { id: 'sno', label: 'S.No', minWidth: 50, align: 'center' },
   { id: 'patientName', label: 'Patient Name', minWidth: 170, align: 'center' },
-  { id: 'RequiredAmount', label: 'RequiredAmount', minWidth: 150, align: 'center' },
   {
     id: 'inventoryItem',
-    label: 'Inventory Item',
+    label: 'Inventory Name',
+    minWidth: 100,
+    align: 'center',
+  },
+  { id: 'priority', label: 'Case Types', minWidth: 100, align: 'center' },
+  {
+    id: 'hospital',
+    label: 'Hospital Name',
+    minWidth: 100,
+    align: 'center',
+  },
+  {
+    id: 'duedate',
+    label: 'Due Date',
     minWidth: 100,
     align: 'center',
   },
   { id: 'dateCreated', label: 'Date Created', minWidth: 150, align: 'center' },
-  { id: 'priority', label: 'Priority', minWidth: 100, align: 'center' },
   {
     id: 'actions',
     label: 'Actions',
@@ -60,82 +74,90 @@ const columns: readonly Column[] = [
 interface Data {
   sno: number;
   patientName: string;
-  RequiredAmount: string;
   inventoryItem: string;
-  dateCreated: string;
   priority: string;
+  hospital: string;
+  duedate: Date;
+  dateCreated: string;
   actions: React.ReactNode;
 }
 
 function createData(
   sno: number,
   patientName: string,
-  RequiredAmount: string,
   inventoryItem: string,
-  dateCreated: string,
   priority: string,
+  hospital: string,
+  duedate: Date,
+  dateCreated: string,
   actions: any
 ): Data {
   return {
     sno,
     patientName,
-    RequiredAmount,
     inventoryItem,
-    dateCreated,
     priority,
+    hospital,
+    duedate,
+    dateCreated,
     actions,
   };
 }
 
 export default function PatientDataTable() {
-
   const [createAddForm, setCreateAddForm] = useState<boolean>(false);
   const [editQuantity, setEditQuantity] = useState<any>(null);
-  const [deleteData, setDeleteData] = useState<string>("");
-
+  const [deleteData, setDeleteData] = useState<string>('');
 
   const { data } = useReadRequestQuery('patientwaitlists');
-  const [deletePatientwaitlist] = useDeleteRequestMutation();
+  console.log(data);
+  const [] = useDeleteRequestMutation();
 
-  const handleDelete = async(id: string) => {
+  const handleDelete = async (id: string) => {
     setDeleteData(id);
-  }
+  };
 
   const handleCancel = () => {
-    setDeleteData(null);
-  }
+    setDeleteData(' ');
+  };
 
   let snoCounter = 1;
+
   const rows = data?.map((item: any) => {
     const sno = snoCounter++; // Increment the counter for each row
     return createData(
       sno,
       item.patientName,
-      item.quantity,
       item.inventory.inventoryName,
-      item.dateModified ? item.dateModified : item.dateCreated,
       item.priority.priorityLevelName,
-         <div className="flex justify-center gap-4 items-center">
-      <BorderColorIcon
-        className="cursor-pointer text-[#006EB9] m-0 p-0"
-        onClick={() => handleEditQuantity(item)}
-      />
-      <DeleteIcon
-        className="cursor-pointer text-red-600 m-0 p-0"
-        onClick={() => handleDelete(item.patientId)}
-      />
-    </div>
+      item.hospital.hospitalName,
+      item.dueDate,
+      item.dateModified
+        ? moment(item.dateModified).format('L')
+        : moment(item.dateCreated).format('L'),
+      <div className="flex justify-center gap-4 items-center">
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer"
+          onClick={() => handleEditQuantity(item)}
+        >
+          <MdEditSquare className="text-xl font-medium text-[#006EB9] hover:text-2xl ease-in-out duration-100" />
+        </div>
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
+          onClick={() => handleDelete(item.patientId)}
+        >
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
+      </div>
     );
   });
-
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
-  };;
+  };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -155,7 +177,6 @@ export default function PatientDataTable() {
   const handleEditQuantity = (item: any) => {
     setEditQuantity(item);
   };
-
 
   return (
     <>
@@ -211,6 +232,9 @@ export default function PatientDataTable() {
                             <TableCell key={column.id} align={column.align}>
                               {column.format && typeof value === 'number'
                                 ? column.format(value)
+                                : typeof value === 'object' &&
+                                  value instanceof Date
+                                ? value.toLocaleString()
                                 : value}
                             </TableCell>
                           );
@@ -239,11 +263,8 @@ export default function PatientDataTable() {
         />
       )}
       {deleteData && (
-        <DeleteAlert deleteRecord ={ deleteData } handleCancel={handleCancel} />
+        <DeleteAlert deleteRecord={deleteData} handleCancel={handleCancel} />
       )}
-      
-      
     </>
   );
 }
-

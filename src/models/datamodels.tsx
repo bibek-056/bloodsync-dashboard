@@ -1,7 +1,8 @@
 export type InventoryData = {
+  inventroyId: string;
   inventoryName: string;
   bloodGroupId: string;
-  hospitalId: string
+  hospitalId: string;
   quantity: number;
 };
 
@@ -14,22 +15,23 @@ export type EditInventoryData = {
 };
 export type PatientData = {
   patientName: string;
-  quantity: number;
+  dueDate: Date;
   inventoryId: string;
   priorityId: string;
+  hospitalId: string;
 };
 export type EditPatientwaitlist = {
   patientId: string;
   patientName: string;
-  quantity: string;
+  dueDate: Date;
   priorityId: string;
   inventoryId: string;
+  hospitalId: string;
 };
 
 export type DonorData = {
   name: string;
   email: string;
-  password: string;
   address: string;
   userTypeId: string;
   hospitalId: string;
@@ -41,6 +43,7 @@ export type DonorData = {
   wardNo: number;
   phoneNumber: number;
   emergencyContact: number;
+  registrationId: number;
 };
 
 export type EditDonors = {
@@ -58,7 +61,7 @@ export type EditDonors = {
   wardNo: number;
   phoneNumber: number;
   emergencyContact: number;
-  password: string;
+  registrationId: number;
 };
 
 export type BloodGroup = {
@@ -109,7 +112,6 @@ export type EditAdminDataModel = {
   hospitalId: string;
   address: string;
   email: string;
-  
 };
 
 export type User = {
@@ -122,7 +124,6 @@ export type User = {
   userTypeId: string;
   // userType: UserTypes;
 };
-
 
 export type Donors = {
   index: number;
@@ -137,26 +138,9 @@ export type Donors = {
   emergencyContact: number;
   dateCreated: Date;
   hospital: Hospital;
+  registrationId: number;
   user: User;
   bloodGroup: BloodGroup;
-};
-
-export type DonorDatata = {
-  index: number;
-  name: string;
-  hospitalAffiliated: string;
-  donorId: string;
-  lastDonated: string;
-  district: string;
-  municipality: string;
-  wardNo: number;
-  phoneNumber: number;
-  emergencyContact: number;
-  dateCreated: Date;
-  hospital: Hospital;
-  user: User;
-  bloodGroup: BloodGroup;
-  actions: JSX.Element;
 };
 
 export type DonorTable = {
@@ -169,25 +153,37 @@ export type DonorTable = {
   municipality: string;
   wardNo: number;
   hospitalAffiliated: string;
+  registrationId: number;
   emergencyContact: number;
   actions: JSX.Element;
 };
 
 export interface EditInventoryProps {
   editElement: PresentInventoryData;
-  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
 export interface EditHospitalProps {
   editElement: PresentHospitalData;
-  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+}
+
+export interface EditHospitalProfileProps {
+  editElement: Hospital;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
 export interface CreateInventoryProps {
-  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleOpenForm: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
-
-
 
 export type SendEditData = {
   inventoryName: string;
@@ -204,7 +200,11 @@ export type PresentInventoryData = {
   bloodGroupId: string;
   dateModified: string;
   dateCreated: string;
+<<<<<<< HEAD
 
+=======
+  hospitalId: string;
+>>>>>>> ef566e37d0391ed19a9a855724f592ee8d128f1c
 };
 
 export type PresentHospitalData = {
@@ -213,29 +213,41 @@ export type PresentHospitalData = {
   hospitalId: string;
   address: string;
   email: string;
-  
 };
 
-
-
 export interface CreateAdminProps {
+<<<<<<< HEAD
   handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 
   hospitalId: string
+=======
+  handleOpenForm: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+
+  hospitalId: string;
+>>>>>>> ef566e37d0391ed19a9a855724f592ee8d128f1c
 }
 export interface EditPatientProps {
   editElement: PresentPatientData;
-  handleCloseEdit: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  priority: Priority;
+  inventory: Inventory;
+  hospital: Hospital;
+  handleCloseEdit: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
 export interface CreatePatientProps {
-  handleOpenForm: (event?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleOpenForm: (
+    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }
 
 export type SendEditPatientData = {
   patientId: string;
+  dueDate: Date;
   patientName: string;
-  quantity: number;
   inventoryId: string;
   priorityId: string;
   hospitalId: string;
@@ -244,11 +256,29 @@ export type SendEditPatientData = {
 export type PresentPatientData = {
   patientId: string;
   patientName: string;
+  dueDate: Date;
   quantity: string;
   inventoryId: string;
   priorityId: string;
   dateCreated: string;
   hospitalId: string;
+<<<<<<< HEAD
 
+=======
+  priority:Priority;
+  inventory: Inventory;  
+  hospital: Hospital;
+>>>>>>> ef566e37d0391ed19a9a855724f592ee8d128f1c
 }
 
+export type Priority={
+  dateCreated : Date;
+  priorityId: string;
+  priorityLevelName:string;
+
+}
+export type Inventory = {
+  dateCreated : Date;
+  inventoryId: string;
+  inventoryName: string;
+}

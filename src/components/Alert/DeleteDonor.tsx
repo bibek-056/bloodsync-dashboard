@@ -27,9 +27,8 @@ function DeleteDonor({
   async function handleDelete(slug: string, id: string) {
     await deleteDonor(`${slug}/${id}`)
       .unwrap()
-      .then((success) => {
-        console.log(success);
-        toast.success('Sucessfully Deleted');
+      .then(() => {
+        toast.success('Sucessfully Deleted Donor');
       })
       .catch((error) => {
         toast.error(`Failed to delete ${error} `);
@@ -42,10 +41,11 @@ function DeleteDonor({
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Delete Record</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Delete this donor</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Are you sure you want to delete this record?
+          Are you sure you want to delete this donor? It won't be retrieved once
+          deleted.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

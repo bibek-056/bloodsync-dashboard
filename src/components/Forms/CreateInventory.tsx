@@ -5,7 +5,7 @@ import {
   useReadRequestQuery,
   useAddInventoryMutation,
 } from "../../api/apiHandler";
-import { BloodGroup, InventoryData, CreateInventoryProps } from "../../models/datamodels";
+import { BloodGroup, InventoryData, CreateInventoryProps, Hospital } from "../../models/datamodels";
 import { toast } from "react-toastify";
 
 const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
@@ -35,24 +35,25 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
   };
 
   const { data: bloodGroups } = useReadRequestQuery("bloodgroups");
+  const { data: hospitals } = useReadRequestQuery("hospitals");
 
   return (
     <div className="flex justify-end fixed top-0 left-0 w-[100vw] h-[100vh] bg-[#0000007A] z-50">
       <div className="w-2/5 h-screen bg-white flex justify-center items-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-4/5 h-4/5 margin-auto flex flex-col justify-around items-start rounded-md p-10 gap-8"
+          className="w-4/5 h-4/5 margin-auto flex flex-col justify-start items-start rounded-md p-10 gap-10"
         >
-          <div className="w-full flex items-center justify-between">
+          <div className="w-full flex items-center justify-between border-b-2 border-[#006EB9]">
             <p className="text-xl font-semibold leading-10 tracking-wide text-[#006EB9]">
               Create a new Inventory Item
             </p>
             <AiOutlineCloseCircle
-              className="text-[#006EB9] text-xl cursor-pointer"
+              className="text-[#006EB9] text-2xl cursor-pointer"
               onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handelCloseForm(e)}
             />
           </div>
-          <div className=" w-full flex flex-col gap-10">
+          <div className=" w-full flex flex-col gap-2">
             <div className="flex flex-col gap-2">
               <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
                 Inventory Name
@@ -96,6 +97,31 @@ const CreateInventory: React.FC<CreateInventoryProps> = (props) => {
                   className=" m-0 w-full items-start text-sm text-red-600"
                 >
                   *{errors.bloodGroupId.message}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="font-semibold leading-6 text-lg tracking-normal text-[#006EB9]">
+                Hospital
+              </label>
+              <select
+                className="w-full rounded-md h-12 px-4 border"
+                {...register("hospitalId", {
+                  required: "Hospital is required",
+                })}
+              >
+                <option label="Select a hospital"></option>
+                {hospitals?.map((oneHospital: Hospital) => (
+                  <option label={oneHospital.hospitalName}>
+                    {oneHospital.hospitalId}
+                  </option>
+                ))}
+              </select>
+              {errors.hospitalId && (
+                <p
+                  className=" m-0 w-full items-start text-sm text-red-600"
+                >
+                  *{errors.hospitalId.message}
                 </p>
               )}
             </div>

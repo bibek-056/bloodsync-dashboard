@@ -35,6 +35,7 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
 
   const { data: priorities } = useReadRequestQuery("Priority");
   const { data: inventoryItems } = useReadRequestQuery("inventorys");
+  const { data: hospital } = useReadRequestQuery("Hospitals");
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-[#0000007A] z-50">
@@ -77,65 +78,87 @@ const CreatePatient: React.FC<CreatePatientProps> = (props) => {
               />
               {errors.patientName && <span className="text-red-500">{errors.patientName.message}</span>}
 
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-lg text-[#006EB9]">
-                Required amount of Blood
-              </label>
-              <input
-                className={`w-full rounded-md h-12 p-3 border ${errors.quantity ? 'border-red-500' : ''}`}
-                type="text"
-                id="quantity"
-                {...register("quantity", { required: "Required amount of Blood is required" })}
-              />
-              {errors.quantity && <span className="text-red-500">{errors.quantity.message}</span>}
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="text-lg text-[#006EB9]">
-                Priority
-              </label>
-              <select
-                className={`w-full rounded-md h-12 p-3 border ${errors.priorityId ? 'border-red-500' : ''}`}
-                id="priority"
-                {...register("priorityId", { required: "Priority is required" })}
-              >
-                <option value="">Select a priority</option>
-                {priorities?.map((priority) => (
-                  <option value={priority.priorityId} key={priority.priorityId}>
-                    {priority.priorityLevelName}
-                  </option>
-                ))}
-              </select>
-              {errors.priorityId && <span className="text-red-500">{errors.priorityId.message}</span>}
-            </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-lg text-[#006EB9]">
+                  Due Date
+                </label>
+                <input
+                  className={`w-full rounded-md h-12 p-3 border ${errors.dueDate ? 'border-red-500' : ''}`}
+                  type="Date"
+                  id="quantity"
+                  {...register("dueDate", { required: "Date is required" })}
+                />
+                {errors.dueDate && <span className="text-red-500">{errors.dueDate.message}</span>}
+              </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-lg text-[#006EB9]">
-                Inventory Item
-              </label>
-              <select
-                className={`w-full rounded-md h-12 p-3 border ${errors.inventoryId ? 'border-red-500' : ''}`}
-                id="inventoryItem"
-                {...register("inventoryId", { required: "Inventory Item is required" })}
-              >
-                <option value="">Select an inventory item</option>
-                {inventoryItems?.map((item) => (
-                  <option value={item.inventoryId} key={item.inventoryId}>
-                    {item.inventoryName}
-                  </option>
-                ))}
-              </select>
-              {errors.inventoryId && <span className="text-red-500">{errors.inventoryId.message}</span>}
+
+              <div className="flex flex-col gap-2">
+                <label className="text-lg text-[#006EB9]">
+                  Priority
+                </label>
+                <select
+                  className={`w-full rounded-md h-12 p-3 border ${errors.priorityId ? 'border-red-500' : ''}`}
+                  id="priority"
+                  {...register("priorityId", { required: "Priority is required" })}
+                >
+                  <option value="">Select a priority</option>
+                  {priorities?.map((priority: any) => (
+                    <option value={priority.priorityId} key={priority.priorityId}>
+                      {priority.priorityLevelName}
+                    </option>
+                  ))}
+                </select>
+                {errors.priorityId && <span className="text-red-500">{errors.priorityId.message}</span>}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-lg text-[#006EB9]">
+                  Inventory Item
+                </label>
+                <select
+                  className={`w-full rounded-md h-12 p-3 border ${errors.inventoryId ? 'border-red-500' : ''}`}
+                  id="inventoryItem"
+                  {...register("inventoryId", { required: "Inventory Item is required" })}
+                >
+                  <option value="">Select an inventory item</option>
+                  {inventoryItems?.map((item :any) => (
+                    <option value={item.inventoryId} key={item.inventoryId}>
+                      {item.inventoryName}
+                    </option>
+                  ))}
+                </select>
+                {errors.inventoryId && <span className="text-red-500">{errors.inventoryId.message}</span>}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-lg text-[#006EB9]">
+                  Hospital Name
+                </label>
+                <select
+                  className={`w-full rounded-md h-12 p-3 border ${errors.hospitalId ? 'border-red-500' : ''}`}
+                  id="hospitalId"
+                  {...register("hospitalId", { required: "Hospital Name is required" })}
+                >
+                  <option value="">Select Hospital</option>
+                  {hospital?.map((item :any) => (
+                    <option value={item.hospitalId} key={item.hospitalId}>
+                      {item.hospitalName}
+                    </option>
+                  ))}
+                </select>
+                {errors.hospitalId && <span className="text-red-500">{errors.hospitalId.message}</span>}
+              </div>
+
             </div>
-          </div>
-          <div className="w-full flex justify-end gap-4">
-            <AddButton />
-            <button
-              className="border w-32 h-12 rounded p-2 bg-gray-500 text-white font-medium"
-              onClick={handleCloseForm}
-            >
-              Cancel
-            </button>
+            <div className="w-full flex justify-end gap-4">
+              <AddButton />
+              <button
+                className="border w-32 h-12 rounded p-2 bg-gray-500 text-white font-medium"
+                onClick={handleCloseForm}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </form>
         <DevTool control={control} />

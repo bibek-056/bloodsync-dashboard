@@ -10,8 +10,13 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import RequiredField from '../Alert/RequiredField';
-
-// import Loading from '../Loading';
+import { nepalJson } from '../../data/nepal';
+import {
+  getDistrictsByProvinceName,
+  getMunicipalitiesByDistrictName,
+} from '../../data/province';
+import { MdOutlineKeyboardBackspace } from 'react-icons/md';
+import { Link } from 'react-router-dom';
 
 export default function CreateDonor() {
   const form = useForm<DonorData>();
@@ -20,6 +25,9 @@ export default function CreateDonor() {
     handleSubmit,
     formState: { errors },
   } = form;
+  const [district, setDistrict] = useState('');
+  const [municipality, setMunicipality] = useState('');
+  const [province, setProvince] = useState('');
   const { data: bloodGroups } = useReadRequestQuery('bloodgroups');
   const { data: hospitals } = useReadRequestQuery('hospitals');
   const { data: userTypes } = useReadRequestQuery('userTypes');
@@ -51,7 +59,6 @@ export default function CreateDonor() {
       },
     },
     email: {
-      required: 'Email is required',
       pattern: {
         value:
           /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
@@ -98,6 +105,13 @@ export default function CreateDonor() {
 
   return (
     <>
+      <Link
+        to="/donor"
+        className="flex hover:underline cursor-pointer items-center align-middle gap-2 w-auto"
+      >
+        <MdOutlineKeyboardBackspace className="hover:underline" />
+        <p>Go back</p>
+      </Link>
       <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
         <h1 className="text-3xl text-[#006EB9] text-center mt-6 font-bold">
           Create a Donor
@@ -131,17 +145,17 @@ export default function CreateDonor() {
           />
           {errors.email && <RequiredField message={errors.email.message} />}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
-            Password
+            Registration Number
           </p>
           <input
-            type="password"
+            type="number"
             className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
             transition duration-200 ease-in-out
            focus:border-slate-100 mb-2"
-            {...register('password', registerConditions.password)}
+            {...register('registrationId', registerConditions.generic)}
           />
-          {errors.password && (
-            <RequiredField message={errors.password.message} />
+          {errors.registrationId && (
+            <RequiredField message={errors.registrationId.message} />
           )}
           <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
             Address
@@ -161,48 +175,79 @@ export default function CreateDonor() {
               <p className="text-[#006EB9] text-base mb-1 font-semibold">
                 Province
               </p>
-              {/* <Autocomplete
-                disablePortal
-                options={provinces}
-                id="combo-box-demo"
-                sx={{ width: 300 }}
-                renderInput={(params) => (
-                  <TextField {...params} label="Movie" />
-                )}
-              /> */}
+              <select
+                className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+                onChange={(e) => {
+                  setProvince(e.target.value);
+                  // You can add code here to fetch districts for the selected province
+                }}
+              >
+                <option value="">Select a province</option>
+                {nepalJson.provinceList.map((province) => (
+                  <option key={province.id} value={province.name}>
+                    {province.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="col-span-2 md:col-span-1">
-              <p className=" text-[#006EB9] text-base mb-1 font-semibold">
+              <p className="text-[#006EB9] text-base mb-1 font-semibold">
                 District
               </p>
-              <input
-                type="text"
-                className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded
-            transition duration-200 ease-in-out
-           focus:border-slate-100 mb-2"
+              <select
+                className={`w-[100%] px-4 py-2 text-xl text-black border ${
+                  errors.district ? 'border-red-500' : 'border-slate-800'
+                } rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2`}
                 {...register('district', registerConditions.generic)}
-              />
+                value={district}
+                onChange={(e) => {
+                  setDistrict(e.target.value);
+                }}
+              >
+                <option value="">Select a district</option>
+                {getDistrictsByProvinceName(province).map((oneDistrict) => (
+                  <option key={oneDistrict.id} value={oneDistrict.name}>
+                    {oneDistrict.name}
+                  </option>
+                ))}
+              </select>
               {errors.district && (
                 <p
-                  className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                  className="m-0 w-full items-start text-sm text-red-600 mb-2"
                   role="alert"
                 >
                   *{errors.district.message}
                 </p>
               )}
             </div>
+
             <div className="col-span-2 md:col-span-1">
-              <p className="  text-[#006EB9] text-base mb-1 font-semibold">
+              <p className="text-[#006EB9] text-base mb-1 font-semibold">
                 Municipality
               </p>
-              <input
-                type="text"
-                className=" w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+              <select
+                className={`w-[100%] px-4 py-2 text-xl text-black border ${
+                  errors.municipality ? 'border-red-500' : 'border-slate-800'
+                } rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2`}
                 {...register('municipality', registerConditions.generic)}
-              />
+                value={municipality}
+                onChange={(e) => setMunicipality(e.target.value)}
+              >
+                <option value="">Select a municipality</option>
+                {getMunicipalitiesByDistrictName(district).map(
+                  (oneMunicipality) => (
+                    <option
+                      key={oneMunicipality.id}
+                      value={oneMunicipality.name}
+                    >
+                      {oneMunicipality.name}
+                    </option>
+                  )
+                )}
+              </select>
               {errors.municipality && (
                 <p
-                  className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                  className="m-0 w-full items-start text-sm text-red-600 mb-2"
                   role="alert"
                 >
                   *{errors.municipality.message}

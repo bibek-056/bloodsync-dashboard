@@ -13,6 +13,9 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router';
 import Loading from '../Loading/Loading';
+import RequiredField from '../Alert/RequiredField';
+import { Link } from 'react-router-dom';
+import { MdOutlineKeyboardBackspace } from 'react-icons/md';
 
 export default function EditDonor() {
   const form = useForm<EditDonors>();
@@ -36,7 +39,6 @@ export default function EditDonor() {
   const onSubmit: SubmitHandler<EditDonors> = async (data) => {
     data.userId = donorData.user.userId;
     data.donorId = donorData.donorId;
-    data.password = 'fghjksjaj';
     setDisableButton(true);
     try {
       await editDonor(data).unwrap();
@@ -48,6 +50,62 @@ export default function EditDonor() {
       setDisableButton(false);
     }
   };
+  const registerConditions = {
+    name: {
+      required: 'Name is required',
+      maxLength: {
+        value: 32,
+        message: 'Max Length is 32',
+      },
+      minLength: {
+        value: 2,
+        message: 'Min length is 2',
+      },
+    },
+    email: {
+      pattern: {
+        value:
+          /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        message: 'Invalid email address',
+      },
+    },
+    password: {
+      required: 'Password is required',
+      maxLength: {
+        value: 32,
+        message: 'Max Length is 32',
+      },
+      minLength: {
+        value: 2,
+        message: 'Min length is 2',
+      },
+      pattern: {
+        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/,
+        message:
+          'Invalid password, please have a uppercase, lowercase and a special character',
+      },
+    },
+    address: {
+      required: 'Address is required',
+    },
+    generic: {
+      required: 'This field is required',
+    },
+    hospital: {
+      required: 'Select a hospital',
+    },
+    phoneNumber: {
+      required: 'Phone number is required',
+      maxLength: {
+        value: 10,
+        message: 'Max Length is 10',
+      },
+      minLength: {
+        value: 9,
+        message: 'Minimum length is 9',
+      },
+    },
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -56,6 +114,13 @@ export default function EditDonor() {
   } else {
     return (
       <>
+        <Link
+          to="/donor"
+          className="flex hover:underline cursor-pointer items-center align-middle gap-2 w-auto"
+        >
+          <MdOutlineKeyboardBackspace className="hover:underline" />
+          <p>Go back</p>
+        </Link>
         <main className="bg-white max-w-md p-2 rounded-md   mx-auto">
           <h1 className="text-3xl text-[#006EB9] text-center mt-6 font-bold">
             Edit a donor
@@ -73,27 +138,10 @@ export default function EditDonor() {
               } rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2`}
-              {...register('name', {
-                required: 'Name is required',
-                maxLength: {
-                  value: 32,
-                  message: 'Max Length is 32',
-                },
-                minLength: {
-                  value: 2,
-                  message: 'Min length is 2',
-                },
-              })}
+              {...register('name', registerConditions.name)}
               defaultValue={donorData?.user.name}
             />
-            {errors.name && (
-              <p
-                className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.name.message}
-              </p>
-            )}
+            {errors.name && <RequiredField message={errors.name.message} />}
 
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Email
@@ -103,25 +151,24 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value:
-                    /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  message: 'Invalid email address',
-                },
-              })}
+              {...register('email', registerConditions.email)}
               defaultValue={donorData?.user.email}
             />
-            {errors.email && (
-              <p
-                className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.email.message}
-              </p>
+            {errors.email && <RequiredField message={errors.email.message} />}
+            <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
+              Registration Number
+            </p>
+            <input
+              type="number"
+              className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
+            transition duration-200 ease-in-out
+           focus:border-slate-100 mb-2"
+              defaultValue={donorData?.registrationId}
+              {...register('registrationId', registerConditions.generic)}
+            />
+            {errors.registrationId && (
+              <RequiredField message={errors.registrationId.message} />
             )}
-
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Address
             </p>
@@ -137,24 +184,17 @@ export default function EditDonor() {
               defaultValue={donorData?.user.address}
             />
             {errors.address && (
-              <p
-                className=" m-0 w-full items-start ml-20 text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.address.message}
-              </p>
+              <RequiredField message={errors.address.message} />
             )}
             {/* District Municipality and Ward No */}
-            <div className=" w-4/5 lg:w-full lg:ml-[90px] items-center flex lg:flex-row flex-col justify-center lg:gap-2 ">
-              <div className="w-auto">
-                <p className=" text-[#006EB9] text-base mb-1 font-semibold">
+            <div className="w-4/5 grid grid-cols-2 gap-4 ">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   District
                 </p>
                 <input
                   type="text"
-                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded
-                  transition duration-200 ease-in-out
-                 focus:border-slate-100 mb-2"
+                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('district', {
                     required: 'This field is required',
                   })}
@@ -162,20 +202,20 @@ export default function EditDonor() {
                 />
                 {errors.district && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
                     *{errors.district.message}
                   </p>
                 )}
               </div>
-              <div className="">
-                <p className="  text-[#006EB9] text-base mb-1 font-semibold">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   Municipality
                 </p>
                 <input
                   type="text"
-                  className=" w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+                  className="w-[100%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('municipality', {
                     required: 'This field is required',
                   })}
@@ -183,36 +223,35 @@ export default function EditDonor() {
                 />
                 {errors.municipality && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
                     *{errors.municipality.message}
                   </p>
                 )}
               </div>
-              <div className="m-0 p-0">
-                <p className="  text-[#006EB9] text-base mb-1 font-semibold">
+              <div className="col-span-2 md:col-span-1">
+                <p className="text-[#006EB9] text-base mb-1 font-semibold">
                   Ward
                 </p>
                 <input
                   type="text"
-                  className=" w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus:border-slate-100 mb-2"
+                  className="w-[40%] px-4 py-2 text-xl text-black border border-slate-800 rounded transition duration-200 ease-in-out focus-border-slate-100 mb-2"
                   {...register('wardNo', {
                     required: 'This field is required',
                   })}
                   defaultValue={donorData.wardNo}
                 />
-                {errors.municipality && (
+                {errors.wardNo && (
                   <p
-                    className=" m-0 w-full items-start text-sm text-red-600 mb-2"
+                    className="m-0 w-full items-start text-sm text-red-600 mb-2"
                     role="alert"
                   >
-                    *{errors.municipality.message}
+                    *{errors.wardNo.message}
                   </p>
                 )}
               </div>
             </div>
-
             {/* BloodGroup */}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Bloodgroup
@@ -222,9 +261,7 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 mb-2 ease-in-out
                  focus:border-slate-100 "
-              {...register('bloodGroupId', {
-                required: 'Blood Group ID is needed',
-              })}
+              {...register('bloodGroupId', registerConditions.generic)}
               defaultValue={donorData.bloodGroup.bloodGroupId}
             >
               <option disabled> Select a bloodgroup</option>
@@ -235,12 +272,7 @@ export default function EditDonor() {
               ))}
             </select>
             {errors.bloodGroupId && (
-              <p
-                className=" m-0 w-4/5 items-start text-sm mb-1 text-red-600"
-                role="alert"
-              >
-                *{errors.bloodGroupId.message}
-              </p>
+              <RequiredField message={errors.bloodGroupId.message} />
             )}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Contact Number
@@ -250,29 +282,13 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
-              {...register('phoneNumber', {
-                required: 'Phone number is required',
-                maxLength: {
-                  value: 10,
-                  message: 'Max Length is 10',
-                },
-                minLength: {
-                  value: 9,
-                  message: 'Minimum length is 9',
-                },
-              })}
+              {...register('phoneNumber', registerConditions.generic)}
               defaultValue={donorData.phoneNumber}
             />
             {errors.phoneNumber && (
-              <p
-                className=" m-0 w-full items-start text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.phoneNumber.message}
-              </p>
+              <RequiredField message={errors.phoneNumber.message} />
             )}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
-              {' '}
               Emergency Contact
             </p>
             <input
@@ -280,26 +296,11 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
-              {...register('emergencyContact', {
-                required: 'Emergency Contact is required',
-                maxLength: {
-                  value: 10,
-                  message: 'Max Length is 10',
-                },
-                minLength: {
-                  value: 9,
-                  message: 'Minimum length is 9',
-                },
-              })}
+              {...register('emergencyContact', registerConditions.phoneNumber)}
               defaultValue={donorData?.emergencyContact}
             />
             {errors.emergencyContact && (
-              <p
-                className=" m-0 w-full items-start text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.emergencyContact.message}
-              </p>
+              <RequiredField message={errors.emergencyContact.message} />
             )}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               UserType
@@ -308,7 +309,7 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
-              {...register('userTypeId')}
+              {...register('userTypeId', registerConditions.generic)}
               defaultValue={donorData?.user.userType.userTypeId}
             >
               <option label="Select the usertype"> Select the usertype</option>
@@ -319,12 +320,7 @@ export default function EditDonor() {
               ))}
             </select>
             {errors.userTypeId && (
-              <p
-                className=" m-0 w-full items-start text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.userTypeId.message}
-              </p>
+              <RequiredField message={errors.userTypeId.message} />
             )}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Hospital Affiliated
@@ -333,9 +329,7 @@ export default function EditDonor() {
               className="w-4/5 px-4 py-2 text-xl text-black border border-slate-800 rounded
                   transition duration-200 ease-in-out
                  focus:border-slate-100 mb-2"
-              {...register('hospitalId', {
-                required: 'Select a hospital',
-              })}
+              {...register('hospitalId', registerConditions.hospital)}
               defaultValue={donorData?.hospital.hospitalId}
             >
               <option label="Select a hopsital"> </option>
@@ -345,13 +339,8 @@ export default function EditDonor() {
                 </option>
               ))}
             </select>
-            {errors.userTypeId && (
-              <p
-                className=" m-0 w-full items-start text-sm text-red-600 mb-2"
-                role="alert"
-              >
-                *{errors.userTypeId.message}
-              </p>
+            {errors.hospitalId && (
+              <RequiredField message={errors.hospitalId.message} />
             )}
             <p className="w-3/4  text-[#006EB9] text-base mb-1 font-semibold">
               Last Donated
@@ -362,15 +351,18 @@ export default function EditDonor() {
                  focus:border-slate-100 mb-2"
               type="date"
               value="2023-08-12"
-              {...register('lastDonated')}
+              {...register('lastDonated', registerConditions.generic)}
             />
+            {errors.lastDonated && (
+              <RequiredField message={errors.lastDonated.message} />
+            )}
             <button
               disabled={disableButton}
               type="submit"
               className="cursor-pointer  w-4/5 text-center  px-4 py-2 rounded text-white hover:bg-[#446eb6] bg-[#006EB9] text-base mb-1 font-thin
-                  disabled:bg-blue-700 disabled:cursor-not-allowed"
+                  disabled:bg-slate-700 disabled:cursor-not-allowed"
             >
-              Create Donor
+              Edit Donor
             </button>
           </form>
         </main>

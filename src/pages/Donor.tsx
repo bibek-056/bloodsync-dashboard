@@ -8,14 +8,13 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Loading from '../components/Loading/Loading';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import moment from 'moment';
 import { useReadRequestQuery } from '../api/apiHandler';
 import { IoMdAddCircleOutline } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { Donors, DonorTable } from '../models/datamodels';
 import DeleteDonor from '../components/Alert/DeleteDonor';
+import { MdDelete, MdEditSquare } from 'react-icons/md';
 interface Column {
   id:
     | 'index'
@@ -28,6 +27,7 @@ interface Column {
     | 'wardNo'
     | 'hospitalAffiliated'
     | 'emergencyContact'
+    | 'registrationId'
     | 'actions';
   label: string;
   minWidth?: number;
@@ -78,6 +78,11 @@ const columns: readonly Column[] = [
     align: 'center',
   },
   {
+    id: 'registrationId',
+    label: 'Registration Number',
+    align: 'center',
+  },
+  {
     id: 'emergencyContact',
     label: 'Emergency Contact',
     align: 'center',
@@ -98,6 +103,7 @@ interface Data {
   municipality: string;
   wardNo: number;
   hospitalAffiliated: string;
+  registrationId: number;
   emergencyContact: number;
   actions: React.ReactNode;
 }
@@ -111,6 +117,7 @@ function createData(
   municipality: string,
   wardNo: number,
   hospitalAffiliated: string,
+  registrationId: number,
   emergencyContact: number,
   actions: JSX.Element
 ): Data {
@@ -124,6 +131,7 @@ function createData(
     municipality,
     wardNo,
     hospitalAffiliated,
+    registrationId,
     emergencyContact,
     actions,
   };
@@ -154,18 +162,25 @@ function Donor() {
       item.municipality,
       item.wardNo,
       item.hospital.hospitalName,
+      item.registrationId,
       item.emergencyContact,
-      <div className="flex gap-2 justify-around items-center">
-        <DeleteIcon
-          onClick={() => handleOpenDeleteDialog(item.donorId)}
-          className="cursor-pointer text-red-600"
-        />
-        <BorderColorIcon
-          className="cursor-pointer"
+      <div className="flex w-full items-center gap-2 justify-between">
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-[#006EB9] shadow-md cursor-pointer "
           onClick={() => {
             navigate(`/donor/edit/${item.donorId}`);
           }}
-        />
+        >
+          <MdEditSquare className="text-xl font-medium text-[#006EB9] hover:text-2xl ease-in-out duration-100" />
+        </div>
+        <div
+          className="flex w-10 h-10 rounded-full gap-2 justify-center items-center border-[3px] border-red-500 shadow-md cursor-pointer"
+          onClick={() => {
+            handleOpenDeleteDialog(item.user.userId);
+          }}
+        >
+          <MdDelete className="text-xl font-medium text-red-500 hover:text-2xl ease-in-out duration-100" />
+        </div>
       </div>
     );
   });
@@ -199,11 +214,16 @@ function Donor() {
           </Link>
         </div>
 
-        <Paper sx={{ width: 'auto', backgroundColor: '#F1F5F9' }}>
+        <Paper
+          sx={{
+            backgroundColor: '#F1F5F9',
+          }}
+        >
           <TableContainer
             style={{
               backgroundColor: '#F1F5F9',
             }}
+            sx={{ maxHeight: 600 }}
           >
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -213,7 +233,7 @@ function Donor() {
                       key={index}
                       align={column.align}
                       style={{
-                        // minWidth: column.minWidth,
+                        minWidth: column.minWidth,
                         backgroundColor: '#F1F5F9',
                       }}
                     >
@@ -262,7 +282,7 @@ function Donor() {
           <DeleteDonor
             open={openDeleteDialog}
             onClose={handleCloseDeleteDialog}
-            slug="donors"
+            slug="users"
             id={donorId}
           />
         </Paper>

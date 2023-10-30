@@ -116,7 +116,8 @@ export default function Inventory() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (event: any, newPage: number) => {
+    event.preventDefault();
     setPage(newPage);
   };
 
